@@ -25,15 +25,23 @@ icon libraries — the page renders completely on first paint.
 
 ## Running it locally
 
-The site needs PHP 8.2 or newer. It runs on the PHP built-in server via `router.php`,
-which reproduces the `.htaccess` clean-URL rules that the built-in server ignores.
+**Easiest way: double-click `START-WEBSITE.bat`.**
+
+It starts PHP, opens <http://localhost:8000> in your browser and keeps running until
+you close the black window. Nothing else to install or configure.
+
+Or start it by hand from a terminal:
 
 ```bash
 cd D:/homemovers
 php -S localhost:8000 router.php
 ```
 
-Then open <http://localhost:8000>.
+Either way, the server must stay running while you use the site — closing the window
+stops it. `router.php` reproduces the `.htaccess` clean-URL rules, which PHP's
+built-in server ignores.
+
+The site needs PHP 8.2 or newer.
 
 `router.php` is a development-only file. On Apache/LiteSpeed the `.htaccess` handles
 routing and `router.php` is never invoked.
@@ -69,6 +77,7 @@ DB_ENABLED=true DB_HOST=127.0.0.1 DB_NAME=homemoverandpaker DB_USER=root DB_PASS
 ├── 404.php
 ├── sitemap.php                Rendered at /sitemap.xml via .htaccess
 ├── router.php                 LOCAL DEV ONLY — mirrors .htaccess routing
+├── START-WEBSITE.bat          LOCAL DEV ONLY — double-click to run the site
 ├── .htaccess                  HTTPS, canonical host, clean URLs, security, caching
 ├── robots.txt
 │
