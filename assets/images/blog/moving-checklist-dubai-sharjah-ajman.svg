@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500"
+     preserveAspectRatio="xMidYMid slice" role="img" aria-label="Moving checklist for Dubai, Sharjah and Ajman">
+  <title>Moving checklist for Dubai, Sharjah and Ajman</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#143458"/><stop offset="1" stop-color="#081a30"/>
+    </linearGradient>
+    <linearGradient id="bx" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0a95f"/><stop offset="1" stop-color="#c98c3f"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <path d="M540 0h260v500H420z" fill="#f5b21d" opacity=".10"/>
+  <path d="M640 0h160v500H540z" fill="#ffffff" opacity=".05"/>
+  
+  <!-- clipboard -->
+  <rect x="250" y="90" width="300" height="330" rx="16" fill="#ffffff"/>
+  <rect x="330" y="66" width="140" height="48" rx="12" fill="#f5b21d"/>
+  <g stroke="#c3cfdf" stroke-width="10" stroke-linecap="round">
+    <path d="M300 190h200M300 240h200M300 290h200M300 340h120"/>
+  </g>
+  <g stroke="#f5b21d" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M296 186l14 14 24-28"/><path d="M296 236l14 14 24-28"/><path d="M296 286l14 14 24-28"/>
+  </g>
+</svg>

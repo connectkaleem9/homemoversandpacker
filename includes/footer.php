@@ -16,7 +16,7 @@ $footYear = date('Y');
 <footer class="site-footer">
   <div class="container footer-top">
     <div class="footer-col footer-brand-col">
-      <a class="brand brand-footer" href="/">
+      <a class="brand brand-footer" href="/" aria-label="<?= e(BUSINESS_NAME) ?> — home">
         <?php if (image_exists('logo-white.png')): ?>
           <img class="brand-logo" src="<?= e(image_url('logo-white.png')) ?>"
                alt="<?= e(BUSINESS_NAME) ?>" width="220" height="66" loading="lazy">

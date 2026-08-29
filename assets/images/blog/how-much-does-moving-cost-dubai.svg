@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500"
+     preserveAspectRatio="xMidYMid slice" role="img" aria-label="What determines the cost of a move in the UAE">
+  <title>What determines the cost of a move in the UAE</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#143458"/><stop offset="1" stop-color="#081a30"/>
+    </linearGradient>
+    <linearGradient id="bx" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0a95f"/><stop offset="1" stop-color="#c98c3f"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <path d="M540 0h260v500H420z" fill="#f5b21d" opacity=".10"/>
+  <path d="M640 0h160v500H540z" fill="#ffffff" opacity=".05"/>
+  
+  <!-- calculator + coins -->
+  <rect x="230" y="110" width="230" height="300" rx="18" fill="#ffffff"/>
+  <rect x="258" y="140" width="174" height="60" rx="8" fill="#dde5ef"/>
+  <g fill="#0d2440">
+    <rect x="258" y="224" width="46" height="40" rx="8"/><rect x="322" y="224" width="46" height="40" rx="8"/>
+    <rect x="386" y="224" width="46" height="40" rx="8"/><rect x="258" y="282" width="46" height="40" rx="8"/>
+    <rect x="322" y="282" width="46" height="40" rx="8"/><rect x="386" y="282" width="46" height="40" rx="8"/>
+    <rect x="258" y="340" width="110" height="40" rx="8"/>
+  </g>
+  <rect x="386" y="340" width="46" height="40" rx="8" fill="#f5b21d"/>
+  <g>
+    <ellipse cx="560" cy="380" rx="70" ry="20" fill="#f5b21d"/>
+    <rect x="490" y="340" width="140" height="40" fill="#f5b21d"/>
+    <ellipse cx="560" cy="340" rx="70" ry="20" fill="#ffc63d"/>
+    <ellipse cx="560" cy="300" rx="70" ry="20" fill="#f5b21d"/>
+    <rect x="490" y="300" width="140" height="40" fill="#f5b21d"/>
+    <ellipse cx="560" cy="300" rx="70" ry="20" fill="#ffc63d"/>
+  </g>
+</svg>

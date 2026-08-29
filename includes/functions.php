@@ -164,17 +164,38 @@ function asset(string $path): string
  | day one and fills in as real photos arrive.
  | ------------------------------------------------------------------ */
 
-/** True when the image actually exists on disk. */
+/**
+ * Resolve an image path to a file that actually exists.
+ *
+ * The requested name wins, so dropping in a real photo immediately replaces
+ * the artwork. Falls back through the other web formats and finally to the
+ * bundled .svg illustration, which is what ships until real photography
+ * arrives. Returns null when nothing is available.
+ */
+function image_resolve(string $path): ?string
+{
+    $path = ltrim($path, '/');
+    $base = preg_replace('/\.[a-zA-Z0-9]+$/', '', $path) ?? $path;
+
+    foreach ([$path, $base . '.webp', $base . '.avif', $base . '.jpg', $base . '.png', $base . '.svg'] as $candidate) {
+        $file = APP_ROOT . '/assets/images/' . $candidate;
+        if (is_file($file) && filesize($file) > 0) {
+            return $candidate;
+        }
+    }
+    return null;
+}
+
+/** True when an image is available for this slot (in any supported format). */
 function image_exists(string $path): bool
 {
-    $file = APP_ROOT . '/assets/images/' . ltrim($path, '/');
-    return is_file($file) && filesize($file) > 0;
+    return image_resolve($path) !== null;
 }
 
 /** URL for an image in /assets/images/, cache-busted. */
 function image_url(string $path): string
 {
-    return asset('images/' . ltrim($path, '/'));
+    return asset('images/' . ltrim(image_resolve($path) ?? $path, '/'));
 }
 
 /**

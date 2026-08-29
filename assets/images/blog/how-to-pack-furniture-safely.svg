@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500"
+     preserveAspectRatio="xMidYMid slice" role="img" aria-label="How to pack and protect furniture for a move">
+  <title>How to pack and protect furniture for a move</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#143458"/><stop offset="1" stop-color="#081a30"/>
+    </linearGradient>
+    <linearGradient id="bx" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0a95f"/><stop offset="1" stop-color="#c98c3f"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <path d="M540 0h260v500H420z" fill="#f5b21d" opacity=".10"/>
+  <path d="M640 0h160v500H540z" fill="#ffffff" opacity=".05"/>
+  
+  <!-- wrapped sofa + tape roll -->
+  <g>
+    <path d="M210 250h300a30 30 0 0 1 30 30v110H180V280a30 30 0 0 1 30-30z" fill="#b9c6d6"/>
+    <rect x="180" y="296" width="56" height="94" rx="16" fill="#a7b6c9"/>
+    <rect x="484" y="296" width="56" height="94" rx="16" fill="#a7b6c9"/>
+    <rect x="248" y="306" width="224" height="60" rx="12" fill="#cdd8e5"/>
+    <g opacity=".5" fill="#ffffff"><path d="M196 264h330l-36 126H180z"/></g>
+    <g opacity=".4" stroke="#ffffff" stroke-width="7" fill="none">
+      <path d="M190 286h340M186 326h344M188 366h340"/>
+    </g>
+  </g>
+  <g transform="translate(596 250)">
+    <circle r="62" fill="#f5b21d"/><circle r="26" fill="#081a30"/>
+    <path d="M-62 0a62 62 0 0 1 62-62v36a26 26 0 0 0-26 26z" fill="#ffc63d"/>
+  </g>
+</svg>

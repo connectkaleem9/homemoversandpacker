@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 108" width="400" height="108" role="img" aria-label="Home Movers and Packers">
+  <title>Home Movers &amp; Packers</title>
+
+  <!-- Mark: house sitting on a moving truck -->
+  <g transform="translate(2 12)">
+    <!-- truck body -->
+    <rect x="4" y="46" width="52" height="26" rx="4" fill="#0d2440"/>
+    <path d="M56 52h16l12 12v8H56z" fill="#f5b21d"/>
+    <circle cx="20" cy="76" r="7" fill="#0d2440"/>
+    <circle cx="20" cy="76" r="2.8" fill="#ffffff"/>
+    <circle cx="68" cy="76" r="7" fill="#0d2440"/>
+    <circle cx="68" cy="76" r="2.8" fill="#ffffff"/>
+    <rect x="0" y="70" width="88" height="4" rx="2" fill="#0d2440" opacity=".18"/>
+
+    <!-- house -->
+    <path d="M30 6 6 26v18h48V26z" fill="#0d2440"/>
+    <path d="M30 6 6 26h48z" fill="#f5b21d"/>
+    <rect x="22" y="30" width="16" height="14" rx="1.5" fill="#ffffff"/>
+    <rect x="26" y="30" width="1.6" height="14" fill="#0d2440" opacity=".35"/>
+    <rect x="22" y="35.5" width="16" height="1.6" fill="#0d2440" opacity=".35"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="100" y="40" font-family="Segoe UI, Helvetica, Arial, sans-serif"
+        font-size="30" font-weight="800" letter-spacing="0.4" fill="#0d2440">HOME MOVER</text>
+  <text x="100" y="72" font-family="Segoe UI, Helvetica, Arial, sans-serif"
+        font-size="30" font-weight="800" letter-spacing="0.4" fill="#f5b21d">AND PAKER</text>
+  <text x="102" y="91" font-family="Segoe UI, Helvetica, Arial, sans-serif"
+        font-size="12.5" font-weight="600" letter-spacing="4.6" fill="#5b6b80">MOVERS &amp; PACKERS</text>
+</svg>

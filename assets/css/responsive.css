@@ -126,7 +126,13 @@
   /* Homepage sections */
   .hero-home-inner { grid-template-columns: 1fr; min-height: 0; }
   .hero-home-copy { max-width: 100%; padding-block: var(--sp-7) var(--sp-5); }
-  .hero-home-media { min-height: 320px; margin-inline: calc(var(--sp-5) * -1); }
+  .hero-home-media {
+    position: relative;
+    width: auto;
+    right: auto;
+    min-height: 300px;
+    margin-inline: calc(var(--sp-5) * -1);
+  }
   .hero-home-media::before { display: none; }
   .why-grid { grid-template-columns: 1fr; gap: var(--sp-6); }
   .serve-grid { grid-template-columns: 1fr; gap: var(--sp-6); }

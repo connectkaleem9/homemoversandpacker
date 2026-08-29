@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500"
+     preserveAspectRatio="xMidYMid slice" role="img" aria-label="Moving between Dubai, Sharjah and Ajman">
+  <title>Moving between Dubai, Sharjah and Ajman</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#143458"/><stop offset="1" stop-color="#081a30"/>
+    </linearGradient>
+    <linearGradient id="bx" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0a95f"/><stop offset="1" stop-color="#c98c3f"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <path d="M540 0h260v500H420z" fill="#f5b21d" opacity=".10"/>
+  <path d="M640 0h160v500H540z" fill="#ffffff" opacity=".05"/>
+  
+  <!-- road + truck + route pins -->
+  <path d="M0 400h800v100H0z" fill="#22303f"/>
+  <g stroke="#f5b21d" stroke-width="9" stroke-dasharray="44 34" stroke-linecap="round">
+    <path d="M20 452h760"/>
+  </g>
+  <g transform="translate(180 210)">
+    <rect x="0" y="0" width="250" height="150" rx="10" fill="#ffffff"/>
+    <rect x="0" y="112" width="250" height="18" fill="#f5b21d"/>
+    <path d="M250 40h44l36 48v72h-80z" fill="#ffffff"/>
+    <path d="M258 52h32l24 32h-56z" fill="#a9c6e2"/>
+    <rect x="250" y="112" width="80" height="18" fill="#f5b21d"/>
+    <circle cx="70" cy="166" r="26" fill="#22303f"/><circle cx="70" cy="166" r="11" fill="#98a5b5"/>
+    <circle cx="266" cy="166" r="26" fill="#22303f"/><circle cx="266" cy="166" r="11" fill="#98a5b5"/>
+  </g>
+  <g fill="#f5b21d">
+    <path d="M120 120c0 22-26 44-26 44s-26-22-26-44a26 26 0 0 1 52 0z"/>
+    <circle cx="94" cy="118" r="10" fill="#081a30"/>
+    <path d="M640 96c0 22-26 44-26 44s-26-22-26-44a26 26 0 0 1 52 0z"/>
+    <circle cx="614" cy="94" r="10" fill="#081a30"/>
+  </g>
+</svg>

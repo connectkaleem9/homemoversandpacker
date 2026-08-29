@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600"
+     preserveAspectRatio="xMidYMid slice" role="img" aria-label="Sharjah skyline — moving services across Sharjah">
+  <title>Sharjah skyline — moving services across Sharjah</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#123a63"/><stop offset="1" stop-color="#3a7ab4"/>
+    </linearGradient>
+    <linearGradient id="tw" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b2440" stop-opacity=".92"/>
+      <stop offset="1" stop-color="#0b2440" stop-opacity=".55"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f6ea6"/><stop offset="1" stop-color="#1d4e7c"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#sky)"/>
+  <radialGradient id="haze" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#ffe6a8" stop-opacity=".34"/>
+    <stop offset="1" stop-color="#ffe6a8" stop-opacity="0"/>
+  </radialGradient>
+  <circle cx="650" cy="130" r="170" fill="url(#haze)"/>
+  <g>
+    <rect x="26" y="430" width="50" height="170" fill="url(#tw)"/>
+    <rect x="86" y="370" width="42" height="230" fill="url(#tw)"/>
+    <path d="M138 600V500a30 30 0 0 1 60 0v100z" fill="url(#tw)"/>
+    <rect x="208" y="340" width="44" height="260" fill="url(#tw)"/>
+    <rect x="262" y="410" width="38" height="190" fill="url(#tw)"/>
+    <path d="M310 600V490a32 32 0 0 1 64 0v110z" fill="#f5b21d" opacity=".9"/>
+    <path d="M384 600V370l23-70 23 70v230z" fill="url(#tw)"/>
+    <rect x="440" y="400" width="40" height="200" fill="url(#tw)"/>
+    <rect x="490" y="360" width="54" height="240" fill="url(#tw)"/>
+    <rect x="554" y="440" width="38" height="160" fill="url(#tw)"/>
+    <rect x="602" y="320" width="48" height="280" fill="url(#tw)"/>
+    <rect x="660" y="400" width="42" height="200" fill="url(#tw)"/>
+    <rect x="712" y="370" width="56" height="230" fill="url(#tw)"/>
+  </g>
+  <rect y="600" width="800" height="0" fill="none"/>
+  <rect y="498" width="800" height="102" fill="url(#water)"/>
+  <g fill="#ffffff" opacity=".14">
+    <rect x="40" y="520" width="120" height="4" rx="2"/>
+    <rect x="220" y="540" width="180" height="4" rx="2"/>
+    <rect x="460" y="524" width="150" height="4" rx="2"/>
+    <rect x="120" y="566" width="240" height="4" rx="2"/>
+    <rect x="470" y="562" width="200" height="4" rx="2"/>
+  </g>
+</svg>

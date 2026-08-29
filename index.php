@@ -73,9 +73,15 @@ require __DIR__ . '/includes/header.php';
       </div>
 
       <div class="btn-row">
-        <?= cta_phone('btn btn-phone btn-lg', 'Call Now ' . PHONE_DISPLAY) ?>
+        <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
+           id="phone-cta" aria-label="Call <?= e(PHONE_INTL) ?>">
+          <?= icon('phone', 'icon') ?>
+          <span class="btn-stack">
+            <small>Call Now</small>
+            <strong><?= e(PHONE_DISPLAY) ?></strong>
+          </span>
+        </a>
         <?= cta_quote('btn btn-primary btn-lg', 'Get a Free Quote', '#quote') ?>
-        <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-whatsapp btn-lg') ?>
       </div>
     </div>
 
@@ -297,7 +303,14 @@ $average = $ratings !== [] ? round(array_sum($ratings) / count($ratings), 1) : n
       <p>Quick, easy and obligation-free.</p>
     </div>
     <div class="cta-gold-actions">
-      <?= cta_phone('btn btn-phone btn-lg', 'Call Now ' . PHONE_DISPLAY) ?>
+      <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
+         aria-label="Call <?= e(PHONE_INTL) ?>">
+        <?= icon('phone', 'icon') ?>
+        <span class="btn-stack">
+          <small>Call Now</small>
+          <strong><?= e(PHONE_DISPLAY) ?></strong>
+        </span>
+      </a>
       <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-white btn-lg') ?>
     </div>
   </div>
