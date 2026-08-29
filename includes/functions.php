@@ -16,10 +16,18 @@ function e(?string $value): string
     return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
-/** Escape for a JSON-LD script block (prevents </script> breakouts). */
+/**
+ * Escape for a JSON-LD script block (prevents </script> breakouts).
+ * Pretty-printed locally so the graph is readable while developing, minified
+ * in production where it is markup weight on every single page.
+ */
 function json_ld(array $data): string
 {
-    $json = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    $flags = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
+    if (APP_DEBUG) {
+        $flags |= JSON_PRETTY_PRINT;
+    }
+    $json = json_encode($data, $flags);
     return str_replace(['<', '>', '&'], ['<', '>', '&'], (string) $json);
 }
 

@@ -1,7 +1,9 @@
 # Runtime data — never commit leads or logs
+# Keep the directories (PHP writes into them) but never the contents
 /storage/*.jsonl
 /storage/*.json
-/storage/logs/
+/storage/logs/*
+!/storage/logs/.gitkeep
 /uploads/*
 !/uploads/.gitkeep
 
