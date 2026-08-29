@@ -15,6 +15,7 @@ return [
     'home-movers' => [
         'name'        => 'Home Movers',
         'short'       => 'Full house and apartment moves handled end to end — packing, loading, transport, unloading and reassembly.',
+        'tile'        => 'Safe, reliable moving solutions for your home.',
         'icon'        => 'home',
         'title'       => 'Home Movers in Dubai, Sharjah & Ajman | House Movers',
         'description' => 'Professional home movers for apartments and villas across Dubai, Sharjah and Ajman. Packing, loading, transport and unpacking. Call 055 658 1781.',
@@ -87,6 +88,7 @@ return [
     'furniture-movers' => [
         'name'        => 'Furniture Movers',
         'short'       => 'Single pieces or a full set — wrapped, dismantled where needed, moved without scratches and rebuilt on arrival.',
+        'tile'        => 'Careful handling and secure transport of furniture.',
         'icon'        => 'sofa',
         'title'       => 'Furniture Movers in Dubai, Sharjah & Ajman',
         'description' => 'Furniture movers for sofas, wardrobes, beds and single items across Dubai, Sharjah and Ajman. Wrapping and reassembly included. Call 055 658 1781.',
@@ -158,6 +160,7 @@ return [
     'office-commercial-movers' => [
         'name'        => 'Office & Commercial Movers',
         'short'       => 'Office relocations planned around your working hours — workstations, IT equipment, files and furniture with minimal downtime.',
+        'tile'        => 'Hassle-free office and commercial relocation.',
         'icon'        => 'building',
         'title'       => 'Office & Commercial Movers in Dubai, Sharjah & Ajman',
         'description' => 'Office and commercial movers for workstations, IT equipment and files in Dubai, Sharjah and Ajman. Minimal downtime. Call 055 658 1781.',
@@ -231,6 +234,7 @@ return [
     'studio-apartment-movers' => [
         'name'        => 'Studio Apartment Movers',
         'short'       => 'Small moves done properly — a right-sized crew and vehicle for studios and one-bedroom flats, usually finished in a few hours.',
+        'tile'        => 'Right-sized moves for studios and small flats.',
         'icon'        => 'apartment',
         'title'       => 'Studio Apartment Movers in Dubai, Sharjah & Ajman',
         'description' => 'Studio and small apartment movers in Dubai, Sharjah and Ajman. Right-sized crew and vehicle, most moves done in hours. Call 055 658 1781.',
@@ -302,6 +306,7 @@ return [
     'villa-movers' => [
         'name'        => 'Villa Movers',
         'short'       => 'Large-home moves with the crew, vehicles and planning that multiple floors, gardens and heavy furniture actually require.',
+        'tile'        => 'Large villa relocations handled with extra care.',
         'icon'        => 'villa',
         'title'       => 'Villa Movers in Dubai, Sharjah & Ajman | Villa Moving',
         'description' => 'Villa movers for large homes across Dubai, Sharjah and Ajman. Multiple floors, heavy furniture and fragile items handled. Call 055 658 1781.',
@@ -375,6 +380,7 @@ return [
     'warehousing-storage' => [
         'name'        => 'Warehousing & Storage',
         'short'       => 'Somewhere for your belongings to wait when the dates do not line up — inventoried in, stored, delivered out when you are ready.',
+        'tile'        => 'Secure storage for short or long-term needs.',
         'icon'        => 'storage',
         'title'       => 'Warehousing & Storage in Dubai, Sharjah & Ajman',
         'description' => 'Furniture and household storage for moves in Dubai, Sharjah and Ajman. Inventoried collection, storage and redelivery. Call 055 658 1781.',
@@ -446,6 +452,7 @@ return [
     'packing-unpacking' => [
         'name'        => 'Packing & Unpacking',
         'short'       => 'Professional packing with proper materials — and unpacking at the other end so you are not living out of boxes for a month.',
+        'tile'        => 'Professional packing for damage-free moving.',
         'icon'        => 'box',
         'title'       => 'Packing & Unpacking in Dubai, Sharjah & Ajman',
         'description' => 'Professional packing and unpacking in Dubai, Sharjah and Ajman. Proper materials, fragile item protection, labelled boxes. Call 055 658 1781.',
@@ -519,6 +526,7 @@ return [
     'commercial-retail-movers' => [
         'name'        => 'Commercial & Retail Movers',
         'short'       => 'Shop and showroom relocations — fixtures, display units, stock and signage moved around your trading hours.',
+        'tile'        => 'Shop and showroom moves around trading hours.',
         'icon'        => 'shop',
         'title'       => 'Commercial & Retail Movers in Dubai, Sharjah & Ajman',
         'description' => 'Retail and commercial movers for shops and showrooms in Dubai, Sharjah and Ajman. Fixtures, displays and stock. Call 055 658 1781.',
@@ -592,6 +600,7 @@ return [
     'furniture-assembly' => [
         'name'        => 'Furniture Assembly',
         'short'       => 'Flat-pack assembly, dismantling and reassembly — beds, wardrobes, desks and modular units built properly and level.',
+        'tile'        => 'Assembly, dismantling and reassembly done right.',
         'icon'        => 'tools',
         'title'       => 'Furniture Assembly in Dubai, Sharjah & Ajman',
         'description' => 'Furniture assembly and dismantling in Dubai, Sharjah and Ajman. Beds, wardrobes, desks and flat-pack units built right. Call 055 658 1781.',
@@ -664,6 +673,7 @@ return [
     'loading-unloading' => [
         'name'        => 'Loading & Unloading',
         'short'       => 'Labour only — a trained crew to load or unload your vehicle or container when you already have the transport.',
+        'tile'        => 'Trained crew for your own truck or container.',
         'icon'        => 'truck',
         'title'       => 'Loading & Unloading in Dubai, Sharjah & Ajman',
         'description' => 'Loading and unloading crews in Dubai, Sharjah and Ajman. Labour-only help for your own truck or container. Call 055 658 1781.',
@@ -735,6 +745,7 @@ return [
     'local-moving' => [
         'name'        => 'Local Moving',
         'short'       => 'Short-distance moves within and between Dubai, Sharjah and Ajman — usually completed in a single day.',
+        'tile'        => 'Short-distance moves, usually done in a day.',
         'icon'        => 'route',
         'title'       => 'Local Moving Services in Dubai, Sharjah & Ajman',
         'description' => 'Local moving services within and between Dubai, Sharjah and Ajman. Short-distance moves usually completed the same day. Call 055 658 1781 for a free quote.',
@@ -806,6 +817,7 @@ return [
     'car-transportation' => [
         'name'        => 'Car Transportation',
         'short'       => 'Vehicle transport arranged alongside your move — collected from one address and delivered to the other.',
+        'tile'        => 'Vehicle transport arranged alongside your move.',
         'icon'        => 'car',
         'title'       => 'Car Transportation in Dubai, Sharjah & Ajman',
         'description' => 'Car and vehicle transportation between Dubai, Sharjah and Ajman, arranged alongside your move. Collection and delivery coordinated for you. Call 055 658 1781.',

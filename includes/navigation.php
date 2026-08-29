@@ -5,25 +5,34 @@
  * The dropdowns work with pure CSS on hover for pointer devices and with a
  * small amount of JavaScript for keyboard and touch, so the menu is usable
  * before main.js loads and remains usable if it never does.
- */
-
-declare(strict_types=1);
-
-/*
+ *
  * NOTE: every variable declared in this partial is prefixed `nav*`.
  * This file is included in the middle of a page's own scope, so an
  * unprefixed $service or $location here would silently overwrite the
  * page's data and the page would render the wrong content.
  */
+
+declare(strict_types=1);
+
 $navServices  = all_services();
 $navLocations = all_locations();
+$navHasLogo   = image_exists('logo.png');
 ?>
 <div class="topbar">
   <div class="container topbar-inner">
-    <span class="topbar-item"><?= icon('pin', 'icon icon-sm') ?> <?= e(BUSINESS_ADDRESS) ?> — serving <?= e(areas_sentence()) ?></span>
-    <span class="topbar-item topbar-phone">
-      <?= icon('phone', 'icon icon-sm') ?>
-      <a href="<?= PHONE_LINK ?>" class="js-track" data-cta="phone"><?= e(PHONE_DISPLAY) ?></a>
+    <span class="topbar-item topbar-left">
+      <?= icon('shield', 'icon icon-sm') ?>
+      Your trusted movers &amp; packers in <?= e(areas_sentence()) ?>
+    </span>
+    <span class="topbar-item topbar-right">
+      <span class="topbar-item"><?= icon('pin', 'icon icon-sm') ?> <?= e(BUSINESS_ADDRESS) ?></span>
+      <?php if (BUSINESS_HOURS_TEXT !== ''): ?>
+        <span class="topbar-item"><?= icon('clock', 'icon icon-sm') ?> <?= e(BUSINESS_HOURS_TEXT) ?></span>
+      <?php endif; ?>
+      <span class="topbar-item topbar-phone">
+        <?= icon('phone', 'icon icon-sm') ?>
+        <a href="<?= PHONE_LINK ?>" class="js-track" data-cta="phone"><?= e(PHONE_DISPLAY) ?></a>
+      </span>
     </span>
   </div>
 </div>
@@ -31,11 +40,16 @@ $navLocations = all_locations();
 <header class="site-header" id="site-header">
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="<?= e(BUSINESS_NAME) ?> — home">
-      <span class="brand-mark" aria-hidden="true"><?= icon('truck', 'icon') ?></span>
-      <span class="brand-text">
-        <strong>Home Movers</strong>
-        <span>&amp; Packers</span>
-      </span>
+      <?php if ($navHasLogo): ?>
+        <img class="brand-logo" src="<?= e(image_url('logo.png')) ?>"
+             alt="<?= e(BUSINESS_NAME) ?>" width="200" height="60">
+      <?php else: ?>
+        <span class="brand-mark" aria-hidden="true"><?= icon('truck', 'icon') ?></span>
+        <span class="brand-text">
+          <strong>Home Movers</strong>
+          <span>&amp; Packers</span>
+        </span>
+      <?php endif; ?>
     </a>
 
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
@@ -87,8 +101,8 @@ $navLocations = all_locations();
           </div>
         </li>
 
-        <li class="nav-item"><a href="/blog/" class="nav-link<?= is_section('/blog') ? ' is-current' : '' ?>">Blog</a></li>
         <li class="nav-item"><a href="/about-us/" class="nav-link<?= is_current('/about-us/') ? ' is-current' : '' ?>">About Us</a></li>
+        <li class="nav-item"><a href="/blog/" class="nav-link<?= is_section('/blog') ? ' is-current' : '' ?>">Blog</a></li>
         <li class="nav-item"><a href="/contact-us/" class="nav-link<?= is_current('/contact-us/') ? ' is-current' : '' ?>">Contact Us</a></li>
       </ul>
 
@@ -100,16 +114,12 @@ $navLocations = all_locations();
     </nav>
 
     <div class="header-cta">
-      <a href="<?= PHONE_LINK ?>" class="header-phone js-track" data-cta="phone">
-        <?= icon('phone', 'icon') ?>
-        <span class="header-phone-text">
-          <small>Call us now</small>
-          <strong><?= e(PHONE_DISPLAY) ?></strong>
-        </span>
+      <a href="<?= PHONE_LINK ?>" class="btn btn-phone js-track" data-cta="phone">
+        <?= icon('phone', 'icon icon-sm') ?><span><?= e(PHONE_DISPLAY) ?></span>
       </a>
-      <a href="<?= e(whatsapp_url('Hello, I need a moving quote.')) ?>" class="btn btn-whatsapp js-track"
+      <a href="<?= e(whatsapp_url('Hello, I need a moving quote.')) ?>" class="btn btn-gold js-track"
          data-cta="whatsapp" target="_blank" rel="noopener">
-        <?= icon('whatsapp', 'icon icon-sm') ?><span>WhatsApp</span>
+        <?= icon('whatsapp', 'icon icon-sm') ?><span>WhatsApp Us</span>
       </a>
     </div>
   </div>

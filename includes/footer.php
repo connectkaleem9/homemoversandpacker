@@ -17,17 +17,37 @@ $footYear = date('Y');
   <div class="container footer-top">
     <div class="footer-col footer-brand-col">
       <a class="brand brand-footer" href="/">
-        <span class="brand-mark" aria-hidden="true"><?= icon('truck', 'icon') ?></span>
-        <span class="brand-text"><strong>Home Movers</strong><span>&amp; Packers</span></span>
+        <?php if (image_exists('logo-white.png')): ?>
+          <img class="brand-logo" src="<?= e(image_url('logo-white.png')) ?>"
+               alt="<?= e(BUSINESS_NAME) ?>" width="220" height="66" loading="lazy">
+        <?php else: ?>
+          <span class="brand-mark" aria-hidden="true"><?= icon('truck', 'icon') ?></span>
+          <span class="brand-text"><strong>Home Movers</strong><span>&amp; Packers</span></span>
+        <?php endif; ?>
       </a>
       <p class="footer-about">
         Movers and packers based in <?= e(BUSINESS_ADDRESS) ?>, providing home, villa, apartment,
         office and commercial moving with packing, storage and furniture services across
         <?= e(areas_sentence()) ?>.
       </p>
-      <div class="footer-cta">
-        <?= cta_phone('btn btn-phone', 'Call ' . PHONE_DISPLAY) ?>
-        <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-whatsapp') ?>
+
+      <?php
+      /* Social icons appear only for profiles that have a real URL in config. */
+      $footSocial = array_filter(SOCIAL_LINKS, static fn ($url): bool => is_string($url) && $url !== '');
+      ?>
+      <?php if ($footSocial !== []): ?>
+        <div class="footer-social">
+          <?php foreach ($footSocial as $footNetwork => $footUrl): ?>
+            <a href="<?= e($footUrl) ?>" target="_blank" rel="noopener"
+               aria-label="<?= e(ucfirst($footNetwork)) ?>">
+              <?= icon($footNetwork, 'icon') ?>
+            </a>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
+
+      <div class="footer-cta" style="margin-top: var(--sp-5);">
+        <?= cta_phone('btn btn-primary', 'Call ' . PHONE_DISPLAY) ?>
       </div>
     </div>
 

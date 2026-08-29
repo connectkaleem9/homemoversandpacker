@@ -62,6 +62,34 @@ function all_posts(): array
     return $posts;
 }
 
+/**
+ * Real customer reviews only. Ships empty; the homepage section and the
+ * Review/AggregateRating schema both stay hidden until genuine reviews are
+ * added. See includes/data/testimonials.php.
+ */
+function all_testimonials(): array
+{
+    static $testimonials = null;
+    if ($testimonials === null) {
+        $testimonials = array_values(array_filter(
+            require __DIR__ . '/data/testimonials.php',
+            static fn ($t): bool => is_array($t) && !empty($t['quote']) && !empty($t['name'])
+        ));
+    }
+    return $testimonials;
+}
+
+/** Initials fallback for a reviewer with no photo. */
+function initials(string $name): string
+{
+    $parts = preg_split('/\s+/', trim($name)) ?: [];
+    $out = '';
+    foreach (array_slice($parts, 0, 2) as $part) {
+        $out .= mb_strtoupper(mb_substr($part, 0, 1));
+    }
+    return $out !== '' ? $out : '?';
+}
+
 function get_service(string $slug): ?array
 {
     $services = all_services();
@@ -125,6 +153,68 @@ function canonical(string $path): string
 function asset(string $path): string
 {
     return '/assets/' . ltrim($path, '/') . '?v=' . ASSET_VERSION;
+}
+
+/* ------------------------------------------------------------------
+ | Images
+ |
+ | Photography is dropped into /assets/images/ by the business (see the
+ | README in that folder). Until a file is there, we render a styled
+ | placeholder rather than a broken image, so the layout is correct from
+ | day one and fills in as real photos arrive.
+ | ------------------------------------------------------------------ */
+
+/** True when the image actually exists on disk. */
+function image_exists(string $path): bool
+{
+    $file = APP_ROOT . '/assets/images/' . ltrim($path, '/');
+    return is_file($file) && filesize($file) > 0;
+}
+
+/** URL for an image in /assets/images/, cache-busted. */
+function image_url(string $path): string
+{
+    return asset('images/' . ltrim($path, '/'));
+}
+
+/**
+ * Render an image, or a placeholder if it has not been supplied yet.
+ *
+ * $opts: width, height, class, loading ('lazy'|'eager'), fetchpriority, sizes, icon
+ * Width and height are always emitted so the browser reserves the space —
+ * that is what keeps Cumulative Layout Shift at zero.
+ */
+function img(string $path, string $alt, array $opts = []): string
+{
+    $width  = (int) ($opts['width'] ?? 800);
+    $height = (int) ($opts['height'] ?? 600);
+    $class  = (string) ($opts['class'] ?? '');
+    $load   = (string) ($opts['loading'] ?? 'lazy');
+    $icon   = (string) ($opts['icon'] ?? 'truck');
+
+    if (image_exists($path)) {
+        $attrs = 'src="' . e(image_url($path)) . '" alt="' . e($alt) . '"'
+            . ' width="' . $width . '" height="' . $height . '"'
+            . ' loading="' . e($load) . '" decoding="async"';
+        if (!empty($opts['fetchpriority'])) {
+            $attrs .= ' fetchpriority="' . e((string) $opts['fetchpriority']) . '"';
+        }
+        if ($class !== '') {
+            $attrs .= ' class="' . e($class) . '"';
+        }
+        return '<img ' . $attrs . '>';
+    }
+
+    /* Placeholder — proportional, never a broken-image icon. */
+    $ratio = $width > 0 ? ($height / $width) * 100 : 75;
+    $hint  = APP_DEBUG
+        ? '<span class="img-placeholder-hint">assets/images/' . e($path) . '</span>'
+        : '';
+
+    return '<div class="img-placeholder ' . e($class) . '" role="img" aria-label="' . e($alt) . '"'
+        . ' style="padding-bottom:' . round($ratio, 3) . '%">'
+        . '<span class="img-placeholder-inner">' . icon($icon, 'icon icon-lg') . $hint . '</span>'
+        . '</div>';
 }
 
 /** True when $path matches the current request path (for nav highlighting). */
@@ -245,6 +335,13 @@ function icon(string $name, string $class = 'icon'): string
         'quote'     => '<path d="M5 4h14v13H8l-3 3z"/><path d="M9 9h6M9 12.5h4"/>',
         'mail'      => '<path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/>',
         'users'     => '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 5.5a3 3 0 0 1 0 5.5"/><path d="M17.5 14.5A6 6 0 0 1 21 20"/>',
+        'headset'   => '<path d="M4 13v-1a8 8 0 0 1 16 0v1"/><path d="M4 13h2.5a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M20 13h-2.5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1H19a1 1 0 0 0 1-1z"/><path d="M20 19v.5a2.5 2.5 0 0 1-2.5 2.5H13"/>',
+        'clipboard' => '<path d="M9 4h6v3H9z"/><path d="M15 5.5h2.5A1.5 1.5 0 0 1 19 7v12.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 19.5V7a1.5 1.5 0 0 1 1.5-1.5H9"/><path d="M8.5 11h7M8.5 14.5h7M8.5 18h4"/>',
+        'sparkle'   => '<path d="M12 3.5 13.7 9l5.5 1.7-5.5 1.8L12 18l-1.7-5.5L4.8 10.7 10.3 9z"/><path d="M18.5 3.5 19 5l1.5.5L19 6l-.5 1.5L18 6l-1.5-.5L18 5z"/>',
+        'facebook'  => '<path d="M14.5 8.5V6.8c0-.7.5-1.3 1.2-1.3h1.6V2.6h-2.4c-2.2 0-3.6 1.5-3.6 3.8v2.1H8.7v3.1h2.6V21h3.2v-9.4h2.5l.4-3.1z" fill="currentColor" stroke="none"/>',
+        'instagram' => '<rect x="3.5" y="3.5" width="17" height="17" rx="4.6"/><circle cx="12" cy="12" r="3.9"/><circle cx="17.1" cy="6.9" r="1.1" fill="currentColor" stroke="none"/>',
+        'youtube'   => '<rect x="2.5" y="5.5" width="19" height="13" rx="3.6"/><path d="m10.3 9.4 5 2.6-5 2.6z" fill="currentColor" stroke="none"/>',
+        'tiktok'    => '<path d="M15 3.5c.4 2.2 1.8 3.5 3.9 3.7v2.7c-1.4.1-2.7-.3-3.9-1.1v5.6a5.4 5.4 0 1 1-4.6-5.3v2.9a2.5 2.5 0 1 0 1.8 2.4V3.5z" fill="currentColor" stroke="none"/>',
     ];
 
     $body = $paths[$name] ?? $paths['check'];
@@ -254,26 +351,43 @@ function icon(string $name, string $class = 'icon'): string
         . $body . '</svg>';
 }
 
+/**
+ * Google Ads conversion tracking wants a stable ID per CTA type, but a page
+ * carries several of each — and repeating an id is invalid HTML that breaks
+ * getElementById. So the first CTA of each type on the page gets the id, and
+ * every one of them carries the .js-track class and data-cta attribute that
+ * the click handler and GTM actually listen on.
+ */
+function cta_id(string $type): string
+{
+    static $used = [];
+    if (isset($used[$type])) {
+        return '';
+    }
+    $used[$type] = true;
+    return ' id="' . e($type) . '-cta"';
+}
+
 /** Phone call-to-action button. */
 function cta_phone(string $style = 'btn btn-phone', string $label = ''): string
 {
     $label = $label !== '' ? $label : 'Call ' . PHONE_DISPLAY;
-    return '<a href="' . PHONE_LINK . '" class="' . e($style) . ' js-track" data-cta="phone" id="phone-cta" '
-        . 'aria-label="Call ' . e(PHONE_INTL) . '">' . icon('phone', 'icon icon-sm') . '<span>' . e($label) . '</span></a>';
+    return '<a href="' . PHONE_LINK . '" class="' . e($style) . ' js-track" data-cta="phone"' . cta_id('phone')
+        . ' aria-label="Call ' . e(PHONE_INTL) . '">' . icon('phone', 'icon icon-sm') . '<span>' . e($label) . '</span></a>';
 }
 
 /** WhatsApp call-to-action button with a contextual message. */
 function cta_whatsapp(string $message = '', string $style = 'btn btn-whatsapp', string $label = 'WhatsApp Us'): string
 {
-    return '<a href="' . e(whatsapp_url($message)) . '" class="' . e($style) . ' js-track" data-cta="whatsapp" '
-        . 'id="whatsapp-cta" target="_blank" rel="noopener" aria-label="Message us on WhatsApp">'
+    return '<a href="' . e(whatsapp_url($message)) . '" class="' . e($style) . ' js-track" data-cta="whatsapp"'
+        . cta_id('whatsapp') . ' target="_blank" rel="noopener" aria-label="Message us on WhatsApp">'
         . icon('whatsapp', 'icon icon-sm') . '<span>' . e($label) . '</span></a>';
 }
 
 /** Quote call-to-action button pointing at the quote form. */
 function cta_quote(string $style = 'btn btn-primary', string $label = 'Get a Free Moving Quote', string $href = '#quote'): string
 {
-    return '<a href="' . e($href) . '" class="' . e($style) . ' js-track" data-cta="quote" id="quote-cta">'
+    return '<a href="' . e($href) . '" class="' . e($style) . ' js-track" data-cta="quote"' . cta_id('quote') . '>'
         . icon('quote', 'icon icon-sm') . '<span>' . e($label) . '</span></a>';
 }
 

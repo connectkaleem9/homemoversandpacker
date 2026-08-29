@@ -19,6 +19,12 @@
   .grid-4 { grid-template-columns: repeat(3, 1fr); }
   .footer-top { grid-template-columns: 1.4fr 1fr 1fr; }
   .footer-top .footer-col:last-child { grid-column: 2 / -1; }
+
+  .service-strip { grid-template-columns: repeat(4, 1fr); }
+  .service-tile:nth-child(4n) { border-right: 0; }
+  .service-tile:nth-child(-n+4) { border-bottom: 1px solid var(--line); }
+  .blog-grid { grid-template-columns: 1fr; }
+  .blog-cards { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* ---------- Tablet: collapse navigation, show mobile CTA bar ---------- */
@@ -116,6 +122,20 @@
   .hero-copy { max-width: 100%; }
   .split, .split-reverse { grid-template-columns: 1fr; gap: var(--sp-6); }
   .trust-grid { grid-template-columns: 1fr 1fr; }
+
+  /* Homepage sections */
+  .hero-home-inner { grid-template-columns: 1fr; min-height: 0; }
+  .hero-home-copy { max-width: 100%; padding-block: var(--sp-7) var(--sp-5); }
+  .hero-home-media { min-height: 320px; margin-inline: calc(var(--sp-5) * -1); }
+  .hero-home-media::before { display: none; }
+  .why-grid { grid-template-columns: 1fr; gap: var(--sp-6); }
+  .serve-grid { grid-template-columns: 1fr; gap: var(--sp-6); }
+  .process-row { grid-template-columns: repeat(3, 1fr); gap: var(--sp-5); }
+  .process-item:nth-child(3n)::after { display: none; }
+  .reviews-grid { grid-template-columns: 1fr; gap: var(--sp-6); }
+  .cta-gold-inner { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+  .cta-gold-media { display: none; }
+  .cta-gold-actions { justify-content: center; }
 }
 
 /* ---------- Small tablet ---------- */
@@ -130,6 +150,17 @@
   .footer-top .footer-col:last-child { grid-column: auto; }
   .topbar-item:first-child { display: none; }
   .topbar-inner { justify-content: center; }
+
+  .service-strip { grid-template-columns: repeat(2, 1fr); }
+  .service-tile { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .service-tile:nth-child(2n) { border-right: 0; }
+  .city-cards { grid-template-columns: 1fr; }
+  .review-cards { grid-template-columns: 1fr; }
+  .blog-cards { grid-template-columns: 1fr; }
+  .why-list { grid-template-columns: 1fr; }
+  .process-row { grid-template-columns: repeat(2, 1fr); }
+  .process-item::after { display: none !important; }
+  .heading-rule::before, .heading-rule::after { width: 28px; }
 }
 
 /* ---------- Phone ---------- */
@@ -162,6 +193,20 @@
   .footer-legal { flex-wrap: wrap; gap: var(--sp-3); }
 
   .error-code { font-size: 3.5rem; }
+
+  .service-strip { grid-template-columns: 1fr; }
+  .service-tile { border-right: 0; }
+  .service-tile { flex-direction: row; text-align: left; align-items: center; gap: var(--sp-4); }
+  .service-tile-icon { width: 46px; height: 46px; }
+  .service-tile-icon .icon { width: 22px; height: 22px; }
+  .service-tile h3 { margin-top: 0; }
+  .process-row { grid-template-columns: 1fr; gap: var(--sp-4); }
+  .hero-trust { gap: var(--sp-4); }
+  .hero-trust-item span { max-width: none; }
+  .help-box { flex-direction: column; text-align: center; }
+  .heading-rule { gap: var(--sp-3); }
+  .heading-rule h2 { font-size: var(--fs-xl); }
+  .cta-gold-actions .btn { flex: 1 1 100%; }
 }
 
 /* ---------- Very small phone ---------- */

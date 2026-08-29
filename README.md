@@ -179,21 +179,39 @@ or `email`, and forms push `form_submit`.
 primary. Email clicks and other CTA interactions are secondary — do not count every
 button click as a primary conversion.
 
-### 3. Legal pages
+### 3. Customer reviews
+
+`includes/data/testimonials.php` ships **empty**, and the reviews section on the
+homepage does not render at all while it is. Add real reviews — copied from your
+Google Business Profile or written by actual customers — and the section appears.
+
+Do not invent them. Fabricated reviews breach Google's structured data guidelines,
+are treated as misleading advertising under UAE consumer protection law, and are the
+easiest thing in the world for a competitor to report.
+
+### 4. Legal pages
 
 `terms-and-conditions.php` contains clearly marked placeholders for payment terms,
 cancellation terms and liability/insurance. These are commercial and legal decisions
 — they must be completed by the business and reviewed by a lawyer.
 `privacy-policy.php` has one placeholder for the data retention period.
 
-### 4. Imagery
+### 5. Imagery
 
-The site currently uses SVG for the favicon and Open Graph card and has no photography.
-Drop real WebP/AVIF photos into `assets/images/` with descriptive filenames
-(`villa-movers-dubai.webp`) and meaningful alt text. Do not use stock imagery that
-misrepresents the service.
+**See `assets/images/README.md` for the exact filenames to use.** Drop your files in
+with those names and the site picks them up — no code changes.
 
-### 5. Server
+Until a file exists the page renders a correctly-proportioned placeholder, so the
+layout is right today and adding a photo later causes zero layout shift.
+
+The homepage needs: `logo.png`, `logo-white.png`, `hero-movers-dubai.webp`,
+`why-choose-us.webp`, `cta-boxes.webp`, three `locations/*.webp` and four
+`blog/*.webp`.
+
+Use real photos of your own crew, keep each one under ~200 KB, and prefer WebP.
+Do not use stock imagery that misrepresents the service.
+
+### 6. Server
 
 - Enable HTTPS, then uncomment the HSTS header in `.htaccess`
 - Confirm `mod_rewrite`, `mod_headers`, `mod_deflate` and `mod_expires` are enabled

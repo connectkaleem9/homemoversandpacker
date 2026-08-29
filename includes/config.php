@@ -62,6 +62,29 @@ define('EMAIL_ADDRESS', 'info@homemoverandpaker.com');
 /** Areas served — used in schema, footer and location listings. */
 define('AREAS_SERVED', ['Dubai', 'Sharjah', 'Ajman']);
 
+/**
+ * Opening hours. EMPTY until the business confirms them — the topbar simply
+ * omits the row while this is blank, and no openingHours schema is emitted.
+ * Publishing invented hours is how customers turn up to a closed business.
+ *
+ * Display example: 'Mon - Sat: 8:00 AM - 7:00 PM'
+ * Schema example:  ['Mo-Sa 08:00-19:00']
+ */
+define('BUSINESS_HOURS_TEXT', '');
+define('BUSINESS_HOURS_SCHEMA', []);
+
+/**
+ * Social profiles. Add the real URLs and the icons appear in the footer and
+ * as sameAs in the organisation schema. Leave blank to hide.
+ */
+define('SOCIAL_LINKS', [
+    'facebook'  => '',
+    'instagram' => '',
+    'whatsapp'  => WHATSAPP_BASE,
+    'youtube'   => '',
+    'tiktok'    => '',
+]);
+
 /* ------------------------------------------------------------------
  | Tracking — leave EMPTY until real IDs are supplied by the business.
  | Nothing is injected into the page while these are blank.
