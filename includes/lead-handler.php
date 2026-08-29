@@ -1,0 +1,255 @@
+<?php
+/**
+ * Shared lead pipeline for the quote and contact forms.
+ *
+ * Order of defence:
+ *   1. POST only, CSRF token, honeypot, submission timing, per-IP rate limit
+ *   2. Validation and sanitisation of every field
+ *   3. Storage — MySQL when enabled, append-only file otherwise (never both fail
+ *      silently: a failure to store is logged and the lead still goes by email)
+ *   4. Email notification to the business
+ *   5. POST-redirect-GET back to the originating page with a flash message
+ */
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/bootstrap.php';
+require_once __DIR__ . '/database.php';
+
+/** Trim, strip control characters and cap the length of a submitted value. */
+function lead_clean(?string $value, int $max = 255): string
+{
+    $value = (string) ($value ?? '');
+    $value = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $value) ?? '';
+    $value = trim(preg_replace('/[ \t]+/', ' ', $value) ?? '');
+    return mb_substr($value, 0, $max);
+}
+
+/** Header-injection guard for anything that reaches a mail header. */
+function lead_header_safe(string $value): string
+{
+    return trim(str_replace(["\r", "\n", "%0a", "%0d"], '', $value));
+}
+
+function lead_valid_uae_phone(string $phone): bool
+{
+    $digits = preg_replace('/[^\d+]/', '', $phone) ?? '';
+    return (bool) preg_match('/^(?:\+?971|0)?5\d{8}$/', $digits);
+}
+
+/** Normalise any accepted UAE mobile format to +9715XXXXXXXX. */
+function lead_normalise_phone(string $phone): string
+{
+    $digits = preg_replace('/\D/', '', $phone) ?? '';
+    if (str_starts_with($digits, '971')) {
+        return '+' . $digits;
+    }
+    return '+971' . ltrim($digits, '0');
+}
+
+function lead_client_ip(): string
+{
+    return (string) ($_SERVER['REMOTE_ADDR'] ?? '0.0.0.0');
+}
+
+/**
+ * Per-IP rate limit backed by a small JSON file. Returns false when the caller
+ * has exceeded RATE_LIMIT_MAX submissions inside RATE_LIMIT_WINDOW seconds.
+ */
+function lead_rate_ok(): bool
+{
+    $file = APP_ROOT . '/storage/rate-limit.json';
+    $now  = time();
+    $ip   = lead_client_ip();
+
+    $data = [];
+    if (is_readable($file)) {
+        $decoded = json_decode((string) file_get_contents($file), true);
+        if (is_array($decoded)) {
+            $data = $decoded;
+        }
+    }
+
+    /* Drop entries outside the window, for every IP, so the file stays small. */
+    foreach ($data as $key => $stamps) {
+        $data[$key] = array_values(array_filter(
+            (array) $stamps,
+            static fn ($t): bool => is_int($t) && ($now - $t) < RATE_LIMIT_WINDOW
+        ));
+        if ($data[$key] === []) {
+            unset($data[$key]);
+        }
+    }
+
+    $count = count($data[$ip] ?? []);
+    if ($count >= RATE_LIMIT_MAX) {
+        return false;
+    }
+
+    $data[$ip][] = $now;
+
+    if (!is_dir(dirname($file))) {
+        @mkdir(dirname($file), 0775, true);
+    }
+    @file_put_contents($file, json_encode($data), LOCK_EX);
+
+    return true;
+}
+
+/** Append the lead to the fallback file. Used when MySQL is off or unreachable. */
+function lead_store_file(array $lead): bool
+{
+    $file = LEAD_FALLBACK_FILE;
+    if (!is_dir(dirname($file))) {
+        @mkdir(dirname($file), 0775, true);
+    }
+    $line = json_encode($lead, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    return (bool) @file_put_contents($file, $line . PHP_EOL, FILE_APPEND | LOCK_EX);
+}
+
+/** Store a quote submission. Returns true if it landed anywhere durable. */
+function lead_store_quote(array $lead): bool
+{
+    $id = db_insert(
+        'INSERT INTO quote_submissions
+            (name, phone, email, moving_from, moving_to, property_type, moving_date,
+             service, details, source, ip_address, user_agent, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())',
+        [
+            $lead['name'], $lead['phone'], $lead['email'], $lead['moving_from'],
+            $lead['moving_to'], $lead['property_type'], $lead['moving_date'] ?: null,
+            $lead['service'], $lead['details'], $lead['source'],
+            $lead['ip_address'], $lead['user_agent'],
+        ]
+    );
+
+    $fileOk = lead_store_file($lead);
+
+    if ($id === null && !$fileOk) {
+        error_log('[lead] FAILED to store quote from ' . $lead['phone']);
+        return false;
+    }
+    return true;
+}
+
+/** Store a contact-message submission. */
+function lead_store_contact(array $lead): bool
+{
+    $id = db_insert(
+        'INSERT INTO contact_submissions
+            (name, phone, email, subject, message, source, ip_address, user_agent, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())',
+        [
+            $lead['name'], $lead['phone'], $lead['email'], $lead['subject'],
+            $lead['message'], $lead['source'], $lead['ip_address'], $lead['user_agent'],
+        ]
+    );
+
+    $fileOk = lead_store_file($lead);
+
+    if ($id === null && !$fileOk) {
+        error_log('[lead] FAILED to store contact message from ' . $lead['phone']);
+        return false;
+    }
+    return true;
+}
+
+/**
+ * Notify the business. Failure here is logged but never shown to the customer —
+ * the lead is already stored, and telling a visitor "email failed" helps nobody.
+ */
+function lead_notify(string $subject, array $lead): void
+{
+    $lines = [];
+    foreach ($lead as $key => $value) {
+        if ($value === '' || $value === null) {
+            continue;
+        }
+        $label = ucwords(str_replace('_', ' ', (string) $key));
+        $lines[] = $label . ': ' . $value;
+    }
+
+    $body = "New enquiry from " . SITE_DOMAIN . "\n\n" . implode("\n", $lines) . "\n";
+
+    $replyTo = '';
+    if (!empty($lead['email']) && filter_var($lead['email'], FILTER_VALIDATE_EMAIL)) {
+        $replyTo = lead_header_safe((string) $lead['email']);
+    }
+
+    $headers = [
+        'From: ' . SITE_NAME . ' <no-reply@' . SITE_DOMAIN . '>',
+        'Content-Type: text/plain; charset=UTF-8',
+        'X-Mailer: PHP/' . PHP_VERSION,
+    ];
+    if ($replyTo !== '') {
+        $headers[] = 'Reply-To: ' . $replyTo;
+    }
+
+    $sent = @mail(LEAD_NOTIFY_EMAIL, lead_header_safe($subject), $body, implode("\r\n", $headers));
+    if (!$sent) {
+        error_log('[lead] notification email could not be sent for: ' . $subject);
+    }
+}
+
+/**
+ * Store flash state and redirect back to the form the visitor came from.
+ * $form tags the flash so a page carrying two forms shows the message on the
+ * right one instead of the first one that renders.
+ */
+function lead_redirect(
+    string $fallback,
+    string $type,
+    string $message,
+    array $old = [],
+    array $errors = [],
+    string $form = 'quote'
+): never {
+    start_session();
+    $_SESSION['form_flash']  = ['type' => $type, 'message' => $message, 'form' => $form];
+    $_SESSION['form_old']    = $old;
+    $_SESSION['form_errors'] = $errors;
+
+    $target = $fallback;
+    $ref    = $_SERVER['HTTP_REFERER'] ?? '';
+
+    /* Only ever redirect to our own host. */
+    if ($ref !== '') {
+        $parts = parse_url($ref);
+        $host  = $parts['host'] ?? '';
+        if ($host === '' || $host === ($_SERVER['HTTP_HOST'] ?? '')) {
+            $target = ($parts['path'] ?? $fallback);
+        }
+    }
+
+    header('Location: ' . $target . ($form === 'contact' ? '#message' : '#quote'), true, 303);
+    exit;
+}
+
+/** Guard rails shared by both endpoints. Terminates the request on failure. */
+function lead_guard(string $fallback, string $form = 'quote'): void
+{
+    if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+        header('Location: ' . $fallback, true, 303);
+        exit;
+    }
+
+    if (!csrf_verify($_POST['csrf_token'] ?? null)) {
+        lead_redirect($fallback, 'error', 'Your session expired before the form was sent. Please try again, or call us on ' . PHONE_DISPLAY . '.', [], [], $form);
+    }
+
+    /* Honeypot — a real person never fills a field they cannot see. */
+    if (lead_clean($_POST['company_website'] ?? '') !== '') {
+        /* Pretend it worked; do not tell a bot it was detected. */
+        lead_redirect($fallback, 'success', 'We will get back to you shortly.', [], [], $form);
+    }
+
+    /* Timing — a form completed faster than a human could type it. */
+    $started = (int) ($_POST['form_started'] ?? 0);
+    if ($started > 0 && (time() - $started) < FORM_MIN_SECONDS) {
+        lead_redirect($fallback, 'success', 'We will get back to you shortly.', [], [], $form);
+    }
+
+    if (!lead_rate_ok()) {
+        lead_redirect($fallback, 'error', 'Too many requests from this connection. Please wait a few minutes, or call us on ' . PHONE_DISPLAY . '.', [], [], $form);
+    }
+}

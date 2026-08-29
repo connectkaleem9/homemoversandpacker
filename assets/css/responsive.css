@@ -1,0 +1,172 @@
+/* ==========================================================================
+   Responsive layer — desktop-down overrides.
+   Mobile is the priority: the sticky call/WhatsApp/quote bar appears below
+   1024px, and the hero form stays above the fold on phones.
+   ========================================================================== */
+
+/* ---------- Large desktop ---------- */
+@media (max-width: 1200px) {
+  :root { --fs-4xl: 2.4rem; --fs-3xl: 1.95rem; }
+  .hero-inner { gap: var(--sp-6); }
+  .nav-link { padding-inline: 0.6rem; }
+}
+
+/* ---------- Small desktop / large tablet ---------- */
+@media (max-width: 1080px) {
+  .header-phone-text small { display: none; }
+  .dropdown-wide { min-width: 460px; }
+  .steps-5 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(3, 1fr); }
+  .footer-top { grid-template-columns: 1.4fr 1fr 1fr; }
+  .footer-top .footer-col:last-child { grid-column: 2 / -1; }
+}
+
+/* ---------- Tablet: collapse navigation, show mobile CTA bar ---------- */
+@media (max-width: 1024px) {
+  :root { --header-h: 68px; }
+
+  body { padding-bottom: 62px; } /* room for the sticky bar */
+
+  .mobile-bar { display: flex; }
+
+  .header-cta { display: none; }
+
+  .nav-toggle {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    order: 3;
+    margin-left: auto;
+    width: 46px;
+    height: 46px;
+    padding: 11px;
+    background: var(--surface-alt);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+  .nav-toggle-bar {
+    display: block;
+    height: 2px;
+    background: var(--navy-800);
+    border-radius: 2px;
+    transition: transform .18s ease, opacity .18s ease;
+  }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) { opacity: 0; }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .primary-nav {
+    position: fixed;
+    top: calc(var(--header-h) + 38px);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: var(--sp-4) var(--sp-5) calc(var(--sp-8) + 62px);
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    overflow-y: auto;
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform .22s ease, visibility .22s;
+    z-index: 150;
+  }
+  .primary-nav.is-open { transform: translateX(0); visibility: visible; }
+
+  .nav-list { flex-direction: column; align-items: stretch; gap: 0; }
+  .nav-item { border-bottom: 1px solid var(--line); }
+  .nav-link {
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.95rem 0.25rem;
+    font-size: var(--fs-base);
+    border-radius: 0;
+  }
+  .nav-link:hover { background: transparent; }
+
+  .dropdown {
+    position: static;
+    transform: none;
+    min-width: 0;
+    max-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    overflow: hidden;
+    transition: max-height .25s ease, padding .2s ease;
+  }
+  .has-dropdown:hover > .dropdown { max-height: 0; }
+  .has-dropdown.is-open > .dropdown {
+    max-height: 720px;
+    padding: 0 0 var(--sp-3) var(--sp-2);
+    transform: none;
+  }
+  .dropdown-wide .dropdown-list { grid-template-columns: 1fr; }
+  .dropdown-list a { padding: 0.6rem 0.5rem; }
+  .dropdown-foot { border-top: 0; padding-top: 0; }
+
+  .nav-cta-mobile { display: grid; gap: var(--sp-3); margin-top: var(--sp-5); }
+
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-copy { max-width: 100%; }
+  .split, .split-reverse { grid-template-columns: 1fr; gap: var(--sp-6); }
+  .trust-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ---------- Small tablet ---------- */
+@media (max-width: 860px) {
+  :root { --fs-4xl: 2.1rem; --fs-3xl: 1.75rem; --fs-2xl: 1.5rem; }
+
+  .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .steps-4, .steps-5 { grid-template-columns: repeat(2, 1fr); }
+  .section { padding-block: var(--sp-7); }
+  .cta-band-inner { flex-direction: column; align-items: flex-start; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .footer-top .footer-col:last-child { grid-column: auto; }
+  .topbar-item:first-child { display: none; }
+  .topbar-inner { justify-content: center; }
+}
+
+/* ---------- Phone ---------- */
+@media (max-width: 600px) {
+  :root { --fs-4xl: 1.85rem; --fs-3xl: 1.55rem; --fs-base: 1rem; --sp-8: 3rem; }
+
+  .container { padding-inline: var(--sp-4); }
+
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .steps-4, .steps-5 { grid-template-columns: 1fr; }
+  .checklist-2 { grid-template-columns: 1fr; }
+  .trust-grid { grid-template-columns: 1fr; }
+
+  .form-grid { grid-template-columns: 1fr; }
+
+  .hero-inner { padding-block: var(--sp-6); }
+  .hero-sub { font-size: var(--fs-base); }
+  .hero-actions .btn { width: 100%; }
+  .hero-assurance { gap: var(--sp-3); flex-direction: column; }
+
+  .quote-card-head, .quote-card-body { padding: var(--sp-4); }
+
+  .btn { width: auto; }
+  .btn-row .btn { flex: 1 1 100%; }
+  .cta-band-actions { width: 100%; }
+  .cta-band-actions .btn { flex: 1 1 100%; }
+
+  .footer-top { grid-template-columns: 1fr; gap: var(--sp-6); }
+  .footer-bottom-inner { flex-direction: column; align-items: flex-start; gap: var(--sp-2); }
+  .footer-legal { flex-wrap: wrap; gap: var(--sp-3); }
+
+  .error-code { font-size: 3.5rem; }
+}
+
+/* ---------- Very small phone ---------- */
+@media (max-width: 380px) {
+  .brand-text strong { font-size: 0.95rem; }
+  .mobile-bar-item { font-size: 0.625rem; }
+  .mobile-bar-item .icon { width: 18px; height: 18px; }
+}

@@ -1,0 +1,2466 @@
+# HOMEMOVERANDPAKER.COM — COMPLETE WEBSITE DEVELOPMENT MASTER PROMPT
+
+## ROLE
+
+You are a senior:
+
+* PHP Developer
+* HTML/CSS/JavaScript Developer
+* UI/UX Designer
+* Technical SEO Specialist
+* Local SEO Specialist
+* Google Ads Landing Page Specialist
+* Conversion Rate Optimization Specialist
+* Performance Optimization Specialist
+
+Your job is to design and develop a **complete, production-ready, SEO-first, Google Ads-ready Movers & Packers website** for:
+
+**homemoverandpaker.com**
+
+The website is for a professional moving company based in **Sharjah, UAE**, targeting customers in:
+
+* Dubai
+* Sharjah
+* Ajman
+
+The website must be built from the beginning with three major goals:
+
+1. **Local SEO rankings**
+2. **Google Ads performance**
+3. **Lead generation / conversions**
+
+Do not treat SEO or Google Ads as something to add after development. They must influence the website architecture, content structure, page design, technical implementation, internal linking, page speed and conversion strategy from the beginning.
+
+---
+
+# 1. MANDATORY TECHNOLOGY STACK
+
+This is a strict requirement.
+
+## Frontend
+
+Use:
+
+* HTML5
+* CSS3
+* Vanilla JavaScript
+* SVG icons where appropriate
+
+You may use:
+
+* Bootstrap 5 if genuinely useful
+* Google Fonts or locally hosted fonts
+
+However, do not add unnecessary libraries.
+
+## Backend
+
+Use:
+
+**PHP 8.2+**
+
+PHP must be used for:
+
+* Reusable templates
+* Header/footer components
+* Navigation
+* SEO metadata
+* Schema markup
+* Forms
+* Contact/quote form processing
+* Dynamic service/location content where appropriate
+
+## Database
+
+Use:
+
+**MySQL**
+
+Only use the database where it provides a genuine benefit, such as:
+
+* Quote submissions
+* Contact submissions
+* Blog content
+* Services
+* Locations
+* FAQs
+
+Do not create unnecessary database complexity if static PHP content is more appropriate.
+
+## Server
+
+The website must be compatible with:
+
+* Apache
+* LiteSpeed
+
+Use:
+
+**.htaccess**
+
+for:
+
+* Clean URLs
+* HTTPS redirects
+* WWW/non-WWW canonicalization
+* PHP extension removal
+* Redirects
+* Security headers where appropriate
+* Browser caching where appropriate
+* Compression where supported
+
+---
+
+# 2. STRICTLY DO NOT USE
+
+Do NOT use:
+
+* Next.js
+* React
+* Vue
+* Angular
+* Laravel
+* WordPress
+* Drupal
+* Joomla
+* Node.js as the website backend
+* Heavy frontend frameworks
+* SPA architecture
+
+The website must be a:
+
+**Server-rendered PHP + HTML website.**
+
+Do not convert the project into a JavaScript SPA.
+
+---
+
+# 3. PRIMARY BUSINESS INFORMATION
+
+## Domain
+
+**homemoverandpaker.com**
+
+IMPORTANT:
+
+Keep this domain exactly as provided.
+
+Do not change:
+
+`paker`
+
+to:
+
+`packer`
+
+The website domain must remain:
+
+**homemoverandpaker.com**
+
+Do not create a different domain or brand.
+
+---
+
+# 4. BUSINESS LOCATION
+
+Primary business location:
+
+**Sharjah, UAE**
+
+Primary target service areas:
+
+1. Sharjah
+2. Dubai
+3. Ajman
+
+The website should establish the company as a professional moving service serving customers across these three markets.
+
+Do not invent additional branches.
+
+Do not claim physical offices in Dubai or Ajman unless information is provided later.
+
+---
+
+# 5. BUSINESS CONTACT INFORMATION
+
+Phone:
+
+**055 658 1781**
+
+International format:
+
+**+971 55 658 1781**
+
+Telephone link:
+
+**tel:+971556581781**
+
+Use the same number consistently throughout the website.
+
+Do not create alternative phone numbers.
+
+---
+
+# 6. WHATSAPP
+
+WhatsApp number:
+
+**+971556581781**
+
+Use:
+
+**https://wa.me/971556581781**
+
+WhatsApp should be a major conversion channel.
+
+Use contextual WhatsApp messages where appropriate.
+
+Examples:
+
+"Hello, I need a moving quote in Dubai."
+
+"Hello, I need villa moving services."
+
+"Hello, I need furniture movers."
+
+Do not make messages excessively long.
+
+---
+
+# 7. BUSINESS ADDRESS
+
+Use:
+
+**Sharjah, UAE**
+
+Do not invent:
+
+* Street address
+* Building number
+* Office number
+* P.O. Box
+* Branches
+* Google Maps location
+* Landmark
+* Warehouse address
+
+If a detailed address is supplied later, update the website consistently.
+
+---
+
+# 8. SERVICES
+
+The company provides:
+
+1. Home Movers
+2. Furniture Movers
+3. Office & Commercial Movers
+4. Studio Apartment Movers
+5. Villa Movers
+6. Warehousing & Storage Services
+7. Packing & Unpacking Services
+8. Commercial & Retail Movers
+9. Furniture Assembly Services
+10. Loading & Unloading Services
+11. Local Moving Services
+12. Car Transportation Services
+
+Every major service must have its own dedicated SEO landing page.
+
+---
+
+# 9. PRIMARY SEO OBJECTIVE
+
+The website must target commercial and local search intent around:
+
+### Dubai
+
+* Movers in Dubai
+* Movers Dubai
+* Packers and Movers Dubai
+* Moving Company Dubai
+* House Movers Dubai
+* Home Movers Dubai
+* Furniture Movers Dubai
+* Villa Movers Dubai
+* Apartment Movers Dubai
+* Studio Movers Dubai
+* Office Movers Dubai
+* Commercial Movers Dubai
+* Packing Services Dubai
+* Storage Services Dubai
+* Furniture Assembly Dubai
+* Loading and Unloading Dubai
+* Car Transportation Dubai
+
+### Sharjah
+
+* Movers in Sharjah
+* Movers Sharjah
+* Packers and Movers Sharjah
+* Moving Company Sharjah
+* House Movers Sharjah
+* Home Movers Sharjah
+* Furniture Movers Sharjah
+* Villa Movers Sharjah
+* Office Movers Sharjah
+* Commercial Movers Sharjah
+
+### Ajman
+
+* Movers in Ajman
+* Movers Ajman
+* Packers and Movers Ajman
+* Moving Company Ajman
+* House Movers Ajman
+* Home Movers Ajman
+* Furniture Movers Ajman
+* Villa Movers Ajman
+* Office Movers Ajman
+* Commercial Movers Ajman
+
+Use these naturally.
+
+Never keyword-stuff.
+
+---
+
+# 10. IMPORTANT LOCAL SEO STRATEGY
+
+Do NOT try to rank every page for every city.
+
+Build a clear keyword-to-page structure.
+
+## Homepage
+
+Primary intent:
+
+**Movers & Packers serving Dubai, Sharjah & Ajman**
+
+## Dubai location page
+
+Primary intent:
+
+**Movers in Dubai**
+
+## Sharjah location page
+
+Primary intent:
+
+**Movers in Sharjah**
+
+## Ajman location page
+
+Primary intent:
+
+**Movers in Ajman**
+
+## Service pages
+
+Each service page should primarily target the service intent.
+
+Example:
+
+**Home Movers**
+
+**Furniture Movers**
+
+**Villa Movers**
+
+**Office & Commercial Movers**
+
+This prevents unnecessary keyword cannibalization.
+
+---
+
+# 11. WEBSITE URL STRUCTURE
+
+Use clean URLs.
+
+Do NOT expose `.php`.
+
+Correct:
+
+```text
+/
+ /about-us/
+ /contact-us/
+
+/services/
+ /services/home-movers/
+ /services/furniture-movers/
+ /services/office-commercial-movers/
+ /services/studio-apartment-movers/
+ /services/villa-movers/
+ /services/warehousing-storage/
+ /services/packing-unpacking/
+ /services/commercial-retail-movers/
+ /services/furniture-assembly/
+ /services/loading-unloading/
+ /services/local-moving/
+ /services/car-transportation/
+
+/locations/
+ /locations/dubai/
+ /locations/sharjah/
+ /locations/ajman/
+
+/blog/
+```
+
+The PHP files can internally be:
+
+```text
+services/home-movers.php
+locations/dubai.php
+```
+
+but users and search engines should see:
+
+```text
+/services/home-movers/
+/locations/dubai/
+```
+
+Use `.htaccess` rewrite rules.
+
+---
+
+# 12. RECOMMENDED PROJECT STRUCTURE
+
+Use a clean PHP architecture similar to:
+
+```text
+homemoverandpaker/
+│
+├── index.php
+├── about-us.php
+├── contact-us.php
+│
+├── services/
+│   ├── index.php
+│   ├── home-movers.php
+│   ├── furniture-movers.php
+│   ├── office-commercial-movers.php
+│   ├── studio-apartment-movers.php
+│   ├── villa-movers.php
+│   ├── warehousing-storage.php
+│   ├── packing-unpacking.php
+│   ├── commercial-retail-movers.php
+│   ├── furniture-assembly.php
+│   ├── loading-unloading.php
+│   ├── local-moving.php
+│   └── car-transportation.php
+│
+├── locations/
+│   ├── index.php
+│   ├── dubai.php
+│   ├── sharjah.php
+│   └── ajman.php
+│
+├── blog/
+│   ├── index.php
+│   └── posts/
+│
+├── includes/
+│   ├── config.php
+│   ├── header.php
+│   ├── footer.php
+│   ├── navigation.php
+│   ├── seo.php
+│   ├── schema.php
+│   ├── breadcrumbs.php
+│   ├── functions.php
+│   └── database.php
+│
+├── forms/
+│   ├── quote-submit.php
+│   └── contact-submit.php
+│
+├── assets/
+│   ├── css/
+│   │   ├── style.css
+│   │   └── responsive.css
+│   │
+│   ├── js/
+│   │   └── main.js
+│   │
+│   ├── images/
+│   │
+│   └── fonts/
+│
+├── uploads/
+│
+├── robots.txt
+├── sitemap.xml
+├── .htaccess
+└── 404.php
+```
+
+You may improve this structure if you have a better PHP architecture, but keep the same principles.
+
+---
+
+# 13. REUSABLE PHP COMPONENTS
+
+Do not duplicate header/footer/navigation code on every page.
+
+Create reusable PHP components.
+
+For example:
+
+```php
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
+```
+
+Use reusable functions for:
+
+* SEO metadata
+* Breadcrumbs
+* Schema
+* CTA buttons
+* Service cards
+* Location cards
+* FAQs
+* Related services
+* Related locations
+
+---
+
+# 14. SEO METADATA SYSTEM
+
+Create a reusable PHP SEO system.
+
+Each page must be able to define:
+
+* SEO title
+* Meta description
+* Canonical URL
+* Robots directive
+* Open Graph title
+* Open Graph description
+* Open Graph image
+* Twitter/X metadata
+
+Example concept:
+
+```php
+$pageTitle = "...";
+$pageDescription = "...";
+$canonicalUrl = "...";
+```
+
+Then load these into the global header.
+
+Every indexable page must have unique metadata.
+
+---
+
+# 15. HOMEPAGE
+
+Create a premium homepage designed around:
+
+**Movers & Packers in Dubai, Sharjah & Ajman**
+
+Suggested H1:
+
+**Professional Movers & Packers in Dubai, Sharjah & Ajman**
+
+The exact wording can be improved if you identify a stronger SEO + conversion version.
+
+---
+
+# 16. HOMEPAGE STRUCTURE
+
+Build the homepage in this order:
+
+## Header
+
+Include:
+
+* Logo
+* Navigation
+* Services dropdown
+* Locations dropdown
+* About
+* Contact
+* Phone CTA
+* WhatsApp CTA
+
+Desktop should have a prominent:
+
+**Call 055 658 1781**
+
+Mobile should provide easy:
+
+**Call Now**
+
+and
+
+**WhatsApp**
+
+actions.
+
+---
+
+# 17. HERO SECTION
+
+The hero must immediately communicate:
+
+### Service
+
+Movers & Packers
+
+### Location
+
+Dubai, Sharjah & Ajman
+
+### Benefit
+
+Professional and careful moving solutions
+
+### Primary CTA
+
+**Get a Free Moving Quote**
+
+### Secondary CTA
+
+**Call 055 658 1781**
+
+### WhatsApp CTA
+
+**WhatsApp Us**
+
+The hero should be highly optimized for Google Ads traffic.
+
+A visitor should understand the business within seconds.
+
+---
+
+# 18. GOOGLE ADS MESSAGE MATCH
+
+This is extremely important.
+
+The website will receive Google Ads traffic.
+
+Design landing pages so:
+
+**Search Query → Ad → Landing Page → Conversion**
+
+are highly relevant.
+
+Example:
+
+Search:
+
+**Villa Movers Dubai**
+
+Ad:
+
+**Villa Movers in Dubai**
+
+Landing page:
+
+**Villa Movers in Dubai**
+
+CTA:
+
+**Get a Free Moving Quote**
+
+Phone:
+
+**055 658 1781**
+
+WhatsApp:
+
+**WhatsApp Us**
+
+Another example:
+
+Search:
+
+**Office Movers Dubai**
+
+Landing page:
+
+**Office & Commercial Movers**
+
+The visitor must immediately see relevant information.
+
+---
+
+# 19. GOOGLE ADS LANDING PAGE REQUIREMENTS
+
+Commercial pages must include above the fold:
+
+* Relevant H1
+* Location
+* Service
+* Primary CTA
+* Phone
+* WhatsApp
+* Quote form or quote CTA
+
+Avoid:
+
+* Large sliders
+* Autoplay videos
+* Huge animations
+* Long text before CTA
+* Intrusive popups
+* Slow third-party scripts
+* Distracting design
+
+The page should load quickly.
+
+---
+
+# 20. SERVICES SECTION
+
+Homepage services grid:
+
+1. Home Movers
+2. Furniture Movers
+3. Office & Commercial Movers
+4. Studio Apartment Movers
+5. Villa Movers
+6. Warehousing & Storage
+7. Packing & Unpacking
+8. Commercial & Retail Movers
+9. Furniture Assembly
+10. Loading & Unloading
+11. Local Moving
+12. Car Transportation
+
+Each card should link to its service page.
+
+---
+
+# 21. SERVICE PAGE REQUIREMENTS
+
+Every service page must be unique.
+
+Each page should include:
+
+* Breadcrumb
+* H1
+* Introduction
+* Service explanation
+* Who the service is for
+* What the service includes
+* Process
+* Benefits
+* Relevant property/business types
+* Relevant locations
+* FAQs
+* CTA
+* Related services
+* Internal links
+
+Do not simply duplicate the same template text.
+
+The layout may be reusable, but the content must be unique.
+
+---
+
+# 22. HOME MOVERS PAGE
+
+URL:
+
+```text
+/services/home-movers/
+```
+
+Target:
+
+* Home Movers
+* House Movers
+* Home Moving Services
+* House Moving Services
+
+Explain:
+
+* Apartment moves
+* Residential moves
+* Household furniture
+* Packing
+* Loading
+* Transportation
+* Unloading
+* Unpacking
+
+CTA:
+
+**Get a Free Moving Quote**
+
+---
+
+# 23. FURNITURE MOVERS PAGE
+
+URL:
+
+```text
+/services/furniture-movers/
+```
+
+Cover:
+
+* Furniture moving
+* Furniture protection
+* Loading
+* Transportation
+* Unloading
+* Assembly/disassembly where applicable
+
+---
+
+# 24. OFFICE & COMMERCIAL MOVERS PAGE
+
+URL:
+
+```text
+/services/office-commercial-movers/
+```
+
+Cover:
+
+* Office relocation
+* Commercial relocation
+* Business furniture
+* Equipment movement
+* Planning
+* Loading/unloading
+
+Target relevant commercial searches.
+
+---
+
+# 25. STUDIO APARTMENT MOVERS PAGE
+
+URL:
+
+```text
+/services/studio-apartment-movers/
+```
+
+Cover:
+
+* Studio moves
+* Small apartment moves
+* Furniture handling
+* Packing
+* Loading
+* Transportation
+* Unpacking
+
+---
+
+# 26. VILLA MOVERS PAGE
+
+URL:
+
+```text
+/services/villa-movers/
+```
+
+Cover:
+
+* Villa relocation
+* Household furniture
+* Fragile items
+* Packing
+* Loading
+* Transportation
+* Unloading
+* Unpacking
+
+---
+
+# 27. WAREHOUSING & STORAGE PAGE
+
+URL:
+
+```text
+/services/warehousing-storage/
+```
+
+Cover:
+
+* Temporary storage
+* Furniture storage
+* Moving-related storage
+* Business storage
+* Relocation storage
+
+Do NOT invent:
+
+* Warehouse size
+* Security systems
+* Climate control
+* Prices
+* Facility address
+* Storage capacity
+
+unless provided.
+
+---
+
+# 28. PACKING & UNPACKING PAGE
+
+URL:
+
+```text
+/services/packing-unpacking/
+```
+
+Cover:
+
+* Household packing
+* Fragile items
+* Furniture wrapping
+* Loading preparation
+* Unpacking
+* Organization
+
+---
+
+# 29. COMMERCIAL & RETAIL MOVERS PAGE
+
+URL:
+
+```text
+/services/commercial-retail-movers/
+```
+
+Cover:
+
+* Retail relocation
+* Shop relocation
+* Commercial furniture
+* Inventory movement
+* Loading/unloading
+
+---
+
+# 30. FURNITURE ASSEMBLY PAGE
+
+URL:
+
+```text
+/services/furniture-assembly/
+```
+
+Cover:
+
+* Furniture assembly
+* Disassembly
+* Reassembly
+* Moving-related furniture setup
+
+Do not claim specialized services that are not actually provided.
+
+---
+
+# 31. LOADING & UNLOADING PAGE
+
+URL:
+
+```text
+/services/loading-unloading/
+```
+
+Cover:
+
+* Loading assistance
+* Unloading assistance
+* Furniture handling
+* Safe handling
+* Moving preparation
+
+---
+
+# 32. LOCAL MOVING PAGE
+
+URL:
+
+```text
+/services/local-moving/
+```
+
+Cover local moves within the UAE service area.
+
+Mention Dubai, Sharjah and Ajman naturally.
+
+---
+
+# 33. CAR TRANSPORTATION PAGE
+
+URL:
+
+```text
+/services/car-transportation/
+```
+
+Cover:
+
+* Vehicle transportation
+* Moving-related vehicle transportation
+* Coordination
+* Safe handling
+
+Do not make unsupported claims about enclosed transport, insurance or specific vehicle types.
+
+---
+
+# 34. LOCAL LOCATION PAGES
+
+Create three dedicated location pages:
+
+```text
+/locations/dubai/
+/locations/sharjah/
+/locations/ajman/
+```
+
+These are extremely important for Local SEO.
+
+---
+
+# 35. DUBAI LOCATION PAGE
+
+Primary keyword:
+
+**Movers in Dubai**
+
+Page should cover:
+
+* Moving services available in Dubai
+* Home moving
+* Furniture moving
+* Villa moving
+* Apartment moving
+* Office moving
+* Commercial moving
+* Packing
+* Storage
+* Loading/unloading
+* Service process
+* FAQs
+* Quote CTA
+
+Do not copy the Sharjah or Ajman page.
+
+---
+
+# 36. SHARJAH LOCATION PAGE
+
+Primary keyword:
+
+**Movers in Sharjah**
+
+This is the primary business location.
+
+Create stronger local relevance here.
+
+Cover:
+
+* Home moving
+* Furniture moving
+* Villa moving
+* Apartment moving
+* Office moving
+* Commercial moving
+* Packing
+* Storage
+* Local moving
+
+Use:
+
+**Sharjah, UAE**
+
+consistently.
+
+---
+
+# 37. AJMAN LOCATION PAGE
+
+Primary keyword:
+
+**Movers in Ajman**
+
+Cover relevant services and moving scenarios in Ajman.
+
+Content must be genuinely useful and unique.
+
+---
+
+# 38. SERVICE + LOCATION SEO
+
+Build the architecture so future pages can be added where there is sufficient unique value.
+
+Potential future pages:
+
+```text
+/dubai/home-movers/
+/dubai/villa-movers/
+/dubai/furniture-movers/
+/dubai/office-movers/
+
+/sharjah/home-movers/
+/sharjah/furniture-movers/
+
+/ajman/home-movers/
+/ajman/furniture-movers/
+```
+
+IMPORTANT:
+
+Do NOT automatically create hundreds of city/service pages.
+
+Avoid thin doorway pages.
+
+Only create a page when it provides genuinely unique and useful information.
+
+---
+
+# 39. INTERNAL LINKING
+
+Create strategic internal linking.
+
+Homepage → Service pages
+
+Homepage → Location pages
+
+Location pages → Relevant service pages
+
+Service pages → Relevant location pages
+
+Example:
+
+Dubai page:
+
+* Villa Movers
+* Home Movers
+* Furniture Movers
+* Office Movers
+* Packing Services
+
+Villa Movers page:
+
+* Dubai
+* Sharjah
+* Ajman
+* Home Movers
+* Furniture Movers
+* Packing & Unpacking
+
+Use natural anchor text.
+
+Do not over-optimize anchor text.
+
+---
+
+# 40. FAQ STRATEGY
+
+Each major service and location page should contain useful FAQs.
+
+Examples:
+
+### General
+
+* How much do movers cost in Dubai?
+* Do you provide packing and unpacking?
+* Do you move furniture?
+* Do you move villas?
+* Do you move studio apartments?
+* Do you provide office moving?
+* Do you provide storage?
+* Do you provide loading and unloading?
+* Do you provide furniture assembly?
+* Do you provide car transportation?
+* Do you serve Dubai, Sharjah and Ajman?
+* How can I request a moving quote?
+
+Do not provide fake fixed pricing.
+
+Explain that moving costs can depend on:
+
+* Property size
+* Number of items
+* Distance
+* Packing requirements
+* Access conditions
+* Furniture/equipment
+* Additional services
+
+---
+
+# 41. FAQ SCHEMA
+
+Implement FAQ structured data only when appropriate and compliant with Google's current guidelines.
+
+The schema must match visible content.
+
+Never create fake FAQ content only for schema.
+
+---
+
+# 42. LOCAL BUSINESS SCHEMA
+
+Implement appropriate structured data.
+
+Potential schema:
+
+**LocalBusiness**
+
+or the most suitable specific subtype based on current schema and Google guidelines.
+
+Include only accurate information:
+
+* Business name
+* Phone
+* Address
+* URL
+* Area served
+* Services
+
+Do not invent:
+
+* Ratings
+* Reviews
+* Awards
+* Opening hours
+* Price range
+* Coordinates
+
+unless actual data is supplied.
+
+---
+
+# 43. BREADCRUMB SCHEMA
+
+Implement:
+
+**BreadcrumbList**
+
+for relevant inner pages.
+
+Example:
+
+```text
+Home
+→ Services
+→ Villa Movers
+```
+
+Location:
+
+```text
+Home
+→ Locations
+→ Dubai
+```
+
+---
+
+# 44. REVIEW SCHEMA
+
+Do NOT create fake:
+
+* Reviews
+* Aggregate ratings
+* Star ratings
+
+Only implement review/aggregateRating schema if genuine review data is supplied.
+
+---
+
+# 45. NAP CONSISTENCY
+
+Use the same business information everywhere.
+
+Business:
+
+**Home Movers & Packers**
+
+Location:
+
+**Sharjah, UAE**
+
+Phone:
+
+**055 658 1781**
+
+Do not create conflicting information.
+
+---
+
+# 46. GOOGLE BUSINESS PROFILE SUPPORT
+
+The website must support a future/active Google Business Profile.
+
+Include:
+
+* Consistent business name
+* Consistent phone
+* Consistent address
+* Services
+* Service areas
+* Contact page
+* Local content
+* Location pages
+
+Do not embed a fake Google Maps listing.
+
+---
+
+# 47. QUOTE FORM
+
+Create a professional quote form.
+
+Fields:
+
+* Name
+* Phone Number
+* Email
+* Moving From
+* Moving To
+* Property Type
+* Moving Date
+* Service Required
+* Additional Details
+
+Keep it short enough for mobile users.
+
+Required fields should be carefully chosen.
+
+Use:
+
+* Client-side validation
+* Server-side validation
+* Sanitization
+* Spam protection
+* Secure submission
+* Success message
+* Error handling
+
+Do not fake form submissions.
+
+---
+
+# 48. FORM TRACKING
+
+Prepare forms for Google Ads conversion tracking.
+
+Use stable IDs.
+
+Quote form:
+
+```text
+id="quote-form"
+```
+
+Phone CTA:
+
+```text
+id="phone-cta"
+```
+
+WhatsApp CTA:
+
+```text
+id="whatsapp-cta"
+```
+
+Quote CTA:
+
+```text
+id="quote-cta"
+```
+
+Track:
+
+* Form submissions
+* Phone clicks
+* WhatsApp clicks
+* Email clicks where applicable
+
+---
+
+# 49. GOOGLE TAG MANAGER / GA4
+
+Prepare the website for:
+
+* Google Tag Manager
+* Google Analytics 4
+* Google Ads
+* Google Search Console
+
+Do not hardcode unknown tracking IDs.
+
+Create an easy configuration location.
+
+Example:
+
+```php
+$googleTagManagerId = '';
+$googleAnalyticsId = '';
+$googleAdsId = '';
+```
+
+Only activate them once actual IDs are supplied.
+
+---
+
+# 50. PHONE CONVERSION TRACKING
+
+Phone number should always be clickable.
+
+Desktop:
+
+**055 658 1781**
+
+Mobile:
+
+**Call Now**
+
+Use:
+
+```text
+tel:+971556581781
+```
+
+Make it easy for Google Ads to track phone CTA clicks.
+
+---
+
+# 51. WHATSAPP CONVERSION TRACKING
+
+All WhatsApp CTAs should use the same official number:
+
+```text
+https://wa.me/971556581781
+```
+
+Give the buttons a consistent tracking identifier/class.
+
+---
+
+# 52. MOBILE STICKY CTA
+
+On mobile, create a fixed bottom CTA bar.
+
+Suggested:
+
+**Call Now | WhatsApp | Get Quote**
+
+Make sure it does not cover important content.
+
+Do not make it visually intrusive.
+
+---
+
+# 53. HOMEPAGE TRUST SECTION
+
+Use truthful trust/value propositions such as:
+
+* Professional Moving Support
+* Residential & Commercial Moving
+* Packing & Unpacking
+* Furniture Handling
+* Flexible Moving Solutions
+* Dubai, Sharjah & Ajman Coverage
+
+Do not invent:
+
+* Years of experience
+* Number of customers
+* Number of moves
+* Fleet size
+* Employee count
+* Certifications
+* Awards
+
+---
+
+# 54. ABOUT PAGE
+
+Create:
+
+```text
+/about-us/
+```
+
+The page should explain:
+
+* Who the company is
+* What it does
+* Services
+* Service areas
+* Moving approach
+* Customer-focused process
+
+Do not invent company history.
+
+---
+
+# 55. CONTACT PAGE
+
+Create:
+
+```text
+/contact-us/
+```
+
+Include:
+
+* Phone
+* WhatsApp
+* Sharjah, UAE
+* Quote form
+* Service areas
+* CTA
+
+Do not invent business hours.
+
+Do not embed a fake map location.
+
+---
+
+# 56. FOOTER
+
+Create a strong SEO-friendly footer.
+
+### Company
+
+* Home
+* About Us
+* Contact Us
+
+### Services
+
+* Home Movers
+* Furniture Movers
+* Office & Commercial Movers
+* Studio Apartment Movers
+* Villa Movers
+* Warehousing & Storage
+* Packing & Unpacking
+* Commercial & Retail Movers
+* Furniture Assembly
+* Loading & Unloading
+* Local Moving
+* Car Transportation
+
+### Locations
+
+* Dubai
+* Sharjah
+* Ajman
+
+### Contact
+
+**055 658 1781**
+
+**Sharjah, UAE**
+
+WhatsApp
+
+Also include:
+
+* Privacy Policy
+* Terms & Conditions
+
+---
+
+# 57. BLOG
+
+Create:
+
+```text
+/blog/
+```
+
+The blog should support commercial SEO.
+
+Potential topics:
+
+* Moving Checklist for Dubai Residents
+* How to Prepare for a House Move in Sharjah
+* Moving from Dubai to Sharjah
+* Moving from Sharjah to Dubai
+* How to Pack Furniture Safely
+* How Much Does Moving Cost in Dubai?
+* Apartment Moving Checklist
+* Villa Moving Checklist
+* Office Relocation Checklist
+* Furniture Storage Tips
+* How to Prepare for Movers
+* Packing Fragile Items
+
+Every article must be genuinely useful.
+
+Avoid publishing thin AI-generated content.
+
+---
+
+# 58. KEYWORD CANNIBALIZATION
+
+Create a keyword mapping system.
+
+Example:
+
+Homepage:
+
+**Movers & Packers Dubai, Sharjah & Ajman**
+
+Dubai page:
+
+**Movers in Dubai**
+
+Sharjah page:
+
+**Movers in Sharjah**
+
+Ajman page:
+
+**Movers in Ajman**
+
+Home Movers page:
+
+**Home Movers / House Movers**
+
+Villa Movers page:
+
+**Villa Movers**
+
+Do not make every page target:
+
+**Best Movers in Dubai**
+
+---
+
+# 59. TECHNICAL SEO
+
+Implement:
+
+* Clean URLs
+* Canonicals
+* XML sitemap
+* Robots.txt
+* 301 redirects
+* HTTPS
+* Proper heading hierarchy
+* Semantic HTML
+* Image alt attributes
+* Internal linking
+* Breadcrumbs
+* Schema
+* Open Graph
+* Twitter/X metadata
+* Mobile optimization
+* Correct indexability
+
+---
+
+# 60. XML SITEMAP
+
+Create a valid XML sitemap.
+
+Include only canonical indexable URLs.
+
+Do not include:
+
+* Admin pages
+* Duplicate pages
+* Redirect URLs
+* Noindex pages
+* Form processing URLs
+
+---
+
+# 61. ROBOTS.TXT
+
+Create a proper:
+
+```text
+/robots.txt
+```
+
+Allow search engines to crawl public pages.
+
+Block:
+
+* Admin areas
+* Private directories
+* Form processing endpoints
+* Sensitive files
+
+Reference the XML sitemap.
+
+---
+
+# 62. CANONICAL TAGS
+
+Every indexable page must have a self-referencing canonical URL unless there is a specific reason otherwise.
+
+Example:
+
+```html
+<link rel="canonical" href="https://homemoverandpaker.com/locations/dubai/">
+```
+
+Canonical URLs must use one consistent domain version.
+
+---
+
+# 63. HTTPS
+
+Force HTTPS through `.htaccess`.
+
+Choose one canonical host:
+
+```text
+https://homemoverandpaker.com/
+```
+
+Redirect HTTP to HTTPS.
+
+Redirect any unwanted www version to the chosen canonical version.
+
+---
+
+# 64. PERFORMANCE
+
+Performance is extremely important.
+
+The website will receive:
+
+* Organic traffic
+* Google Ads traffic
+* Mobile traffic
+
+Optimize for excellent Core Web Vitals:
+
+* LCP
+* INP
+* CLS
+
+Use:
+
+* Lightweight HTML
+* Minimal JavaScript
+* Optimized CSS
+* WebP/AVIF images
+* Lazy loading
+* Responsive images
+* Proper image dimensions
+* Browser caching
+* Compression
+* Efficient PHP
+* Minimal third-party scripts
+
+Avoid:
+
+* Heavy animation
+* Huge images
+* Autoplay videos
+* Unnecessary sliders
+* Excessive JavaScript
+
+---
+
+# 65. IMAGE OPTIMIZATION
+
+Use:
+
+* WebP
+* AVIF where appropriate
+
+Use meaningful filenames.
+
+Example:
+
+```text
+villa-movers-dubai.webp
+furniture-movers-sharjah.webp
+office-movers-ajman.webp
+```
+
+Use descriptive alt text.
+
+Example:
+
+```text
+Professional movers handling furniture during a villa move
+```
+
+Do not stuff keywords into alt text.
+
+---
+
+# 66. RESPONSIVE DESIGN
+
+The website must work perfectly on:
+
+* Mobile
+* Tablet
+* Laptop
+* Desktop
+* Large screens
+
+Test common widths.
+
+Mobile is a priority.
+
+---
+
+# 67. MOBILE UX
+
+Mobile users should immediately see:
+
+* Call
+* WhatsApp
+* Get Quote
+
+Navigation must be simple.
+
+Forms must be easy to complete.
+
+Buttons must have appropriate touch targets.
+
+Avoid intrusive popups.
+
+---
+
+# 68. ACCESSIBILITY
+
+Implement:
+
+* Semantic HTML
+* Accessible navigation
+* Keyboard navigation
+* Visible focus states
+* Proper form labels
+* Form error messages
+* Good contrast
+* Accessible buttons
+* Image alt text
+
+Use ARIA only when actually required.
+
+---
+
+# 69. SECURITY
+
+Implement secure PHP practices.
+
+Use:
+
+* Prepared SQL statements
+* Input validation
+* Input sanitization
+* CSRF protection for forms
+* Output escaping
+* Secure session handling where required
+* Rate limiting/spam protection
+* No exposed database credentials
+* No exposed API keys
+
+Never place secret credentials inside frontend JavaScript.
+
+---
+
+# 70. DATABASE
+
+If MySQL is used, create a clean database structure.
+
+Potential tables:
+
+```text
+services
+locations
+faqs
+blog_posts
+contact_submissions
+quote_submissions
+```
+
+Use prepared statements.
+
+Do not store unnecessary personal information.
+
+---
+
+# 71. GOOGLE ADS LANDING PAGE STRUCTURE
+
+Each commercial page should follow:
+
+```text
+Hero
+↓
+Service explanation
+↓
+Benefits
+↓
+What is included
+↓
+Process
+↓
+Relevant local coverage
+↓
+FAQs
+↓
+Quote CTA
+↓
+Phone / WhatsApp
+```
+
+Keep important CTA opportunities throughout the page.
+
+---
+
+# 72. GOOGLE ADS RELEVANCE
+
+Build pages specifically so Ads can point to the most relevant destination.
+
+Examples:
+
+```text
+Villa Movers Dubai
+→ /services/villa-movers/
+```
+
+or future:
+
+```text
+Villa Movers Dubai
+→ /dubai/villa-movers/
+```
+
+Do not force all paid traffic to the homepage.
+
+---
+
+# 73. GOOGLE ADS CONVERSION PRIORITIES
+
+Primary conversions:
+
+1. Quote form submission
+2. Phone CTA
+3. WhatsApp CTA
+
+Secondary:
+
+* Email click
+* Contact page engagement
+* Other meaningful CTA interactions
+
+Do not count every button click as a primary conversion.
+
+---
+
+# 74. GOOGLE ADS LANDING PAGE QUALITY
+
+Make the website:
+
+* Relevant
+* Transparent
+* Fast
+* Mobile-friendly
+* Easy to navigate
+* Easy to contact
+* Clear about the service
+* Clear about location
+* Clear about next action
+
+This is important for user experience and paid traffic performance.
+
+---
+
+# 75. DESIGN STYLE
+
+Create a premium and trustworthy UAE moving company design.
+
+Visual direction:
+
+* Professional
+* Modern
+* Clean
+* Strong
+* Reliable
+* Corporate
+* Conversion-focused
+
+Avoid:
+
+* Cheap template appearance
+* Excessive gradients
+* Excessive glass effects
+* Cartoon graphics
+* Excessive rounded cards
+* Over-animation
+* Clutter
+* Generic AI-looking layouts
+
+The website should look like a serious UAE business.
+
+---
+
+# 76. HERO IMAGERY
+
+Use relevant professional imagery:
+
+* Movers carrying furniture
+* Workers packing household items
+* Furniture wrapping
+* Villa moving
+* Apartment moving
+* Office relocation
+* Loading trucks
+* Furniture assembly
+* Storage
+* Commercial moving
+
+Avoid irrelevant stock images.
+
+Do not use misleading imagery.
+
+---
+
+# 77. NO FAKE CLAIMS
+
+This is mandatory.
+
+Never create fake:
+
+* Reviews
+* Testimonials
+* Ratings
+* Awards
+* Certifications
+* Licenses
+* Insurance claims
+* Years of experience
+* Customer numbers
+* Fleet numbers
+* Warehouse sizes
+* Branches
+* Pricing
+* Guarantees
+
+Only use factual information supplied by the business.
+
+---
+
+# 78. CONTENT STYLE
+
+Content must be:
+
+* Original
+* Helpful
+* Natural
+* Professional
+* Conversion-focused
+* Locally relevant
+* Human-readable
+
+Avoid repetitive AI language.
+
+Do not repeatedly write:
+
+"We are the best movers in Dubai."
+
+Do not keyword stuff.
+
+---
+
+# 79. LOCAL CONTENT QUALITY
+
+Location pages should not simply replace city names.
+
+For example, do NOT create:
+
+```text
+We are movers in Dubai...
+```
+
+and then copy it to:
+
+```text
+We are movers in Sharjah...
+```
+
+Instead, each page must have unique content related to:
+
+* Moving scenarios
+* Property types
+* Service requirements
+* Local service coverage
+* Relevant FAQs
+* Local customer intent
+
+---
+
+# 80. FUTURE SEO EXPANSION
+
+The architecture must make it easy to add:
+
+* More locations
+* More services
+* Service + location pages
+* Blog articles
+* FAQs
+* Moving guides
+
+Do not create an architecture that requires rebuilding the website later.
+
+---
+
+# 81. PHP DATA-DRIVEN ARCHITECTURE
+
+Where practical, create structured arrays/data objects for:
+
+Services:
+
+```php
+$services = [
+    [
+        'name' => 'Home Movers',
+        'slug' => 'home-movers',
+        'description' => '...',
+    ],
+];
+```
+
+Locations:
+
+```php
+$locations = [
+    [
+        'name' => 'Dubai',
+        'slug' => 'dubai',
+    ],
+];
+```
+
+This allows reusable cards, navigation and related content.
+
+---
+
+# 82. SEO PAGE CONFIGURATION
+
+Every page should be able to define:
+
+```php
+$pageTitle
+$pageDescription
+$pageH1
+$canonicalUrl
+$ogImage
+$robots
+```
+
+Do not hardcode the same SEO metadata across the entire site.
+
+---
+
+# 83. ERROR HANDLING
+
+Create:
+
+```text
+/404
+```
+
+or appropriate PHP 404 handling.
+
+The 404 page should include:
+
+* Helpful message
+* Home CTA
+* Services
+* Locations
+* Phone
+* WhatsApp
+
+---
+
+# 84. PRIVACY & TERMS
+
+Create:
+
+```text
+/privacy-policy/
+ /terms-and-conditions/
+```
+
+Do not fabricate detailed legal claims.
+
+Use reasonable placeholders where business-specific legal information is required.
+
+---
+
+# 85. FINAL SITE NAVIGATION
+
+Main navigation:
+
+```text
+Home
+Services
+Locations
+About Us
+Contact Us
+```
+
+Header CTAs:
+
+```text
+Call Now
+WhatsApp
+Get a Quote
+```
+
+Services dropdown:
+
+All 12 services.
+
+Locations dropdown:
+
+* Dubai
+* Sharjah
+* Ajman
+
+---
+
+# 86. FINAL PAGE LIST
+
+Build the following:
+
+## Core
+
+1. Home
+2. About Us
+3. Contact Us
+4. Privacy Policy
+5. Terms & Conditions
+6. 404
+
+## Services
+
+7. Home Movers
+8. Furniture Movers
+9. Office & Commercial Movers
+10. Studio Apartment Movers
+11. Villa Movers
+12. Warehousing & Storage
+13. Packing & Unpacking
+14. Commercial & Retail Movers
+15. Furniture Assembly
+16. Loading & Unloading
+17. Local Moving
+18. Car Transportation
+
+## Locations
+
+19. Movers in Dubai
+20. Movers in Sharjah
+21. Movers in Ajman
+
+## Content
+
+22. Blog
+23. Blog article template
+
+---
+
+# 87. DEVELOPMENT WORKFLOW
+
+Do not immediately start creating random pages.
+
+First:
+
+### Step 1
+
+Create the complete website architecture.
+
+### Step 2
+
+Create the keyword-to-page mapping.
+
+### Step 3
+
+Create reusable PHP components.
+
+### Step 4
+
+Create the global SEO system.
+
+### Step 5
+
+Create the global design system.
+
+### Step 6
+
+Build homepage.
+
+### Step 7
+
+Build service template and all service pages.
+
+### Step 8
+
+Build location template and all location pages.
+
+### Step 9
+
+Build forms.
+
+### Step 10
+
+Implement schema.
+
+### Step 11
+
+Implement technical SEO.
+
+### Step 12
+
+Implement Google Ads tracking readiness.
+
+### Step 13
+
+Optimize performance.
+
+### Step 14
+
+Run a complete QA audit.
+
+---
+
+# 88. FINAL SEO AUDIT
+
+Before completion, check:
+
+## On-Page SEO
+
+* Unique title
+* Unique meta description
+* Correct H1
+* H2/H3 hierarchy
+* Keyword intent
+* Internal links
+* Image alt text
+* Canonical
+* Breadcrumbs
+
+## Technical SEO
+
+* HTTPS
+* Canonicals
+* Sitemap
+* Robots
+* Clean URLs
+* 301 redirects
+* 404
+* Indexability
+* Structured data
+
+## Local SEO
+
+* NAP consistency
+* Sharjah business location
+* Dubai location page
+* Sharjah location page
+* Ajman location page
+* Service/location relevance
+* Internal linking
+* Local content
+
+## Google Ads
+
+* Search-to-page relevance
+* CTA above fold
+* Phone CTA
+* WhatsApp CTA
+* Quote form
+* Mobile landing experience
+* Fast loading
+* Conversion tracking readiness
+
+## Performance
+
+* Core Web Vitals
+* Image compression
+* CSS optimization
+* JS optimization
+* Font optimization
+* Third-party scripts
+* Caching
+* Compression
+
+---
+
+# 89. IMPORTANT FINAL RULES
+
+Do NOT:
+
+* Build a generic template
+* Keyword stuff
+* Create doorway pages
+* Duplicate location pages
+* Create fake reviews
+* Create fake ratings
+* Invent company information
+* Invent branches
+* Invent prices
+* Invent certifications
+* Use fake Google Maps locations
+* Use unnecessary frameworks
+* Use React
+* Use Next.js
+* Use Laravel
+* Use WordPress
+* Build a SPA
+* Expose `.php` in public URLs
+* Make the website unnecessarily heavy
+
+---
+
+# 90. PRIMARY BUSINESS OBJECTIVE
+
+Every design and development decision should support this goal:
+
+## Generate qualified leads.
+
+The website must encourage users to:
+
+**Call → WhatsApp → Request a Quote**
+
+while also building long-term organic visibility for:
+
+**Dubai + Sharjah + Ajman Movers & Packers searches.**
+
+---
+
+# 91. FINAL INSTRUCTION
+
+Build this website as a **real production website**, not merely a demo.
+
+The final result should be:
+
+**Fast + Professional + Mobile-First + Local SEO Optimized + Google Ads Optimized + Conversion Focused + Technically Clean + Scalable.**
+
+Technology is strictly:
+
+**PHP 8.2+ + HTML5 + CSS3 + Vanilla JavaScript + MySQL + Apache/LiteSpeed + .htaccess**
+
+The website must use server-rendered HTML.
+
+Prioritize:
+
+**Local SEO → Search Intent → Google Ads Relevance → UX → Conversion → Performance → Technical SEO.**
+
+Before finishing, perform a complete technical, SEO, local SEO, Google Ads and conversion audit and fix all identified issues.
+
+Do not declare the project finished while there are obvious SEO, performance, UX, security or conversion problems.

@@ -1,0 +1,22 @@
+# robots.txt — homemoverandpaker.com
+
+User-agent: *
+Allow: /
+
+# CSS, JS and images must stay crawlable so Google can render pages correctly.
+# They are served with a ?v= cache-busting query, so allow that explicitly.
+Allow: /assets/
+
+# Form processing endpoints — no content, nothing to index
+Disallow: /forms/
+
+# Application internals
+Disallow: /includes/
+Disallow: /storage/
+Disallow: /database/
+Disallow: /uploads/
+
+# The canonical URLs are the clean ones; never index the raw .php paths
+Disallow: /*.php$
+
+Sitemap: https://homemoverandpaker.com/sitemap.xml

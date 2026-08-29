@@ -1,0 +1,30 @@
+# Runtime data — never commit leads or logs
+/storage/*.jsonl
+/storage/*.json
+/storage/logs/
+/uploads/*
+!/uploads/.gitkeep
+
+# Local environment
+.env
+.env.local
+*.local.php
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Dependencies / build output
+/vendor/
+/node_modules/
+
+# Archives and dumps
+*.zip
+*.tar.gz
+*.sql.gz
+*-backup.sql

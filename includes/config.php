@@ -1,0 +1,101 @@
+<?php
+/**
+ * Global configuration — homemoverandpaker.com
+ * Single source of truth for business NAP, tracking IDs and environment settings.
+ */
+
+declare(strict_types=1);
+
+/* ------------------------------------------------------------------
+ | Environment
+ | ------------------------------------------------------------------ */
+define('APP_ENV', getenv('APP_ENV') ?: 'local');           // local | production
+define('APP_DEBUG', APP_ENV === 'local');
+define('APP_ROOT', dirname(__DIR__));
+
+if (APP_DEBUG) {
+    error_reporting(E_ALL);
+    ini_set('display_errors', '1');
+} else {
+    error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+    ini_set('display_errors', '0');
+    ini_set('log_errors', '1');
+    ini_set('error_log', APP_ROOT . '/storage/logs/php-error.log');
+}
+
+date_default_timezone_set('Asia/Dubai');
+
+/* ------------------------------------------------------------------
+ | Site
+ | ------------------------------------------------------------------ */
+define('SITE_DOMAIN', 'homemoverandpaker.com');
+define('SITE_URL', APP_ENV === 'production'
+    ? 'https://homemoverandpaker.com'
+    : (isset($_SERVER['HTTP_HOST']) ? 'http://' . $_SERVER['HTTP_HOST'] : 'http://localhost:8000'));
+
+/** Canonical URLs always use the production domain so staging never leaks into search. */
+define('CANONICAL_BASE', 'https://homemoverandpaker.com');
+
+define('SITE_NAME', 'Home Movers & Packers');
+define('SITE_TAGLINE', 'Movers & Packers in Dubai, Sharjah & Ajman');
+
+/* ------------------------------------------------------------------
+ | Business NAP  (Name / Address / Phone) — keep identical everywhere
+ | ------------------------------------------------------------------ */
+define('BUSINESS_NAME', 'Home Movers & Packers');
+define('BUSINESS_CITY', 'Sharjah');
+define('BUSINESS_REGION', 'Sharjah');
+define('BUSINESS_COUNTRY', 'AE');
+define('BUSINESS_COUNTRY_NAME', 'United Arab Emirates');
+define('BUSINESS_ADDRESS', 'Sharjah, UAE');
+
+define('PHONE_DISPLAY', '055 658 1781');
+define('PHONE_INTL', '+971 55 658 1781');
+define('PHONE_LINK', 'tel:+971556581781');
+define('PHONE_E164', '+971556581781');
+
+define('WHATSAPP_NUMBER', '971556581781');
+define('WHATSAPP_BASE', 'https://wa.me/971556581781');
+
+define('EMAIL_ADDRESS', 'info@homemoverandpaker.com');
+
+/** Areas served — used in schema, footer and location listings. */
+define('AREAS_SERVED', ['Dubai', 'Sharjah', 'Ajman']);
+
+/* ------------------------------------------------------------------
+ | Tracking — leave EMPTY until real IDs are supplied by the business.
+ | Nothing is injected into the page while these are blank.
+ | ------------------------------------------------------------------ */
+$googleTagManagerId  = '';   // e.g. GTM-XXXXXXX
+$googleAnalyticsId   = '';   // e.g. G-XXXXXXXXXX
+$googleAdsId         = '';   // e.g. AW-XXXXXXXXX
+$googleAdsQuoteLabel = '';   // conversion label for quote form submissions
+$googleAdsCallLabel  = '';   // conversion label for phone CTA clicks
+$googleAdsWhatsLabel = '';   // conversion label for WhatsApp CTA clicks
+$googleSiteVerify    = '';   // Search Console meta verification token
+
+/* ------------------------------------------------------------------
+ | Database (MySQL) — optional. The site degrades gracefully to file
+ | storage when the database is unreachable, so a lead is never lost.
+ | ------------------------------------------------------------------ */
+define('DB_ENABLED', filter_var(getenv('DB_ENABLED') ?: 'false', FILTER_VALIDATE_BOOL));
+define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
+define('DB_PORT', getenv('DB_PORT') ?: '3306');
+define('DB_NAME', getenv('DB_NAME') ?: 'homemoverandpaker');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_CHARSET', 'utf8mb4');
+
+/* ------------------------------------------------------------------
+ | Leads
+ | ------------------------------------------------------------------ */
+define('LEAD_NOTIFY_EMAIL', getenv('LEAD_NOTIFY_EMAIL') ?: EMAIL_ADDRESS);
+define('LEAD_FALLBACK_FILE', APP_ROOT . '/storage/leads.jsonl');
+define('FORM_MIN_SECONDS', 3);      // submissions faster than this are treated as bots
+define('RATE_LIMIT_MAX', 5);        // max submissions
+define('RATE_LIMIT_WINDOW', 900);   // per 15 minutes, per IP
+
+/* ------------------------------------------------------------------
+ | Asset cache-busting version
+ | ------------------------------------------------------------------ */
+define('ASSET_VERSION', '1.0.0');

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Home Movers and Packers — Dubai, Sharjah and Ajman">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#081a30"/>
+      <stop offset="0.55" stop-color="#0d2440"/>
+      <stop offset="1" stop-color="#143458"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <path d="M780 0 1200 0 1200 630 620 630Z" fill="#ffffff" opacity="0.04"/>
+  <path d="M900 0 1200 0 1200 630 740 630Z" fill="#f26a1b" opacity="0.10"/>
+  <g transform="translate(90 150)">
+    <rect width="72" height="72" rx="14" fill="#f26a1b"/>
+    <g transform="translate(14 16)" fill="none" stroke="#ffffff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 6h24v22H2z"/>
+      <path d="M26 13h10l7 7v8H26z"/>
+      <circle cx="11" cy="32" r="4"/>
+      <circle cx="35" cy="32" r="4"/>
+    </g>
+  </g>
+  <text x="90" y="300" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="62" font-weight="700" fill="#ffffff">Home Movers &amp; Packers</text>
+  <text x="90" y="372" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="38" font-weight="600" fill="#c3d3e4">Movers &amp; Packers in Dubai, Sharjah &amp; Ajman</text>
+  <rect x="90" y="410" width="86" height="5" rx="2.5" fill="#f26a1b"/>
+  <text x="90" y="480" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="30" fill="#a9bed4">Home &#183; Villa &#183; Office &#183; Packing &#183; Storage</text>
+  <text x="90" y="530" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="34" font-weight="700" fill="#ffffff">055 658 1781</text>
+</svg>
