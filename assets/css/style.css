@@ -1144,25 +1144,61 @@ a.card:hover .card-link .icon { transform: translateX(3px); }
 .reviews { background: var(--navy-800); color: #c3d3e4; }
 .reviews-grid {
   display: grid;
-  grid-template-columns: 0.75fr 2.25fr;
+  grid-template-columns: 0.8fr 2.2fr;
   gap: var(--sp-7);
   align-items: center;
 }
-.reviews-intro h2 { color: #fff; font-size: var(--fs-2xl); }
-.reviews-intro p { font-size: var(--fs-sm); margin: 0; }
-.stars { display: flex; gap: 3px; margin-bottom: var(--sp-3); }
-.stars .icon { width: 22px; height: 22px; color: var(--accent-500); fill: var(--accent-500); }
+.reviews-intro h2 {
+  color: #fff;
+  font-size: var(--fs-2xl);
+  line-height: 1.22;
+  margin-bottom: var(--sp-4);
+}
+.reviews-intro p { font-size: var(--fs-sm); margin: 0; color: #a9bed4; }
+.reviews-score { margin-bottom: var(--sp-3) !important; color: #dbe6f2 !important; }
+.reviews-score strong { color: var(--accent-500); font-size: var(--fs-lg); }
+
+.stars { display: flex; gap: 4px; margin-bottom: var(--sp-2); }
+.stars .icon {
+  width: 24px; height: 24px;
+  color: var(--accent-500);
+  fill: var(--accent-500);
+}
+.stars .icon.is-empty { fill: none; opacity: .45; }
+.stars-sm { margin-bottom: var(--sp-3); }
+.stars-sm .icon { width: 16px; height: 16px; }
+
+.reviews-main { min-width: 0; }
+.reviews-dev-note {
+  margin-bottom: var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
+  border-left: 4px solid var(--accent-500);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .07);
+  font-size: var(--fs-xs);
+  color: #dbe6f2;
+}
+.reviews-dev-note code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: rgba(0, 0, 0, .28);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
 .review-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); }
 .review-card {
   background: var(--surface);
   border-radius: var(--radius-lg);
   padding: var(--sp-5);
+  margin: 0;
   display: flex;
   flex-direction: column;
+  box-shadow: var(--shadow-sm);
 }
+.review-card.is-hidden { display: none; }
 .review-mark {
-  font-size: 2.5rem;
-  line-height: 0.7;
+  font-size: 3rem;
+  line-height: 0.62;
   color: var(--accent-500);
   font-family: Georgia, "Times New Roman", serif;
   margin-bottom: var(--sp-3);
@@ -1170,29 +1206,45 @@ a.card:hover .card-link .icon { transform: translateX(3px); }
 .review-card blockquote {
   margin: 0 0 var(--sp-4);
   font-size: var(--fs-sm);
+  line-height: 1.6;
   color: var(--ink-700);
   flex: 1;
 }
-.review-author { display: flex; align-items: center; gap: var(--sp-3); }
-.review-avatar {
-  width: 42px; height: 42px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex: none;
+.review-author {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--line);
 }
+.review-avatar { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; flex: none; }
 .review-avatar-initials {
   display: grid;
   place-items: center;
-  width: 42px; height: 42px;
+  width: 46px; height: 46px;
   border-radius: 50%;
   background: var(--navy-800);
-  color: #fff;
+  color: var(--accent-500);
   font-size: var(--fs-sm);
-  font-weight: 700;
+  font-weight: 750;
   flex: none;
 }
 .review-author strong { display: block; font-size: var(--fs-sm); color: var(--ink-900); }
-.review-author span { display: block; font-size: var(--fs-xs); color: var(--ink-400); }
+.review-author > span > span { display: block; font-size: var(--fs-xs); color: var(--ink-400); }
+
+/* Carousel dots — only rendered when there is more than one page of reviews */
+.review-dots { display: flex; justify-content: center; gap: var(--sp-2); margin-top: var(--sp-5); }
+.review-dot {
+  width: 10px; height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .32);
+  cursor: pointer;
+  transition: background-color .16s ease, transform .16s ease;
+}
+.review-dot:hover { background: rgba(255, 255, 255, .55); }
+.review-dot.is-active { background: var(--accent-500); transform: scale(1.25); }
 
 /* --- Gold CTA band --------------------------------------------------------- */
 .cta-gold { background: var(--accent-500); color: var(--on-accent); overflow: hidden; }

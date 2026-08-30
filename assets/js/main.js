@@ -185,6 +185,48 @@
   var startedAt = Date.now();
 
   /* ----------------------------------------------------------------------
+     Review pager
+     The dots only exist when there is more than one page of reviews, and the
+     first three cards are visible without JavaScript — so with this file
+     blocked the section still shows reviews, just without paging.
+     -------------------------------------------------------------------- */
+  var reviewDots = document.querySelectorAll('.review-dot');
+
+  if (reviewDots.length > 1) {
+    var reviewCards = document.querySelectorAll('#review-cards .review-card');
+
+    var showReviewPage = function (page) {
+      reviewCards.forEach(function (card) {
+        card.classList.toggle('is-hidden', card.dataset.page !== String(page));
+      });
+      reviewDots.forEach(function (dot) {
+        var active = dot.dataset.page === String(page);
+        dot.classList.toggle('is-active', active);
+        dot.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+    };
+
+    reviewDots.forEach(function (dot) {
+      dot.addEventListener('click', function () {
+        showReviewPage(dot.dataset.page);
+      });
+    });
+
+    /* Left/right arrows move between pages when a dot has focus. */
+    document.querySelector('.review-dots').addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') { return; }
+      var dots = Array.prototype.slice.call(reviewDots);
+      var current = dots.findIndex(function (d) { return d.classList.contains('is-active'); });
+      var next = e.key === 'ArrowRight'
+        ? (current + 1) % dots.length
+        : (current - 1 + dots.length) % dots.length;
+      dots[next].click();
+      dots[next].focus();
+      e.preventDefault();
+    });
+  }
+
+  /* ----------------------------------------------------------------------
      Scroll to a form that reported errors or success
      -------------------------------------------------------------------- */
   var alertBox = document.querySelector('.alert[data-focus]');

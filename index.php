@@ -19,7 +19,6 @@ require_once __DIR__ . '/includes/bootstrap.php';
 $services     = all_services();
 $locations    = all_locations();
 $posts        = all_posts();
-$testimonials = all_testimonials();
 
 /* The seven services shown in the strip; the eighth tile links to them all. */
 $featured = ['home-movers', 'furniture-movers', 'office-commercial-movers', 'studio-apartment-movers',
@@ -247,44 +246,89 @@ require __DIR__ . '/includes/header.php';
   </div>
 </section>
 
-<?php if ($testimonials !== []): ?>
-<!-- ======================================================== Reviews ====== -->
 <?php
-$ratings = array_filter(array_column($testimonials, 'rating'));
+/* Real reviews when they exist; on a local server, example cards so the
+   design can be seen. Production with no real reviews renders nothing. */
+$reviewState = reviews_for_display();
+$reviews     = $reviewState['reviews'];
+$isExample   = $reviewState['is_example'];
+
+$ratings = array_filter(array_column($reviews, 'rating'));
 $average = $ratings !== [] ? round(array_sum($ratings) / count($ratings), 1) : null;
+$pages   = (int) ceil(count($reviews) / 3);
 ?>
-<section class="section reviews">
+<?php if ($reviews !== []): ?>
+<!-- ======================================================== Reviews ====== -->
+<section class="section reviews" aria-labelledby="reviews-heading">
   <div class="container reviews-grid">
     <div class="reviews-intro">
-      <h2>What Our Customers Say</h2>
+      <h2 id="reviews-heading"><?= e(REVIEWS_HEADING) ?></h2>
+
       <?php if ($average !== null): ?>
-        <div class="stars" role="img" aria-label="<?= e((string) $average) ?> out of 5 stars">
-          <?php for ($i = 0; $i < 5; $i++): ?><?= icon('star', 'icon') ?><?php endfor; ?>
+        <div class="stars" role="img"
+             aria-label="Average rating <?= e((string) $average) ?> out of 5 from <?= count($reviews) ?> reviews">
+          <?php for ($i = 1; $i <= 5; $i++): ?>
+            <?= icon('star', 'icon' . ($i <= round($average) ? '' : ' is-empty')) ?>
+          <?php endfor; ?>
         </div>
-        <p><?= e((string) $average) ?> out of 5 from <?= count($testimonials) ?> customer
-          <?= count($testimonials) === 1 ? 'review' : 'reviews' ?>.</p>
+        <p class="reviews-score">
+          <strong><?= e(number_format($average, 1)) ?></strong> out of 5
+          &middot; <?= count($reviews) ?> <?= count($reviews) === 1 ? 'review' : 'reviews' ?>
+        </p>
       <?php endif; ?>
+
+      <p>Rated by our customers for careful handling, clear pricing and turning up on time.</p>
     </div>
 
-    <div class="review-cards">
-      <?php foreach (array_slice($testimonials, 0, 3) as $review): ?>
-        <figure class="review-card">
-          <span class="review-mark" aria-hidden="true">&ldquo;</span>
-          <blockquote><?= e($review['quote']) ?></blockquote>
-          <figcaption class="review-author">
-            <?php if (!empty($review['photo']) && image_exists('testimonials/' . $review['photo'])): ?>
-              <img class="review-avatar" src="<?= e(image_url('testimonials/' . $review['photo'])) ?>"
-                   alt="" width="42" height="42" loading="lazy">
-            <?php else: ?>
-              <span class="review-avatar-initials" aria-hidden="true"><?= e(initials($review['name'])) ?></span>
+    <div class="reviews-main">
+      <?php if ($isExample): ?>
+        <p class="reviews-dev-note">
+          <strong>Local preview only.</strong> These cards are placeholders so you can see the
+          design. Add your real reviews to <code>includes/data/testimonials.php</code> — on the
+          live site this section stays hidden until you do.
+        </p>
+      <?php endif; ?>
+
+      <div class="review-cards" id="review-cards">
+        <?php foreach ($reviews as $i => $review): ?>
+          <figure class="review-card<?= $i >= 3 ? ' is-hidden' : '' ?>" data-page="<?= (int) floor($i / 3) ?>">
+            <span class="review-mark" aria-hidden="true">&ldquo;</span>
+
+            <?php if (!empty($review['rating'])): ?>
+              <div class="stars stars-sm" role="img" aria-label="<?= (int) $review['rating'] ?> out of 5 stars">
+                <?php for ($n = 1; $n <= 5; $n++): ?>
+                  <?= icon('star', 'icon' . ($n <= (int) $review['rating'] ? '' : ' is-empty')) ?>
+                <?php endfor; ?>
+              </div>
             <?php endif; ?>
-            <span>
-              <strong><?= e($review['name']) ?></strong>
-              <span><?= e($review['city'] ?? '') ?><?= !empty($review['source']) ? ' · ' . e($review['source']) : '' ?></span>
-            </span>
-          </figcaption>
-        </figure>
-      <?php endforeach; ?>
+
+            <blockquote><?= e($review['quote']) ?></blockquote>
+
+            <figcaption class="review-author">
+              <?php if (!empty($review['photo']) && image_exists('testimonials/' . $review['photo'])): ?>
+                <img class="review-avatar" src="<?= e(image_url('testimonials/' . $review['photo'])) ?>"
+                     alt="" width="46" height="46" loading="lazy">
+              <?php else: ?>
+                <span class="review-avatar-initials" aria-hidden="true"><?= e(initials($review['name'])) ?></span>
+              <?php endif; ?>
+              <span>
+                <strong>&mdash; <?= e($review['name']) ?></strong>
+                <span><?= e($review['city'] ?? '') ?><?= !empty($review['source']) ? ' &middot; ' . e($review['source']) : '' ?></span>
+              </span>
+            </figcaption>
+          </figure>
+        <?php endforeach; ?>
+      </div>
+
+      <?php if ($pages > 1): ?>
+        <div class="review-dots" role="tablist" aria-label="Review pages">
+          <?php for ($p = 0; $p < $pages; $p++): ?>
+            <button type="button" class="review-dot<?= $p === 0 ? ' is-active' : '' ?>"
+                    role="tab" aria-selected="<?= $p === 0 ? 'true' : 'false' ?>"
+                    data-page="<?= $p ?>" aria-label="Show reviews page <?= $p + 1 ?>"></button>
+          <?php endfor; ?>
+        </div>
+      <?php endif; ?>
     </div>
   </div>
 </section>

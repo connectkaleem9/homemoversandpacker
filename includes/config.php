@@ -74,6 +74,15 @@ define('BUSINESS_HOURS_TEXT', '');
 define('BUSINESS_HOURS_SCHEMA', []);
 
 /**
+ * Heading above the reviews section.
+ *
+ * Deliberately not "Trusted by Hundreds of Happy Customers" — that is a
+ * customer-count claim, and it should only be made once the business can
+ * actually stand behind the number. Change it when you can.
+ */
+define('REVIEWS_HEADING', 'What Our Customers Say');
+
+/**
  * Social profiles. Add the real URLs and the icons appear in the footer and
  * as sameAs in the organisation schema. Leave blank to hide.
  */

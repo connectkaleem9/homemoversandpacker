@@ -79,6 +79,46 @@ function all_testimonials(): array
     return $testimonials;
 }
 
+/**
+ * Placeholder reviews, shown ONLY on a local development server so the design
+ * of the section can be seen while it is being built.
+ *
+ * These are never served in production: reviews_for_display() refuses to return
+ * them once APP_ENV is 'production', and no Review or AggregateRating schema is
+ * ever emitted from them. Replace them with real customer reviews in
+ * includes/data/testimonials.php and they stop being used entirely.
+ */
+function example_testimonials(): array
+{
+    return [
+        ['quote' => 'This is example text so the layout can be checked. Replace it with a real review from a real customer before this site goes live.',
+         'name' => 'Example Customer', 'city' => 'Dubai', 'rating' => 5, 'date' => '2026-01-10', 'photo' => '', 'source' => 'Example'],
+        ['quote' => 'Placeholder review number two. Copy your genuine Google reviews into includes/data/testimonials.php and this block disappears.',
+         'name' => 'Example Customer', 'city' => 'Sharjah', 'rating' => 5, 'date' => '2026-01-12', 'photo' => '', 'source' => 'Example'],
+        ['quote' => 'Placeholder review number three, here only to show the card design. It will never appear on the live website.',
+         'name' => 'Example Customer', 'city' => 'Ajman', 'rating' => 5, 'date' => '2026-01-18', 'photo' => '', 'source' => 'Example'],
+    ];
+}
+
+/**
+ * What the reviews section should render.
+ *
+ * Returns ['reviews' => [...], 'is_example' => bool]. Real reviews always win.
+ * With none, a local server shows the examples so the design is visible, and
+ * production shows nothing at all.
+ */
+function reviews_for_display(): array
+{
+    $real = all_testimonials();
+    if ($real !== []) {
+        return ['reviews' => $real, 'is_example' => false];
+    }
+    if (APP_ENV !== 'production') {
+        return ['reviews' => example_testimonials(), 'is_example' => true];
+    }
+    return ['reviews' => [], 'is_example' => false];
+}
+
 /** Initials fallback for a reviewer with no photo. */
 function initials(string $name): string
 {
