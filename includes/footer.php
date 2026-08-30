@@ -54,9 +54,15 @@ $footYear = date('Y');
     <div class="footer-col">
       <h2 class="footer-title">Services</h2>
       <ul class="footer-list">
-        <?php foreach ($footServices as $footSlug => $footService): ?>
+        <?php
+        /* The reference footer lists a handful of services and an "And more"
+           link, not all twelve — twelve stacked links doubled the footer height. */
+        $footShown = 0;
+        foreach ($footServices as $footSlug => $footService):
+            if ($footShown++ >= 6) { break; } ?>
           <li><a href="<?= e(service_url($footSlug)) ?>"><?= e($footService['name']) ?></a></li>
         <?php endforeach; ?>
+        <li><a href="/services/"><strong style="color:inherit;">And more services</strong></a></li>
       </ul>
     </div>
 

@@ -134,7 +134,14 @@
     margin-inline: calc(var(--sp-5) * -1);
   }
   .hero-home-media::before { display: none; }
-  .why-grid { grid-template-columns: 1fr; gap: var(--sp-6); }
+  .why-grid { grid-template-columns: 1fr; gap: var(--sp-5); }
+  .why-media {
+    margin-left: calc(var(--sp-5) * -1);
+    margin-right: calc(var(--sp-5) * -1);
+    width: auto;
+    aspect-ratio: 16 / 9;
+  }
+  .why-media img, .why-media .img-placeholder { border-radius: 0; }
   .serve-grid { grid-template-columns: 1fr; gap: var(--sp-6); }
   .process-row { grid-template-columns: repeat(3, 1fr); gap: var(--sp-5); }
   .process-item:nth-child(3n)::after { display: none; }

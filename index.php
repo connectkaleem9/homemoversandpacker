@@ -2,10 +2,13 @@
 /**
  * Homepage — primary intent: "Movers & Packers in Dubai, Sharjah & Ajman".
  *
- * Section order follows the Google Ads landing-page pattern:
- *   Hero (service + location + CTA + phone + WhatsApp above the fold)
- *   → Services → Why us → Process → Service areas → Reviews → FAQs
+ * Section order:
+ *   Hero → Services → Why us → Process → Service areas → Reviews
  *   → CTA band → Blog + quote form
+ *
+ * No FAQ block here: it is not in the approved design. FAQs and their
+ * FAQPage schema live on all 12 service pages and all 3 location pages,
+ * which is where the question-shaped search traffic lands anyway.
  *
  * Photography is dropped into /assets/images/ (see the README there). Every
  * image renders a correctly-proportioned placeholder until the file exists, so
@@ -24,24 +27,11 @@ $posts        = all_posts();
 $featured = ['home-movers', 'furniture-movers', 'office-commercial-movers', 'studio-apartment-movers',
              'villa-movers', 'warehousing-storage', 'packing-unpacking'];
 
-/* FAQs rendered on this page — the same array feeds FAQPage schema. */
-$homeFaqs = [
-    ['q' => 'Which areas do you cover?', 'a' => 'We are based in Sharjah, UAE and provide moving services across Dubai, Sharjah and Ajman, including moves between all three emirates. Most cross-emirate household moves along these routes are completed in a single day.'],
-    ['q' => 'How much do movers and packers cost?', 'a' => 'There is no single fixed price, and any quote given without asking about your property is a guess. The cost depends on the size of the property, the number of items, the distance between addresses, whether you want packing included, the access at both ends — floor, lift and parking — and any extra services such as storage or furniture assembly. Send us your details and we will give you a specific quotation.'],
-    ['q' => 'Do you provide packing and unpacking?', 'a' => 'Yes. Full or partial packing is available with all materials supplied — cartons, bubble wrap, stretch film, tape and hanging wardrobe boxes — and we can unpack and place items at the new property if you want the home usable straight away.'],
-    ['q' => 'Do you dismantle and reassemble furniture?', 'a' => 'Yes. Beds, wardrobes, dining tables, desks and modular units are dismantled where the access requires it and reassembled at your new property. Fixings are bagged and kept with the piece they belong to.'],
-    ['q' => 'Can you move offices and shops as well as homes?', 'a' => 'Yes. We handle office relocations, retail and showroom moves, and commercial premises, usually scheduled outside working hours so the business keeps trading.'],
-    ['q' => 'Do you offer storage between moving dates?', 'a' => 'Yes. Where your move-out and move-in dates do not line up, we collect and inventory your belongings, store them for the period you need, and deliver and reassemble them when your new property is ready.'],
-    ['q' => 'How do I request a moving quote?', 'a' => 'Call or WhatsApp us on 055 658 1781, or complete the quote form on this page. A short video walkthrough of the property over WhatsApp is the fastest way for us to quote accurately.'],
-    ['q' => 'How far in advance should I book a move?', 'a' => 'Earlier is better, especially at month end and around tenancy start and end dates when demand peaks. If your move is urgent, call us and we will tell you honestly what is available.'],
-];
-
 seo_set([
     'title'       => 'Movers and Packers in Dubai, Sharjah & Ajman',
     'description' => 'Movers and packers based in Sharjah, serving Dubai, Sharjah and Ajman. Home, villa, apartment and office moving with packing and storage. Call 055 658 1781.',
     'path'        => '/',
     'breadcrumbs' => [['label' => 'Home', 'url' => '/']],
-    'schema'      => [schema_faq($homeFaqs)],
     'quote_anchor'=> '#quote',
 ]);
 
@@ -333,8 +323,6 @@ $pages   = (int) ceil(count($reviews) / 3);
   </div>
 </section>
 <?php endif; ?>
-
-<?= faq_list($homeFaqs, 'Movers and packers — common questions') ?>
 
 <!-- ======================================================= CTA band ====== -->
 <section class="cta-gold">

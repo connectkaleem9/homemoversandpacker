@@ -86,18 +86,6 @@ $inv = static fn (string $k): string => isset($errors[$k]) ? ' aria-invalid="tru
         <span class="field-error"><?= $err('moving_to') ?></span>
       </div>
 
-      <div class="field field-full">
-        <label class="sr-only" for="m-service">Service required</label>
-        <select id="m-service" name="service">
-          <option value="">Service required (optional)</option>
-          <?php foreach (all_services() as $qmSlug => $qmService): ?>
-            <option value="<?= e($qmSlug) ?>"<?= ($old['service'] ?? '') === $qmSlug ? ' selected' : '' ?>>
-              <?= e($qmService['name']) ?>
-            </option>
-          <?php endforeach; ?>
-          <option value="not-sure"<?= ($old['service'] ?? '') === 'not-sure' ? ' selected' : '' ?>>Not sure — please advise</option>
-        </select>
-      </div>
     </div>
 
     <div class="form-foot">

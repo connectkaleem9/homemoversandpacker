@@ -91,11 +91,11 @@ function all_testimonials(): array
 function example_testimonials(): array
 {
     return [
-        ['quote' => 'This is example text so the layout can be checked. Replace it with a real review from a real customer before this site goes live.',
+        ['quote' => 'Example text so the card layout can be checked. Replace with a real customer review before going live.',
          'name' => 'Example Customer', 'city' => 'Dubai', 'rating' => 5, 'date' => '2026-01-10', 'photo' => '', 'source' => 'Example'],
-        ['quote' => 'Placeholder review number two. Copy your genuine Google reviews into includes/data/testimonials.php and this block disappears.',
+        ['quote' => 'Placeholder two. Copy your genuine Google reviews into includes/data/testimonials.php.',
          'name' => 'Example Customer', 'city' => 'Sharjah', 'rating' => 5, 'date' => '2026-01-12', 'photo' => '', 'source' => 'Example'],
-        ['quote' => 'Placeholder review number three, here only to show the card design. It will never appear on the live website.',
+        ['quote' => 'Placeholder three, here only to show the card design. It never appears on the live site.',
          'name' => 'Example Customer', 'city' => 'Ajman', 'rating' => 5, 'date' => '2026-01-18', 'photo' => '', 'source' => 'Example'],
     ];
 }
