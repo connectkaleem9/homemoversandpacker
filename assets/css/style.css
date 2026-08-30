@@ -437,6 +437,14 @@ hr { border: 0; border-top: 1px solid var(--line); margin: var(--sp-6) 0; }
 .hero-assurance span { display: inline-flex; align-items: center; gap: var(--sp-2); }
 .hero-assurance .icon { color: var(--accent-500); }
 
+/* Slightly shorter hero for inner pages that use the homepage hero layout */
+.hero-compact .hero-home-inner { min-height: 380px; }
+.hero-compact .hero-home h1 { font-size: clamp(1.6rem, 2.3vw, 2.1rem); }
+
+/* Duotone illustration inside a plain card, no tinted circle behind it */
+.card-icon-plain { display: block; margin-bottom: var(--sp-3); }
+.card-icon-plain .svc-icon { width: 46px; height: 46px; }
+
 /* Compact hero for inner pages */
 .hero-inner-page .hero-inner { grid-template-columns: 1fr; padding-block: var(--sp-7); }
 .hero-inner-page .hero-copy { max-width: 780px; }
