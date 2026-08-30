@@ -136,11 +136,15 @@
     margin-inline: calc(var(--sp-5) * -1);
   }
   .hero-home-media::before { display: none; }
-  .why-grid { grid-template-columns: 1fr; gap: var(--sp-5); }
+  .why-grid { grid-template-columns: 1fr; gap: var(--sp-5); min-height: 0; }
+  .why-grid > *:not(.why-media) { grid-column: auto; }
   .why-media {
-    margin-left: calc(var(--sp-5) * -1);
-    margin-right: calc(var(--sp-5) * -1);
+    position: relative;
+    left: auto;
+    top: auto;
+    bottom: auto;
     width: auto;
+    margin-inline: calc(var(--sp-5) * -1);
     aspect-ratio: 16 / 9;
   }
   .why-media img, .why-media .img-placeholder { border-radius: 0; }

@@ -113,7 +113,7 @@ require __DIR__ . '/includes/header.php';
 </section>
 
 <!-- ================================================== Why choose us ====== -->
-<section class="section section-alt">
+<section class="section section-alt why-section">
   <div class="container">
     <div class="why-grid">
       <div class="why-media">

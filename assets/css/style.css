@@ -1008,19 +1008,32 @@ a.card:hover .card-link .icon { transform: translateX(3px); }
 .service-strip-foot { display: flex; justify-content: center; margin-top: var(--sp-4); }
 
 /* --- Why choose us --------------------------------------------------------- */
+.why-section { position: relative; overflow: hidden; }
+
 .why-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--sp-7);
   align-items: center;
-  position: relative;
+  min-height: 400px;
 }
-/* Photo runs off the left edge of the viewport, as in the reference. */
+/* .why-media is positioned against the section, so it is out of the grid
+   flow. Without this the copy falls into column 1 and sits behind the photo. */
+.why-grid > *:not(.why-media) { grid-column: 2; }
+
+/*
+ * The photo runs off the left edge of the viewport, as in the reference.
+ * Positioned against the SECTION rather than pulled left with a percentage
+ * margin: a percentage margin resolves against the grid area, not the
+ * container, which dragged the picture 300px off-screen and cut the left
+ * half of the scene out of frame.
+ */
 .why-media {
-  position: relative;
-  margin-left: calc(50% - 50vw);
-  width: calc(100% + (50vw - 50%));
-  height: 340px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 47vw;
 }
 .why-media img,
 .why-media .img-placeholder {
@@ -1028,6 +1041,8 @@ a.card:hover .card-link .icon { transform: translateX(3px); }
   height: 100%;
   padding-bottom: 0 !important;
   object-fit: cover;
+  /* Bias slightly above centre so the crew's heads stay in frame. */
+  object-position: center 42%;
   border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
 }
 .why-list {
