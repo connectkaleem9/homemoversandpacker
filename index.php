@@ -4,7 +4,7 @@
  *
  * Section order:
  *   Hero → Services → Why us → Process → Service areas → Reviews
- *   → CTA band → Blog + quote form
+ *   → CTA band → Quote form
  *
  * No FAQ block here: it is not in the approved design. FAQs and their
  * FAQPage schema live on all 12 service pages and all 3 location pages,
@@ -21,7 +21,6 @@ require_once __DIR__ . '/includes/bootstrap.php';
 
 $services     = all_services();
 $locations    = all_locations();
-$posts        = all_posts();
 
 /* The seven services shown in the strip; the eighth tile links to them all. */
 $featured = ['home-movers', 'furniture-movers', 'office-commercial-movers', 'studio-apartment-movers',
@@ -348,44 +347,16 @@ $pages   = (int) ceil(count($reviews) / 3);
   </div>
 </section>
 
-<!-- ==================================================== Blog + quote ===== -->
-<section class="section">
-  <div class="container">
-    <div class="heading-rule">
-      <h2>Latest From Our Blog</h2>
-    </div>
-
-    <div class="blog-grid">
-      <div class="blog-cards">
-        <?php
-        $shown = 0;
-        foreach ($posts as $postSlug => $post):
-            if ($shown >= 3) { break; }
-            $shown++;
-            $published = new DateTimeImmutable($post['published']);
-        ?>
-          <a class="blog-card" href="<?= e(post_url($postSlug)) ?>">
-            <span class="blog-card-media">
-              <?= img('blog/' . $postSlug . '.webp', '',
-                      ['width' => 800, 'height' => 500, 'icon' => 'quote']) ?>
-            </span>
-            <span class="blog-card-body">
-              <span class="post-meta">
-                <span><time datetime="<?= e($published->format('Y-m-d')) ?>"><?= e($published->format('j M Y')) ?></time></span>
-                <span><?= e($post['category']) ?></span>
-              </span>
-              <h3><?= e($post['title']) ?></h3>
-              <span class="card-link">Read More <?= icon('arrow', 'icon icon-sm') ?></span>
-            </span>
-          </a>
-        <?php endforeach; ?>
-      </div>
-
-      <?php
-      $miniSource = 'homepage';
-      require __DIR__ . '/includes/quote-form-mini.php';
-      ?>
-    </div>
+<!-- ==================================================== Quote form ====== -->
+<section class="section section-alt">
+  <div class="container container-narrow">
+    <?php
+    /* The blog strip that sat beside this form was removed at the client's
+       request. The form stays: it is the page's primary conversion and the
+       only one on the homepage, so it now gets a section of its own. */
+    $miniSource = 'homepage';
+    require __DIR__ . '/includes/quote-form-mini.php';
+    ?>
   </div>
 </section>
 

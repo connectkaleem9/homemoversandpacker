@@ -6,8 +6,13 @@ automatically — no code changes needed.
 Until a file exists, the page renders a styled placeholder in its place, so the
 layout is correct right now and fills in as you add photos.
 
-Prefer **WebP** (or AVIF). If you only have JPG/PNG, convert them first —
-[squoosh.app](https://squoosh.app) does it in the browser, free.
+**Any of `.webp`, `.jpg` or `.png` works** — the site tries each in turn, so
+drop in whatever you have. Only the filename has to match.
+
+Keep every photo under roughly 200 KB. The hero image is the largest thing on
+the homepage and it sets your Largest Contentful Paint score directly, which
+Google measures. [squoosh.app](https://squoosh.app) shrinks images in the
+browser, free.
 
 ---
 
