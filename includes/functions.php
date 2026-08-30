@@ -429,6 +429,96 @@ function cta_id(string $type): string
     return ' id="' . e($type) . '-cta"';
 }
 
+/**
+ * Duotone service icons — solid navy shapes with gold accents, matching the
+ * reference design. Separate from icon(): those are line icons used inline in
+ * body copy, these are filled illustrations sized for the service cards.
+ */
+function service_icon(string $name, string $class = 'svc-icon'): string
+{
+    $N = '#0d2440';   // navy
+    $G = '#f5b21d';   // gold
+    $W = '#ffffff';
+
+    $art = [
+        'home' => '<path d="M24 6 6 20v22h36V20z" fill="' . $N . '"/>'
+                . '<path d="M24 6 4 21h40z" fill="' . $G . '"/>'
+                . '<rect x="18" y="26" width="12" height="16" rx="1.5" fill="' . $G . '"/>'
+                . '<rect x="10" y="24" width="6" height="6" fill="' . $W . '"/>'
+                . '<rect x="32" y="24" width="6" height="6" fill="' . $W . '"/>',
+
+        'sofa' => '<path d="M8 20a4 4 0 0 1 4-4h24a4 4 0 0 1 4 4v6H8z" fill="' . $N . '"/>'
+                . '<path d="M4 28a4 4 0 0 1 8 0v10H4z" fill="' . $N . '"/>'
+                . '<path d="M36 28a4 4 0 0 1 8 0v10h-8z" fill="' . $N . '"/>'
+                . '<rect x="10" y="24" width="28" height="14" rx="3" fill="' . $G . '"/>'
+                . '<rect x="9" y="38" width="4" height="5" fill="' . $N . '"/>'
+                . '<rect x="35" y="38" width="4" height="5" fill="' . $N . '"/>',
+
+        'building' => '<rect x="8" y="8" width="20" height="34" fill="' . $N . '"/>'
+                . '<rect x="28" y="18" width="13" height="24" fill="' . $G . '"/>'
+                . '<g fill="' . $W . '"><rect x="12" y="13" width="5" height="5"/><rect x="20" y="13" width="5" height="5"/>'
+                . '<rect x="12" y="22" width="5" height="5"/><rect x="20" y="22" width="5" height="5"/>'
+                . '<rect x="12" y="31" width="5" height="5"/><rect x="20" y="31" width="5" height="5"/>'
+                . '<rect x="32" y="23" width="5" height="5"/><rect x="32" y="32" width="5" height="5"/></g>',
+
+        'apartment' => '<rect x="10" y="6" width="17" height="36" fill="' . $N . '"/>'
+                . '<rect x="27" y="16" width="11" height="26" fill="' . $G . '"/>'
+                . '<g fill="' . $W . '"><rect x="14" y="11" width="4" height="4"/><rect x="20" y="11" width="4" height="4"/>'
+                . '<rect x="14" y="19" width="4" height="4"/><rect x="20" y="19" width="4" height="4"/>'
+                . '<rect x="14" y="27" width="4" height="4"/><rect x="20" y="27" width="4" height="4"/>'
+                . '<rect x="30" y="21" width="5" height="4"/><rect x="30" y="29" width="5" height="4"/></g>',
+
+        'villa' => '<path d="M24 8 8 19v23h32V19z" fill="' . $N . '"/>'
+                . '<path d="M24 8 5 20h38z" fill="' . $G . '"/>'
+                . '<rect x="19" y="28" width="10" height="14" fill="' . $G . '"/>'
+                . '<rect x="12" y="25" width="5" height="5" fill="' . $W . '"/>'
+                . '<rect x="31" y="25" width="5" height="5" fill="' . $W . '"/>',
+
+        'storage' => '<path d="M6 20 24 8l18 12v22H6z" fill="' . $N . '"/>'
+                . '<rect x="14" y="26" width="20" height="16" fill="' . $G . '"/>'
+                . '<g fill="' . $N . '" opacity=".35"><rect x="14" y="30" width="20" height="2"/>'
+                . '<rect x="14" y="35" width="20" height="2"/></g>'
+                . '<rect x="14" y="22" width="20" height="3" fill="' . $W . '"/>',
+
+        'box' => '<path d="M24 12 6 19v18l18 7 18-7V19z" fill="' . $N . '"/>'
+                . '<path d="M6 19 24 26l18-7-18-7z" fill="' . $G . '"/>'
+                . '<path d="M24 26v18l18-7V19z" fill="' . $N . '" opacity=".72"/>'
+                . '<path d="M15 8h6v8l-3-2-3 2z" fill="' . $G . '"/>',
+
+        'shop' => '<path d="M8 12h32l3 9H5z" fill="' . $G . '"/>'
+                . '<rect x="9" y="21" width="30" height="21" fill="' . $N . '"/>'
+                . '<rect x="19" y="28" width="10" height="14" fill="' . $G . '"/>'
+                . '<rect x="12" y="25" width="5" height="5" fill="' . $W . '"/>'
+                . '<rect x="31" y="25" width="5" height="5" fill="' . $W . '"/>',
+
+        'tools' => '<path d="M30 8a9 9 0 0 0 11 11l-3 4-12-12z" fill="' . $G . '"/>'
+                . '<path d="m26 15 7 7L15 40a5 5 0 0 1-7-7z" fill="' . $N . '"/>'
+                . '<circle cx="12" cy="36" r="2.4" fill="' . $W . '"/>',
+
+        'truck' => '<rect x="4" y="14" width="24" height="18" rx="2" fill="' . $N . '"/>'
+                . '<path d="M28 19h8l6 7v6H28z" fill="' . $G . '"/>'
+                . '<rect x="4" y="27" width="38" height="4" fill="' . $G . '"/>'
+                . '<circle cx="14" cy="36" r="5" fill="' . $N . '"/><circle cx="14" cy="36" r="2" fill="' . $W . '"/>'
+                . '<circle cx="34" cy="36" r="5" fill="' . $N . '"/><circle cx="34" cy="36" r="2" fill="' . $W . '"/>',
+
+        'route' => '<circle cx="12" cy="12" r="6" fill="' . $G . '"/><circle cx="12" cy="12" r="2.4" fill="' . $W . '"/>'
+                . '<circle cx="36" cy="36" r="6" fill="' . $N . '"/><circle cx="36" cy="36" r="2.4" fill="' . $W . '"/>'
+                . '<path d="M17 14h11a7 7 0 0 1 0 14h-8a7 7 0 0 0 0 14h11" stroke="' . $N . '" stroke-width="3.4" fill="none" stroke-linecap="round"/>',
+
+        'car' => '<path d="M8 24 12 14h24l4 10z" fill="' . $G . '"/>'
+                . '<rect x="5" y="24" width="38" height="11" rx="3" fill="' . $N . '"/>'
+                . '<circle cx="14" cy="37" r="4.6" fill="' . $N . '"/><circle cx="14" cy="37" r="1.9" fill="' . $W . '"/>'
+                . '<circle cx="34" cy="37" r="4.6" fill="' . $N . '"/><circle cx="34" cy="37" r="1.9" fill="' . $W . '"/>'
+                . '<rect x="9" y="27" width="6" height="3" rx="1.5" fill="' . $W . '"/>'
+                . '<rect x="33" y="27" width="6" height="3" rx="1.5" fill="' . $W . '"/>',
+    ];
+
+    $body = $art[$name] ?? $art['box'];
+
+    return '<svg class="' . e($class) . '" viewBox="0 0 48 48" aria-hidden="true" focusable="false">'
+        . $body . '</svg>';
+}
+
 /** Phone call-to-action button. */
 function cta_phone(string $style = 'btn btn-phone', string $label = ''): string
 {

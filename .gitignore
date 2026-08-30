@@ -30,3 +30,7 @@ Desktop.ini
 *.tar.gz
 *.sql.gz
 *-backup.sql
+
+# Design references — not part of the website
+/design/
+assets/images/_ref.png

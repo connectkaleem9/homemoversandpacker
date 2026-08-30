@@ -21,8 +21,6 @@
   .footer-top .footer-col:last-child { grid-column: 2 / -1; }
 
   .service-strip { grid-template-columns: repeat(4, 1fr); }
-  .service-tile:nth-child(4n) { border-right: 0; }
-  .service-tile:nth-child(-n+4) { border-bottom: 1px solid var(--line); }
   .blog-grid { grid-template-columns: 1fr; }
   .blog-cards { grid-template-columns: repeat(3, 1fr); }
 }
@@ -74,12 +72,16 @@
     background: var(--surface);
     border-top: 1px solid var(--line);
     overflow-y: auto;
-    transform: translateX(100%);
+    /* Fades rather than sliding in from translateX(100%). A fixed panel
+       parked outside the viewport widens the scrollable area on a phone,
+       and being fixed it is not clipped by overflow on html or body. */
+    opacity: 0;
     visibility: hidden;
-    transition: transform .22s ease, visibility .22s;
+    transform: translateY(-10px);
+    transition: opacity .18s ease, transform .18s ease, visibility .18s;
     z-index: 150;
   }
-  .primary-nav.is-open { transform: translateX(0); visibility: visible; }
+  .primary-nav.is-open { opacity: 1; visibility: visible; transform: translateY(0); }
 
   .nav-list { flex-direction: column; align-items: stretch; gap: 0; }
   .nav-item { border-bottom: 1px solid var(--line); }
@@ -167,8 +169,6 @@
   .topbar-inner { justify-content: center; }
 
   .service-strip { grid-template-columns: repeat(2, 1fr); }
-  .service-tile { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .service-tile:nth-child(2n) { border-right: 0; }
   .city-cards { grid-template-columns: 1fr; }
   .review-cards { grid-template-columns: 1fr; }
   .blog-cards { grid-template-columns: 1fr; }
@@ -209,15 +209,13 @@
 
   .error-code { font-size: 3.5rem; }
 
-  .service-strip { grid-template-columns: 1fr; }
-  .service-tile { border-right: 0; }
+  .service-strip { grid-template-columns: 1fr; gap: var(--sp-2); }
   .service-tile { flex-direction: row; text-align: left; align-items: center; gap: var(--sp-4); }
-  .service-tile-icon { width: 46px; height: 46px; }
-  .service-tile-icon .icon { width: 22px; height: 22px; }
+  .service-tile-icon { width: 40px; height: 40px; margin-bottom: 0; }
+  .svc-icon { width: 38px; height: 38px; }
   .service-tile h3 { margin-top: 0; }
   .process-row { grid-template-columns: 1fr; gap: var(--sp-4); }
-  .hero-trust { gap: var(--sp-4); }
-  .hero-trust-item span { max-width: none; }
+  .hero-trust { grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
   .help-box { flex-direction: column; text-align: center; }
   .heading-rule { gap: var(--sp-3); }
   .heading-rule h2 { font-size: var(--fs-xl); }

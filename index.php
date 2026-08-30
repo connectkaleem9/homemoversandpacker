@@ -92,14 +92,14 @@ require __DIR__ . '/includes/header.php';
     <div class="service-strip">
       <?php foreach ($featured as $featSlug): $feat = $services[$featSlug]; ?>
         <a class="service-tile" href="<?= e(service_url($featSlug)) ?>">
-          <span class="service-tile-icon"><?= icon($feat['icon'], 'icon') ?></span>
+          <span class="service-tile-icon"><?= service_icon($feat['icon']) ?></span>
           <h3><?= e($feat['name']) ?></h3>
           <p><?= e($feat['tile']) ?></p>
         </a>
       <?php endforeach; ?>
 
       <a class="service-tile" href="/services/">
-        <span class="service-tile-icon"><?= icon('truck', 'icon') ?></span>
+        <span class="service-tile-icon"><?= service_icon('truck') ?></span>
         <h3>And More Services</h3>
         <p>Loading, assembly, local moving and car transport.</p>
       </a>
