@@ -167,5 +167,9 @@ define('RATE_LIMIT_WINDOW', 900);   // per 15 minutes, per IP
 
 /* ------------------------------------------------------------------
  | Asset cache-busting version
+ |
+ | Assets are served with `Cache-Control: immutable, max-age=1 year` and a
+ | ?v= query string. BUMP THIS whenever a file in /assets changes, or nobody
+ | who has already visited — and no CDN edge — will ever fetch the new one.
  | ------------------------------------------------------------------ */
-define('ASSET_VERSION', '1.0.0');
+define('ASSET_VERSION', '1.1.0');
