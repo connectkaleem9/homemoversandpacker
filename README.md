@@ -421,7 +421,7 @@ Currently set:
 - **Address:** Sharjah, UAE
 - **Phone:** 055 658 1781 → `tel:+971556581781`
 - **WhatsApp:** <https://wa.me/971556581781>
-- **Email:** info@homemoverandpaker.com — *confirm this mailbox exists*
+- **Email:** homemoversandpackers09@gmail.com
 
 ### 2. Analytics and Search Console — done
 
@@ -549,8 +549,9 @@ Still to do:
 - Uncomment the HSTS header in `.htaccess` once you are confident nothing
   needs to be served over plain HTTP. It is commented out deliberately:
   `max-age=31536000; preload` is very hard to undo if something is wrong.
-- Confirm the `info@homemoverandpaker.com` mailbox exists and that lead
-  notifications are actually arriving in it
+- Confirm lead notifications are actually arriving in
+  `homemoversandpackers09@gmail.com`, and mark the first one **Not spam** if it
+  lands in the spam folder — see [Lead notifications](#lead-notifications)
 - Finish the Google property setup — see
   [Analytics and Search Console](#2-analytics-and-search-console--done)
 

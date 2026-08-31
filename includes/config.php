@@ -95,7 +95,16 @@ define('PHONE_E164', '+971556581781');
 define('WHATSAPP_NUMBER', '971556581781');
 define('WHATSAPP_BASE', 'https://wa.me/971556581781');
 
-define('EMAIL_ADDRESS', 'info@homemoverandpaker.com');
+/*
+ * The public contact address, and where lead notifications go by default.
+ *
+ * A Gmail address rather than one on the domain, at the client's request. Note
+ * that the From header on outgoing notifications stays on the domain
+ * (no-reply@homemoverandpaker.com, set in lead-handler.php) — sending "from" a
+ * gmail.com address the server has no authority over fails DMARC outright and
+ * is how a notification ends up in spam or is refused entirely.
+ */
+define('EMAIL_ADDRESS', 'homemoversandpackers09@gmail.com');
 
 /** Areas served — used in schema, footer and location listings. */
 define('AREAS_SERVED', ['Dubai', 'Sharjah', 'Ajman']);
