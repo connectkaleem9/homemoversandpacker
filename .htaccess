@@ -148,7 +148,11 @@ ErrorDocument 403 /404.php
   Require all denied
 </Files>
 
-RedirectMatch 404 ^/(storage|database|includes)(/|$)
+# A .git directory in a document root lets anyone reconstruct the whole source
+# tree. The FilesMatch "^\." rule above matches file NAMES, so it would not
+# cover /.git/config — this does. Deployment keeps the repository outside the
+# web root anyway; this is here so an in-place clone is not a disaster.
+RedirectMatch 404 ^/(\.git|\.github|storage|database|includes)(/|$)
 
 # ------------------------------------------------------------------------
 # 11. Compression
