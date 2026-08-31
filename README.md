@@ -236,6 +236,74 @@ was filled in.
 
 ---
 
+## Deployment
+
+The site is live at **<https://homemoverandpaker.com>** on Hostinger shared
+hosting (LiteSpeed, PHP 8.3).
+
+### Layout on the server
+
+```
+~/homemovers/                                 git clone, OUTSIDE the web root
+~/domains/homemoverandpaker.com/public_html/  document root
+~/deploy.sh                                   pull + copy + permissions
+```
+
+The repository is deliberately **not** cloned into the document root: a
+readable `.git` directory lets anyone reconstruct the source. Only the files
+git tracks are copied across, so nothing untracked in the working copy can
+reach the public directory either.
+
+### Updating the live site
+
+Push to `main`, then over SSH:
+
+```sh
+sh ~/deploy.sh
+```
+
+It fetches, resets to `origin/main`, copies the tracked files into the
+document root, fixes permissions and runs a syntax and config check.
+`includes/env.php` is not in the repository, so it survives every deploy.
+
+### Server settings
+
+`includes/env.php` on the server holds `APP_ENV=production`. That one value
+switches off displayed errors, turns on logging to
+`storage/logs/php-error.log`, and hides the placeholder review cards.
+
+The database is off (`DB_ENABLED=false`). Leads are written to
+`storage/leads.jsonl` and emailed to `LEAD_NOTIFY_EMAIL`. To switch MySQL on:
+create the database in hPanel, import `database/schema.sql`, then fill in
+`DB_NAME`, `DB_USER`, `DB_PASS` and set `DB_ENABLED` to `true`. Nothing else
+changes — the file fallback stays as the safety net.
+
+### What is protected
+
+`.htaccess` denies `/includes/`, `/storage/`, `/database/` and `/.git/`, the
+project brief, `env.php`, and the `.sql .log .jsonl .md .sh .bat` extensions.
+`storage/` and `database/` carry their own `Require all denied` as well, so
+one lost file is not enough to expose enquiry records. `env.php` is `0600`.
+
+### Two things that only show up in production
+
+Both were found by testing against the live server, and neither could happen
+locally, because `router.php` has no rewrite rules:
+
+- **`POST` to a form endpoint was answered with a 301.** `THE_REQUEST`
+  matches the whole request line regardless of method, so the rule that
+  strips `.php` from public URLs caught the form POSTs too — and a 301 on a
+  POST makes the browser re-issue it as a GET with no body. Both redirect
+  rules are now `REQUEST_METHOD =GET` only.
+- **Lead notification emails were failing silently.** A blank entry in
+  `env.php` was being returned as a deliberate empty string, so `mail()` got
+  an empty recipient. Blank now means "unset, use the default".
+
+If you change `.htaccess` or anything about forms, test a real submission
+against the live site rather than only locally.
+
+---
+
 ## Before going live
 
 ### 1. Business details — `includes/config.php`
@@ -311,11 +379,24 @@ Do not use stock imagery that misrepresents the service.
 
 ### 6. Server
 
-- Enable HTTPS, then uncomment the HSTS header in `.htaccess`
-- Confirm `mod_rewrite`, `mod_headers`, `mod_deflate` and `mod_expires` are enabled
-- Ensure `storage/` is writable by PHP but not web-accessible
-- Set `APP_ENV=production` so errors are logged rather than displayed
-- Submit `https://homemoverandpaker.com/sitemap.xml` to Search Console
+Done during deployment — see [Deployment](#deployment):
+
+- HTTPS is live (Let's Encrypt, covers the apex and `www`), HTTP and `www`
+  both 301 to `https://homemoverandpaker.com`
+- `mod_rewrite`, `mod_headers`, `mod_deflate` and `mod_expires` all confirmed
+  working on the live server
+- `storage/` is writable by PHP and returns 404 over HTTP
+- `APP_ENV=production` is set in `includes/env.php`
+
+Still to do:
+
+- Uncomment the HSTS header in `.htaccess` once you are confident nothing
+  needs to be served over plain HTTP. It is commented out deliberately:
+  `max-age=31536000; preload` is very hard to undo if something is wrong.
+- Submit `https://homemoverandpaker.com/sitemap.xml` to Search Console, and
+  set the Arabic pages as an alternate version there
+- Confirm the `info@homemoverandpaker.com` mailbox exists and that lead
+  notifications are actually arriving in it
 
 ---
 
