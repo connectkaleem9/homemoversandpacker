@@ -132,9 +132,21 @@ ErrorDocument 403 /404.php
   Require all denied
 </FilesMatch>
 
-<FilesMatch "\.(sql|log|jsonl|ini|md|yml|yaml|lock|bak|dist|sh)$">
+<FilesMatch "\.(sql|log|jsonl|ini|md|yml|yaml|lock|bak|dist|sh|bat)$">
   Require all denied
 </FilesMatch>
+
+# The project brief is an internal document. robots.txt is the only .txt that
+# is meant to be served, so this is named explicitly rather than denying .txt.
+<Files "briefprompt.txt">
+  Require all denied
+</Files>
+
+# Server-specific settings and credentials. Already covered by the
+# /includes/ rule below; named here too because of what it contains.
+<Files "env.php">
+  Require all denied
+</Files>
 
 RedirectMatch 404 ^/(storage|database|includes)(/|$)
 
