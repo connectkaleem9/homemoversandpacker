@@ -340,6 +340,67 @@ the uploads directory if you back anything up.
 
 ---
 
+## Lead notifications
+
+Every quote, contact and review submission is stored in `storage/leads.jsonl`
+(or `storage/data/reviews.json`) **and** emailed to `LEAD_NOTIFY_EMAIL`, which
+defaults to `EMAIL_ADDRESS` in `config.php` —
+currently `homemoversandpackers09@gmail.com`.
+
+The storage always happens. The email is the convenience, not the record: if a
+notification never arrives, the lead is still on disk and readable over SSH.
+
+### The From address stays on the domain
+
+Notifications go out as `no-reply@homemoverandpaker.com`, not as the Gmail
+address. Sending "from" a `gmail.com` address that this server has no authority
+over fails DMARC outright, and is a reliable way to have every notification
+refused or filed as spam.
+
+### The domain publishes no SPF record
+
+Checked from the server itself:
+
+```
+SPF: NONE     MX: NONE     DMARC: NONE
+```
+
+Two consequences, and the first one matters:
+
+**Deliverability.** Mail leaves the Hostinger server claiming to be
+`no-reply@homemoverandpaker.com`, and Gmail has no published record saying that
+server is allowed to. `mail()` returns true either way — it only means the local
+mail system accepted the message, never that Gmail did — so a notification can
+be silently filtered with nothing in the error log. Adding SPF is the fix, and
+it is a DNS change in hPanel, not a code change:
+
+```
+Type:  TXT
+Name:  @
+Value: v=spf1 include:_spf.mail.hostinger.com ~all
+```
+
+(Confirm the include with Hostinger — it is on their "Email → SPF" help page for
+the server the site is actually on.) A DMARC record at `_dmarc` with
+`v=DMARC1; p=none; rua=mailto:homemoversandpackers09@gmail.com` is worth adding
+afterwards, as it reports what is passing and failing.
+
+**No mailbox on the domain.** With no MX record, `homemoverandpaker.com` cannot
+*receive* mail at all, so an address on the domain would never have worked. That
+is presumably why the contact address is a Gmail one.
+
+### Check it is arriving
+
+Submit the quote form on the live site and watch the inbox. If it lands in spam,
+mark it **Not spam** once — that teaches the filter for this
+sender-and-recipient pair, and matters more than any single header.
+
+If nothing arrives at all, check `storage/logs/php-error.log` on the server: a
+refused send is logged there with the recipient, and an empty
+`LEAD_NOTIFY_EMAIL` is logged separately.
+
+---
+
 ## Deployment
 
 The site is live at **<https://homemoverandpaker.com>** on Hostinger shared

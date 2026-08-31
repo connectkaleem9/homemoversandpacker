@@ -204,6 +204,17 @@ function lead_notify(string $subject, array $lead): void
         error_log('[lead] mail() refused the notification to ' . LEAD_NOTIFY_EMAIL
                 . ' for: ' . $subject . ' (the lead itself was stored)');
     }
+
+    /*
+     * A true return only means the local mail system accepted the message. It
+     * says nothing about whether the recipient's provider did — and this domain
+     * publishes no SPF record, so mail claiming to be from it is unauthenticated
+     * and Gmail may file it as spam with nothing logged anywhere.
+     *
+     * That is why every lead is written to storage BEFORE this function is
+     * called, and why a missing notification is an inconvenience rather than a
+     * lost enquiry. See "Lead notifications" in README.md for the SPF record.
+     */
 }
 
 /**
