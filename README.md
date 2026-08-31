@@ -84,6 +84,18 @@ DB_ENABLED=true DB_HOST=127.0.0.1 DB_NAME=homemoverandpaker DB_USER=root DB_PASS
 ├── .htaccess                  HTTPS, canonical host, clean URLs, security, caching
 ├── robots.txt
 │
+├── admin/                     Dashboard — projects, reviews, account
+│   ├── index.php              Counts and what needs attention
+│   ├── login.php              Sign in, and first-run account setup
+│   ├── projects.php           Add / edit / delete, with photo upload
+│   ├── reviews.php            Approve / reject / unpublish / delete
+│   └── account.php            Change password
+│
+├── projects/                  Public project pages
+│   ├── index.php              The grid
+│   └── project.php            One project (reached by rewrite)
+├── reviews.php                Approved reviews + the submission form
+│
 ├── services/                  12 service pages, each a 4-line file
 │   ├── index.php
 │   └── <slug>.php             sets $serviceSlug, requires the shared template
@@ -106,6 +118,12 @@ DB_ENABLED=true DB_HOST=127.0.0.1 DB_NAME=homemoverandpaker DB_USER=root DB_PASS
 │   ├── database.php           PDO, prepared statements only
 │   ├── lead-handler.php       Validation, spam defence, storage, notification
 │   ├── i18n.php               Language detection, t(), lang_url(), format_date()
+│   ├── store.php              JSON record store — atomic, locked writes
+│   ├── content.php            Projects and reviews domain logic
+│   ├── admin.php              Auth, throttling, sessions, flash
+│   ├── upload.php             Photo validation and re-encoding
+│   ├── admin-layout.php / admin-foot.php
+│   ├── review-form.php        Public "leave a review" form
 │   ├── header.php / navigation.php / footer.php
 │   ├── quote-form.php         Primary conversion form
 │   ├── quote-form-mini.php    Compact 4-field version
@@ -236,6 +254,92 @@ was filled in.
 
 ---
 
+## Admin dashboard
+
+At **`/admin/`**. It manages the two things that change after launch: the
+projects on `/projects/` and the customer reviews on `/reviews/`.
+
+### First run
+
+There is no default password in this repository. The first visit to `/admin/`
+shows a setup screen that creates the single account — whoever sets the site up
+chooses the password, and it never passes through anyone else's hands.
+
+If the password is ever lost, delete `storage/admin.json` over SSH and the next
+visit sets the account up again.
+
+### What it does
+
+| Screen | What it is for |
+|---|---|
+| Dashboard | Counts, and anything waiting for attention |
+| Projects | Add, edit and delete projects, with up to six photos each |
+| Reviews | Approve, reject, unpublish or delete customer reviews |
+| Account | Change the password |
+
+### Reviews are moderated on purpose
+
+Everything submitted through the public form arrives as `pending` and is
+invisible on the site until it is approved. An unmoderated review form is a
+spam target, and `Review` structured data built from unchecked submissions is
+what Google's guidelines mean by misleading. Approving is one click.
+
+`Review` and `AggregateRating` schema is emitted only when there are approved
+reviews behind it. With none, the page claims nothing — which is why the site
+shipped with no rating markup at all until this existed.
+
+Approved reviews also feed the homepage reviews section, which had been waiting
+for real data since it was built.
+
+### Projects are bilingual, with English as the fallback
+
+The project form takes Arabic title, summary and description as **optional**
+fields: a business that has just finished a job should be able to publish it in
+a minute. A blank Arabic field shows the English on the Arabic page rather than
+an empty card.
+
+The slug is set once, when the project is created. It is part of a published
+URL, and changing it silently would break every link to that project.
+
+### Security notes
+
+- bcrypt hash in `storage/admin.json`, denied over HTTP three ways and `0600`
+- Five wrong passwords locks that address out for fifteen minutes
+- A wrong username and a wrong password take the same time and give the same
+  message, so neither can be used to enumerate the other
+- The session id is regenerated on login and on a password change, and expires
+  after an hour of inactivity
+- Every write is a POST with a CSRF token, followed by a redirect
+
+**Photo uploads** are the only place a file arrives from outside and is written
+to disk, so:
+
+- the type is read from the file, never from its name or the browser's claim
+- the image is **re-encoded** through GD rather than moved — a polyglot file
+  that is both a valid JPEG and a valid PHP script does not survive being
+  decoded to a pixel buffer and written out again, and nor does any EXIF payload
+- the stored filename is generated here; nothing from the upload reaches the
+  filesystem
+- `uploads/.htaccess` disables execution several ways, because which one takes
+  effect depends on how the host runs PHP
+
+### Where the records live
+
+`storage/data/projects.json` and `storage/data/reviews.json`, through
+`includes/store.php` — exclusive-locked writes that land through a temporary
+file, so a request that dies mid-write cannot leave a half-written file.
+
+A file rather than MySQL because the database has to be created in hPanel
+before it can be used, and the feature should work the moment it deploys. At
+this scale — tens of projects, hundreds of reviews — a JSON file read once per
+request is not the bottleneck. `includes/database.php` is still there for the
+day the volume justifies moving.
+
+**Neither file is in version control.** They are live data. Back them up with
+the uploads directory if you back anything up.
+
+---
+
 ## Deployment
 
 The site is live at **<https://homemoverandpaker.com>** on Hostinger shared
@@ -344,13 +448,18 @@ button click as a primary conversion.
 
 ### 3. Customer reviews
 
-`includes/data/testimonials.php` ships **empty**, and the reviews section on the
-homepage does not render at all while it is. Add real reviews — copied from your
-Google Business Profile or written by actual customers — and the section appears.
+Customers leave reviews themselves at `/reviews/`, and you approve them in the
+dashboard — see [Admin dashboard](#admin-dashboard). Approved reviews appear on
+that page and on the homepage.
 
-Do not invent them. Fabricated reviews breach Google's structured data guidelines,
-are treated as misleading advertising under UAE consumer protection law, and are the
-easiest thing in the world for a competitor to report.
+`includes/data/testimonials.php` is still read as a fallback for anything added
+by hand before the dashboard existed. It ships empty.
+
+Do not invent reviews. Fabricated ones breach Google's structured data
+guidelines, are treated as misleading advertising under UAE consumer protection
+law, and are the easiest thing in the world for a competitor to report. The
+moderation queue exists so the reviews on this site are worth reading, not so
+the awkward ones can be removed.
 
 ### 4. Legal pages
 
