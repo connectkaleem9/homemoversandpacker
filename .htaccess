@@ -30,17 +30,29 @@ RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 # ------------------------------------------------------------------------
 # 3. Never expose .php in public URLs
 #    /services/villa-movers.php  ->  301  ->  /services/villa-movers/
+#
+#    GET only, and never /forms/. The form endpoints are POST targets: a 301
+#    on a POST makes the browser re-issue it as a GET with no body, so every
+#    quote and contact submission would arrive empty. THE_REQUEST matches the
+#    whole request line regardless of method, so the method has to be excluded
+#    explicitly.
 # ------------------------------------------------------------------------
+RewriteCond %{REQUEST_METHOD} =GET
 RewriteCond %{THE_REQUEST} \s/+(.*?)index\.php[\s?] [NC]
 RewriteRule ^ /%1 [R=301,L,NE]
 
+RewriteCond %{REQUEST_METHOD} =GET
+RewriteCond %{REQUEST_URI} !^/forms/
 RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[\s?] [NC]
 RewriteRule ^ /%1/ [R=301,L,NE]
 
 # ------------------------------------------------------------------------
 # 4. Enforce a single trailing-slash form for directory-style URLs
 #    /services/villa-movers  ->  301  ->  /services/villa-movers/
+#
+#    GET only, for the same reason as rule 3.
 # ------------------------------------------------------------------------
+RewriteCond %{REQUEST_METHOD} =GET
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !\.[a-zA-Z0-9]{2,5}$
