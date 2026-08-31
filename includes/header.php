@@ -63,12 +63,20 @@ $trackingIds = $analyticsEnabled
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     <?php foreach ($trackingIds as $trackingId): ?>
-    gtag('config', '<?= e($trackingId) ?>');
+    /*
+     * content_language goes in the config call, not a gtag('set') after it.
+     * config sends the page_view immediately, so anything set afterwards
+     * misses the one event every session is guaranteed to have — which is
+     * exactly the event you want the language on. Verified on the wire.
+     *
+     * Which language the visitor is reading is the whole point of running a
+     * bilingual site: without it there is no way to tell whether the Arabic
+     * half is earning its keep.
+     */
+    gtag('config', '<?= e($trackingId) ?>', {
+      'content_language': '<?= e(lang()) ?>'
+    });
     <?php endforeach; ?>
-    /* Which language the visitor is reading, as a dimension on every event —
-       the whole point of running a bilingual site is being able to see
-       whether the Arabic side is working. */
-    gtag('set', {'content_language': '<?= e(lang()) ?>'});
   </script>
 <?php endif; ?>
 </head>
