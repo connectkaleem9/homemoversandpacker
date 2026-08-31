@@ -29,15 +29,15 @@ seo_set([
     'description' => $location['description'],
     'path'        => location_url($slug),
     'breadcrumbs' => [
-        ['label' => 'Home', 'url' => '/'],
-        ['label' => 'Locations', 'url' => '/locations/'],
-        ['label' => 'Movers in ' . $city, 'url' => location_url($slug)],
+        ['label' => t('crumb.home'), 'url' => '/'],
+        ['label' => t('crumb.locations'), 'url' => '/locations/'],
+        ['label' => t('nav.movers_in', ['city' => $city]), 'url' => location_url($slug)],
     ],
     'schema'      => [schema_faq($location['faqs'])],
     'quote_anchor'=> '#quote',
 ]);
 
-$waMessage = 'Hello, I need a moving quote in ' . $city . '.';
+$waMessage = t('wa.city', ['city' => $city]);
 
 require dirname(__DIR__) . '/header.php';
 
@@ -58,22 +58,22 @@ $heroImg = image_exists('locations/' . $slug . '-hero.jpg')
 <section class="hero-home hero-compact">
   <div class="container hero-home-inner">
     <div class="hero-home-copy">
-      <span class="eyebrow">Movers &amp; Packers · <?= e($city) ?>, UAE</span>
+      <span class="eyebrow"><?= e(t('tpl.location.eyebrow', ['city' => $city])) ?></span>
       <h1><?= e($location['h1']) ?></h1>
       <p class="hero-home-sub"><?= e($location['hero_sub']) ?></p>
 
       <div class="hero-trust">
-        <div class="hero-trust-item"><?= icon('pin', 'icon') ?><span>Based in Sharjah</span></div>
-        <div class="hero-trust-item"><?= icon('route', 'icon') ?><span>Cross-emirate moves</span></div>
-        <div class="hero-trust-item"><?= icon('quote', 'icon') ?><span>Free quotation</span></div>
+        <div class="hero-trust-item"><?= icon('pin', 'icon') ?><span><?= e(t('misc.based_sharjah')) ?></span></div>
+        <div class="hero-trust-item"><?= icon('route', 'icon') ?><span><?= e(t('misc.cross_emirate')) ?></span></div>
+        <div class="hero-trust-item"><?= icon('quote', 'icon') ?><span><?= e(t('misc.free_quotation')) ?></span></div>
       </div>
 
       <div class="btn-row">
-        <?= cta_quote('btn btn-primary btn-lg', 'Get a Free Quote', '#quote') ?>
+        <?= cta_quote('btn btn-primary btn-lg', t('cta.quote'), '#quote') ?>
         <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
-           <?= cta_id('phone') ?> aria-label="Call <?= e(PHONE_INTL) ?>">
+           <?= cta_id('phone') ?> aria-label="<?= e(t('cta.call', ['phone' => PHONE_INTL])) ?>">
           <?= icon('phone', 'icon') ?>
-          <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
+          <span class="btn-stack"><small><?= e(t('cta.call_now')) ?></small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
         </a>
       </div>
     </div>
@@ -95,14 +95,14 @@ $heroImg = image_exists('locations/' . $slug . '-hero.jpg')
       </div>
 
       <div>
-        <span class="eyebrow">Moving in <?= e($city) ?></span>
+        <span class="eyebrow"><?= e(t('tpl.location.moving_in', ['city' => $city])) ?></span>
         <h2><?= e($location['local_context']['heading']) ?></h2>
         <?php foreach ($location['intro'] as $paragraph): ?>
           <p><?= e($paragraph) ?></p>
         <?php endforeach; ?>
 
         <div class="btn-row" style="margin-top: var(--sp-5);">
-          <?= cta_quote('btn btn-primary', 'Get a Free Quote', '#quote') ?>
+          <?= cta_quote('btn btn-primary', t('cta.quote'), '#quote') ?>
           <?= cta_whatsapp($waMessage, 'btn btn-whatsapp') ?>
         </div>
       </div>
@@ -122,14 +122,11 @@ $heroImg = image_exists('locations/' . $slug . '-hero.jpg')
 
       <aside>
         <div class="panel panel-accent">
-          <h3>Book a move in <?= e($city) ?></h3>
-          <p style="font-size: var(--fs-sm); color: var(--ink-500);">
-            Send us the two addresses, the property type and your preferred date. We confirm
-            access, crew and vehicle, then quote.
-          </p>
+          <h3><?= e(t('tpl.location.book_h3', ['city' => $city])) ?></h3>
+          <p style="font-size: var(--fs-sm); color: var(--ink-500);"><?= e(t('tpl.location.book_p')) ?></p>
           <div class="grid" style="gap: var(--sp-3); margin-top: var(--sp-4);">
-            <?= cta_quote('btn btn-primary btn-block', 'Get a Free Quote', '#quote') ?>
-            <?= cta_phone('btn btn-phone btn-block', 'Call ' . PHONE_DISPLAY) ?>
+            <?= cta_quote('btn btn-primary btn-block', t('cta.quote'), '#quote') ?>
+            <?= cta_phone('btn btn-phone btn-block', t('cta.call', ['phone' => PHONE_DISPLAY])) ?>
             <?= cta_whatsapp($waMessage, 'btn btn-whatsapp btn-block') ?>
           </div>
         </div>
@@ -160,7 +157,7 @@ $heroImg = image_exists('locations/' . $slug . '-hero.jpg')
 <section class="section">
   <div class="container">
     <div class="heading-rule">
-      <h2>Our Services in <?= e($city) ?></h2>
+      <h2><?= e(t('tpl.location.svc_h2', ['city' => $city])) ?></h2>
     </div>
     <p class="section-lead" style="text-align:center; margin-bottom: var(--sp-5);">
       <?= e($location['services_intro']) ?>
@@ -175,15 +172,15 @@ $heroImg = image_exists('locations/' . $slug . '-hero.jpg')
           <p><?= e($feat['tile']) ?></p>
         </a>
       <?php endforeach; ?>
-      <a class="service-tile" href="/services/">
+      <a class="service-tile" href="<?= e(lang_url('/services/')) ?>">
         <span class="service-tile-icon"><?= service_icon('truck') ?></span>
-        <h3>And More Services</h3>
-        <p>Loading, assembly, local moving and car transport.</p>
+        <h3><?= e(t('sec.and_more')) ?></h3>
+        <p><?= e(t('sec.and_more_text')) ?></p>
       </a>
     </div>
 
     <div class="panel" style="margin-top: var(--sp-5);">
-      <h3>Every service we offer covers <?= e($city) ?></h3>
+      <h3><?= e(t('tpl.location.every_h3', ['city' => $city])) ?></h3>
       <ul class="checklist checklist-2">
         <?php foreach ($services as $svcSlug => $svc): ?>
           <li>
@@ -196,14 +193,14 @@ $heroImg = image_exists('locations/' . $slug . '-hero.jpg')
   </div>
 </section>
 
-<?= faq_list($location['faqs'], 'Movers in ' . e($city) . ' — frequently asked questions') ?>
+<?= faq_list($location['faqs'], t('tpl.location.faq_h', ['city' => $city])) ?>
 
 <!-- ==================================================== Quote form ====== -->
 <section class="section">
   <div class="container container-narrow">
     <?php
-    $quoteHeading = 'Get a Free Moving Quote in ' . $city;
-    $quoteIntro   = 'Tell us about your move in ' . $city . ' and we will come back with a specific quotation. No obligation.';
+    $quoteHeading = t('tpl.location.q_head', ['city' => $city]);
+    $quoteIntro   = t('tpl.location.q_intro', ['city' => $city]);
     $quoteSource  = 'location:' . $slug;
     require dirname(__DIR__) . '/quote-form.php';
     ?>
@@ -214,59 +211,21 @@ $heroImg = image_exists('locations/' . $slug . '-hero.jpg')
 <section class="section section-alt">
   <div class="container">
     <div class="heading-rule">
-      <h2>Also Moving To or From Another Emirate?</h2>
+      <h2><?= e(t('tpl.location.other_h2')) ?></h2>
     </div>
-    <div class="city-cards">
-      <?php foreach (all_locations() as $otherSlug => $other): ?>
-        <?php if ($otherSlug === $slug) { continue; } ?>
-        <a class="city-card" href="<?= e(location_url($otherSlug)) ?>">
-          <span class="city-card-media">
-            <?= img('locations/' . $otherSlug . '.webp',
-                    'Movers and packers serving ' . $other['name'] . ', UAE',
-                    ['width' => 900, 'height' => 600, 'icon' => 'building']) ?>
-          </span>
-          <span class="city-card-body">
-            <h3>Movers in <?= e($other['name']) ?></h3>
-            <p><?= e($other['short']) ?></p>
-            <span class="card-link">Learn more <?= icon('arrow', 'icon icon-sm') ?></span>
-          </span>
-        </a>
-      <?php endforeach; ?>
-
-      <a class="city-card" href="/services/">
-        <span class="city-card-media">
-          <?= img('why-choose-us.jpg', 'All our moving services',
-                  ['width' => 900, 'height' => 600, 'icon' => 'box']) ?>
-        </span>
-        <span class="city-card-body">
-          <h3>All moving services</h3>
-          <p>Browse the full range of residential, commercial and specialist services.</p>
-          <span class="card-link">View services <?= icon('arrow', 'icon icon-sm') ?></span>
-        </span>
-      </a>
-    </div>
+    <?php
+    $cityExclude = $slug;
+    $cityExtra = true;
+    require __DIR__ . '/../city-cards.php';
+    ?>
   </div>
 </section>
 
-<!-- ======================================================= CTA band ====== -->
-<section class="cta-gold">
-  <div class="container cta-gold-inner">
-    <div class="cta-gold-media">
-      <?= img('cta-boxes.webp', '', ['width' => 600, 'height' => 450, 'icon' => 'box']) ?>
-    </div>
-    <div>
-      <h2>Moving in <?= e($city) ?>?</h2>
-      <p>Call or WhatsApp us with your dates and addresses — we will confirm what is available.</p>
-    </div>
-    <div class="cta-gold-actions">
-      <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
-         aria-label="Call <?= e(PHONE_INTL) ?>">
-        <?= icon('phone', 'icon') ?>
-        <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
-      </a>
-      <?= cta_whatsapp($waMessage, 'btn btn-white btn-lg') ?>
-    </div>
-  </div>
-</section>
+<?php
+$bandTitle    = t('band.city_title', ['city' => $city]);
+$bandSub      = t('band.city_sub');
+$bandWhatsApp = $waMessage;
+require __DIR__ . '/../cta-band.php';
+?>
 
 <?php require dirname(__DIR__) . '/footer.php'; ?>

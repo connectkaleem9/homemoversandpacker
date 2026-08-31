@@ -16,8 +16,8 @@ declare(strict_types=1);
 
 start_session();
 
-$quoteHeading = $quoteHeading ?? 'Get a Free Moving Quote';
-$quoteIntro   = $quoteIntro   ?? 'Tell us about your move and we will come back with a clear, specific quotation — no obligation.';
+$quoteHeading = $quoteHeading ?? t('form.quote_title');
+$quoteIntro   = $quoteIntro   ?? t('form.quote_intro');
 $quoteSource  = $quoteSource  ?? ($_SERVER['REQUEST_URI'] ?? '/');
 $quoteService = $quoteService ?? '';
 
@@ -47,12 +47,12 @@ $inv = static fn (string $key): string => isset($errors[$key]) ? ' aria-invalid=
 
     <?php if ($flash && ($flash['type'] ?? '') === 'success'): ?>
       <div class="alert alert-success" role="status" data-focus>
-        <strong>Thank you — your request has been received.</strong>
+        <strong><?= e(t('flash.success_title')) ?></strong>
         <?= e($flash['message']) ?>
       </div>
     <?php elseif ($flash && ($flash['type'] ?? '') === 'error'): ?>
       <div class="alert alert-error" role="alert" data-focus>
-        <strong>We could not send your request.</strong>
+        <strong><?= e(t('flash.error_title')) ?></strong>
         <?= e($flash['message']) ?>
       </div>
     <?php endif; ?>
@@ -63,6 +63,7 @@ $inv = static fn (string $key): string => isset($errors[$key]) ? ' aria-invalid=
       <input type="hidden" name="source" value="<?= e($quoteSource) ?>">
       <input type="hidden" name="form_started" value="<?= e((string) time()) ?>">
       <input type="hidden" name="form_elapsed" value="">
+      <input type="hidden" name="form_lang" value="<?= e(lang()) ?>">
 
       <!-- Honeypot: hidden from people, tempting to naive bots -->
       <div class="hp-field" aria-hidden="true">
@@ -72,14 +73,14 @@ $inv = static fn (string $key): string => isset($errors[$key]) ? ' aria-invalid=
 
       <div class="form-grid">
         <div class="field">
-          <label for="q-name">Your name <span class="req" aria-hidden="true">*</span></label>
+          <label for="q-name"><?= e(t('form.name')) ?> <span class="req" aria-hidden="true">*</span></label>
           <input type="text" id="q-name" name="name" required autocomplete="name"
                  value="<?= $val('name') ?>"<?= $inv('name') ?>>
           <span class="field-error"><?= $err('name') ?></span>
         </div>
 
         <div class="field">
-          <label for="q-phone">Phone number <span class="req" aria-hidden="true">*</span></label>
+          <label for="q-phone"><?= e(t('form.phone')) ?> <span class="req" aria-hidden="true">*</span></label>
           <input type="tel" id="q-phone" name="phone" required autocomplete="tel"
                  inputmode="tel" placeholder="055 658 1781"
                  value="<?= $val('phone') ?>"<?= $inv('phone') ?>>
@@ -87,76 +88,89 @@ $inv = static fn (string $key): string => isset($errors[$key]) ? ' aria-invalid=
         </div>
 
         <div class="field field-full">
-          <label for="q-email">Email <span class="field-hint">(optional)</span></label>
+          <label for="q-email"><?= e(t('form.email')) ?> <span class="field-hint"><?= e(t('form.email_opt')) ?></span></label>
           <input type="email" id="q-email" name="email" autocomplete="email"
                  value="<?= $val('email') ?>"<?= $inv('email') ?>>
           <span class="field-error"><?= $err('email') ?></span>
         </div>
 
         <div class="field">
-          <label for="q-from">Moving from <span class="req" aria-hidden="true">*</span></label>
-          <input type="text" id="q-from" name="moving_from" required placeholder="Area, emirate"
+          <label for="q-from"><?= e(t('form.from')) ?> <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="q-from" name="moving_from" required placeholder="<?= e(t('form.area_ph')) ?>"
                  value="<?= $val('moving_from') ?>"<?= $inv('moving_from') ?>>
           <span class="field-error"><?= $err('moving_from') ?></span>
         </div>
 
         <div class="field">
-          <label for="q-to">Moving to <span class="req" aria-hidden="true">*</span></label>
-          <input type="text" id="q-to" name="moving_to" required placeholder="Area, emirate"
+          <label for="q-to"><?= e(t('form.to')) ?> <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="q-to" name="moving_to" required placeholder="<?= e(t('form.area_ph')) ?>"
                  value="<?= $val('moving_to') ?>"<?= $inv('moving_to') ?>>
           <span class="field-error"><?= $err('moving_to') ?></span>
         </div>
 
         <div class="field">
-          <label for="q-property">Property type</label>
+          <label for="q-property"><?= e(t('form.property')) ?></label>
           <select id="q-property" name="property_type">
+            <option value=""><?= e(t('form.property_ph')) ?></option>
             <?php
-            $properties = ['', 'Studio', '1 Bedroom Apartment', '2 Bedroom Apartment', '3+ Bedroom Apartment',
-                           'Townhouse', 'Villa', 'Office', 'Shop / Retail', 'Storage only', 'Other'];
-            foreach ($properties as $property):
-                $selected = ($old['property_type'] ?? '') === $property && $property !== '' ? ' selected' : '';
+            /* The submitted VALUE stays English so every lead in the database
+               reads the same way whichever language the form was filled in. */
+            $qfProperties = [
+                'Studio'               => 'prop.studio',
+                '1 Bedroom Apartment'  => 'prop.1br',
+                '2 Bedroom Apartment'  => 'prop.2br',
+                '3+ Bedroom Apartment' => 'prop.3br',
+                'Townhouse'            => 'prop.townhouse',
+                'Villa'                => 'prop.villa',
+                'Office'               => 'prop.office',
+                'Shop / Retail'        => 'prop.retail',
+                'Storage only'         => 'prop.storage',
+                'Other'                => 'prop.other',
+            ];
+            foreach ($qfProperties as $qfValue => $qfKey):
+                $selected = ($old['property_type'] ?? '') === $qfValue ? ' selected' : '';
             ?>
-              <option value="<?= e($property) ?>"<?= $selected ?>><?= $property === '' ? 'Select property type' : e($property) ?></option>
+              <option value="<?= e($qfValue) ?>"<?= $selected ?>><?= e(t($qfKey)) ?></option>
             <?php endforeach; ?>
           </select>
         </div>
 
         <div class="field">
-          <label for="q-date">Preferred moving date</label>
+          <label for="q-date"><?= e(t('form.date')) ?></label>
           <input type="date" id="q-date" name="moving_date" value="<?= $val('moving_date') ?>">
         </div>
 
         <div class="field field-full">
-          <label for="q-service">Service required</label>
+          <label for="q-service"><?= e(t('form.service')) ?></label>
           <select id="q-service" name="service">
-            <option value="">Select a service</option>
+            <option value=""><?= e(t('form.service_ph')) ?></option>
             <?php foreach (all_services() as $qfSlug => $qfService):
                 $selected = (($old['service'] ?? $quoteService) === $qfSlug) ? ' selected' : ''; ?>
               <option value="<?= e($qfSlug) ?>"<?= $selected ?>><?= e($qfService['name']) ?></option>
             <?php endforeach; ?>
-            <option value="not-sure"<?= ($old['service'] ?? '') === 'not-sure' ? ' selected' : '' ?>>Not sure — please advise</option>
+            <option value="not-sure"<?= ($old['service'] ?? '') === 'not-sure' ? ' selected' : '' ?>><?= e(t('form.not_sure')) ?></option>
           </select>
         </div>
 
         <div class="field field-full">
-          <label for="q-details">Additional details <span class="field-hint">(items, floors, lift access, packing needed)</span></label>
+          <label for="q-details"><?= e(t('form.details')) ?> <span class="field-hint"><?= e(t('form.details_hint')) ?></span></label>
           <textarea id="q-details" name="details" rows="4"
-                    placeholder="e.g. 2 bedroom apartment, 5th floor with lift, need packing for the kitchen"><?= $val('details') ?></textarea>
+                    placeholder="<?= e(t('form.details_ph')) ?>"><?= $val('details') ?></textarea>
         </div>
       </div>
 
       <div class="form-foot">
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Get My Free Quote</button>
+        <button type="submit" class="btn btn-primary btn-lg btn-block"><?= e(t('form.submit')) ?></button>
         <p class="form-legal">
-          We use your details only to prepare and discuss your moving quote. See our
-          <a href="/privacy-policy/">Privacy Policy</a>.
+          <?= e(t('form.legal')) ?>
+          <a href="<?= e(lang_url('/privacy-policy/')) ?>"><?= e(t('form.privacy')) ?></a>.
         </p>
       </div>
 
       <div class="form-alt">
-        <span>Prefer to talk?</span>
+        <span><?= e(t('form.prefer_talk')) ?></span>
         <?= cta_phone('btn btn-outline', PHONE_DISPLAY) ?>
-        <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-whatsapp') ?>
+        <?= cta_whatsapp('', 'btn btn-whatsapp') ?>
       </div>
     </form>
   </div>

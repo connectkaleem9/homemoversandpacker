@@ -28,11 +28,17 @@ function schema_organisation(): array
         ],
         'areaServed'  => array_map(
             static fn (string $city): array => ['@type' => 'City', 'name' => $city],
-            AREAS_SERVED
+            areas_list()
         ),
-        'description' => 'Movers and packers based in ' . BUSINESS_ADDRESS
-            . ', providing home, villa, apartment, office and commercial moving, packing, storage and furniture services across '
-            . areas_sentence() . '.',
+        /*
+         * One business, one @id, in both languages — the organisation is the
+         * same entity whichever page references it. Only the human-readable
+         * fields follow the page's language.
+         */
+        'description' => t('foot.about', [
+            'address' => business_address(),
+            'areas'   => areas_sentence(),
+        ]),
     ];
 }
 
@@ -45,7 +51,7 @@ function schema_website(): array
         'url'       => CANONICAL_BASE . '/',
         'name'      => SITE_NAME,
         'publisher' => ['@id' => CANONICAL_BASE . '/#organization'],
-        'inLanguage'=> 'en-AE',
+        'inLanguage'=> lang_locale(),
     ];
 }
 
@@ -59,7 +65,7 @@ function schema_webpage(): array
         'name'       => seo_title(),
         'isPartOf'   => ['@id' => CANONICAL_BASE . '/#website'],
         'about'      => ['@id' => CANONICAL_BASE . '/#organization'],
-        'inLanguage' => 'en-AE',
+        'inLanguage' => lang_locale(),
     ];
     if (seo_description() !== '') {
         $node['description'] = seo_description();
@@ -81,7 +87,7 @@ function schema_breadcrumbs(array $trail): ?array
             'name'     => $crumb['label'],
         ];
         if (!empty($crumb['url'])) {
-            $item['item'] = canonical($crumb['url']);
+            $item['item'] = canonical($crumb['url']);   // language-aware
         }
         $items[] = $item;
     }
@@ -131,7 +137,7 @@ function schema_service(array $service): array
         'provider'        => ['@id' => CANONICAL_BASE . '/#organization'],
         'areaServed'      => array_map(
             static fn (string $city): array => ['@type' => 'City', 'name' => $city],
-            AREAS_SERVED
+            areas_list()
         ),
         'url'             => seo_canonical(),
     ];
@@ -150,7 +156,7 @@ function schema_article(array $post): array
         'author'           => ['@id' => CANONICAL_BASE . '/#organization'],
         'publisher'        => ['@id' => CANONICAL_BASE . '/#organization'],
         'mainEntityOfPage' => ['@id' => seo_canonical() . '#webpage'],
-        'inLanguage'       => 'en-AE',
+        'inLanguage'       => lang_locale(),
     ];
 }
 

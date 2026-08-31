@@ -13,7 +13,7 @@ function breadcrumbs_render(?array $trail = null): string
         return '';
     }
 
-    $html  = '<nav class="breadcrumbs" aria-label="Breadcrumb"><div class="container">';
+    $html  = '<nav class="breadcrumbs" aria-label="' . e(t('crumb.aria')) . '"><div class="container">';
     $html .= '<ol class="breadcrumb-list">';
 
     $last = count($trail) - 1;
@@ -22,7 +22,7 @@ function breadcrumbs_render(?array $trail = null): string
         if ($i === $last || empty($crumb['url'])) {
             $html .= '<span aria-current="page">' . e($crumb['label']) . '</span>';
         } else {
-            $html .= '<a href="' . e(url($crumb['url'])) . '">' . e($crumb['label']) . '</a>';
+            $html .= '<a href="' . e(lang_url(url($crumb['url']))) . '">' . e($crumb['label']) . '</a>';
             $html .= '<span class="breadcrumb-sep" aria-hidden="true">/</span>';
         }
         $html .= '</li>';

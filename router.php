@@ -16,6 +16,16 @@ $uri  = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 $uri  = rawurldecode($uri);
 $path = '/' . trim($uri, '/');
 
+/*
+ * Arabic lives at /ar/... but is served by the same files. Strip the prefix
+ * before resolving; includes/i18n.php reads the language back out of
+ * REQUEST_URI, which is untouched by this. Mirrors rule 5 in .htaccess.
+ */
+if (preg_match('#^/ar(/|$)#', $path) === 1) {
+    $path = substr($path, 3);
+    $path = $path === '' ? '/' : $path;
+}
+
 /* Block the paths .htaccess denies, so local behaviour matches production. */
 if (preg_match('#^/(storage|database|includes)(/|$)#', $path)) {
     http_response_code(404);

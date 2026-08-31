@@ -387,6 +387,19 @@ hr { border: 0; border-top: 1px solid var(--line); margin: var(--sp-6) 0; }
 .header-phone:hover { text-decoration: none; color: var(--accent-700); }
 .header-phone .icon { color: var(--accent-500); width: 26px; height: 26px; }
 .header-phone-text { display: flex; flex-direction: column; line-height: 1.2; }
+
+/* Language switcher — a quiet pill, so it reads as a utility rather than
+   competing with the section links beside it. */
+.nav-item-lang { margin-inline-start: var(--sp-2); }
+.nav-lang {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding-inline: var(--sp-3);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--navy-700);
+}
+.nav-lang:hover { border-color: var(--accent-500); background: var(--surface-tint); text-decoration: none; }
+.nav-lang .icon { width: 16px; height: 16px; opacity: .8; }
 .header-phone-text small { font-size: 0.6875rem; color: var(--ink-400); text-transform: uppercase; letter-spacing: .06em; }
 .header-phone-text strong { font-size: 1.0625rem; font-weight: 750; }
 

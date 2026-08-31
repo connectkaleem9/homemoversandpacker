@@ -9,9 +9,11 @@ declare(strict_types=1);
 
 require_once dirname(__DIR__) . '/includes/lead-handler.php';
 
-const CONTACT_FALLBACK = '/contact-us/';
+lead_guard('/contact-us/', 'contact');
 
-lead_guard(CONTACT_FALLBACK, 'contact');
+/* lead_guard() has set the language from the posted form, so the fallback
+   lands the visitor back on the contact page in the language they were in. */
+define('CONTACT_FALLBACK', lang_url('/contact-us/'));
 
 $input = [
     'name'    => lead_clean($_POST['name'] ?? '', 120),
@@ -25,25 +27,25 @@ $input = [
 $errors = [];
 
 if (mb_strlen($input['name']) < 2) {
-    $errors['name'] = 'Please enter your name.';
+    $errors['name'] = t('err.name');
 }
 if ($input['phone'] === '' && $input['email'] === '') {
-    $errors['phone'] = 'Give us either a phone number or an email address so we can reply.';
+    $errors['phone'] = t('err.reach');
 } elseif ($input['phone'] !== '' && !lead_valid_uae_phone($input['phone'])) {
-    $errors['phone'] = 'Enter a valid UAE mobile number, e.g. 055 658 1781.';
+    $errors['phone'] = t('err.phone_invalid');
 }
 if ($input['email'] !== '' && !filter_var($input['email'], FILTER_VALIDATE_EMAIL)) {
-    $errors['email'] = 'Enter a valid email address, or leave the field empty.';
+    $errors['email'] = t('err.email');
 }
 if (mb_strlen($input['message']) < 10) {
-    $errors['message'] = 'Please tell us a little more so we can help.';
+    $errors['message'] = t('err.message');
 }
 
 if ($errors !== []) {
     lead_redirect(
         CONTACT_FALLBACK,
         'error',
-        'Please check the highlighted fields and send the message again.',
+        t('err.check_message'),
         $input,
         $errors,
         'contact'
@@ -67,7 +69,7 @@ if (!lead_store_contact($lead)) {
     lead_redirect(
         CONTACT_FALLBACK,
         'error',
-        'Something went wrong on our side. Please call or WhatsApp us on ' . PHONE_DISPLAY . '.',
+        t('lead.store_failed', ['phone' => PHONE_DISPLAY]),
         $input,
         [],
         'contact'
@@ -79,7 +81,7 @@ lead_notify('Website message — ' . $lead['subject'], $lead);
 lead_redirect(
     CONTACT_FALLBACK,
     'success',
-    'Thanks for your message — we will reply shortly. For anything urgent, call or WhatsApp ' . PHONE_DISPLAY . '.',
+    t('lead.message_ok', ['phone' => PHONE_DISPLAY]),
     [],
     [],
     'contact'

@@ -98,6 +98,22 @@ function seo_render_meta(): string
     $out .= '  <meta name="robots" content="' . e((string) seo_get('robots')) . '">' . PHP_EOL;
     $out .= '  <link rel="canonical" href="' . e($url) . '">' . PHP_EOL;
 
+    /*
+     * hreflang. Every indexable page exists in both languages at the same
+     * path, one with the /ar prefix, so the alternates are derived rather
+     * than maintained by hand. x-default points at English.
+     */
+    if (seo_get('robots') && !str_contains((string) seo_get('robots'), 'noindex')) {
+        $base = rtrim(CANONICAL_BASE, '/');
+        $path = url((string) seo_get('path', '/'));
+        foreach (array_keys(LANGUAGES) as $altLang) {
+            $out .= '  <link rel="alternate" hreflang="' . e(LANGUAGES[$altLang]['locale'])
+                  . '" href="' . e($base . lang_url($path, $altLang)) . '">' . PHP_EOL;
+        }
+        $out .= '  <link rel="alternate" hreflang="x-default" href="'
+              . e($base . lang_url($path, DEFAULT_LANG)) . '">' . PHP_EOL;
+    }
+
     /* Open Graph */
     $ogTitle = seo_get('og_title') ?: seo_title();
     $ogDesc  = seo_get('og_desc') ?: $desc;
@@ -105,7 +121,9 @@ function seo_render_meta(): string
 
     $out .= '  <meta property="og:type" content="' . e((string) seo_get('og_type')) . '">' . PHP_EOL;
     $out .= '  <meta property="og:site_name" content="' . e(SITE_NAME) . '">' . PHP_EOL;
-    $out .= '  <meta property="og:locale" content="en_AE">' . PHP_EOL;
+    $out .= '  <meta property="og:locale" content="' . e(str_replace('-', '_', lang_locale())) . '">' . PHP_EOL;
+    $out .= '  <meta property="og:locale:alternate" content="'
+          . e(str_replace('-', '_', LANGUAGES[other_lang()]['locale'])) . '">' . PHP_EOL;
     $out .= '  <meta property="og:title" content="' . e($ogTitle) . '">' . PHP_EOL;
     if ($ogDesc !== '') {
         $out .= '  <meta property="og:description" content="' . e($ogDesc) . '">' . PHP_EOL;

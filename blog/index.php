@@ -11,12 +11,12 @@ $posts     = all_posts();
 $services  = all_services();
 
 seo_set([
-    'title'       => 'Moving Guides & Tips for Dubai, Sharjah & Ajman',
-    'description' => 'Practical moving guides for UAE residents — checklists, packing advice, what moves actually cost and what to expect when moving between Dubai, Sharjah and Ajman.',
+    'title'       => t('page.blog.title'),
+    'description' => t('page.blog.desc'),
     'path'        => '/blog/',
     'breadcrumbs' => [
-        ['label' => 'Home', 'url' => '/'],
-        ['label' => 'Blog', 'url' => '/blog/'],
+        ['label' => t('crumb.home'), 'url' => '/'],
+        ['label' => t('crumb.blog'), 'url' => '/blog/'],
     ],
     'quote_anchor'=> '#quote',
 ]);
@@ -28,25 +28,22 @@ require dirname(__DIR__) . '/includes/header.php';
 <section class="hero-home hero-compact">
   <div class="container hero-home-inner">
     <div class="hero-home-copy">
-      <span class="eyebrow">Moving guides</span>
-      <h1>Practical Moving Advice for Dubai, Sharjah &amp; Ajman</h1>
-      <p class="hero-home-sub">
-        Guides written from actual moving days — what goes wrong, why it goes wrong, and the
-        order to do things in so it does not.
-      </p>
+      <span class="eyebrow"><?= e(t('page.blog.eyebrow')) ?></span>
+      <h1><?= e(t('page.blog.h1')) ?></h1>
+      <p class="hero-home-sub"><?= e(t('page.blog.sub')) ?></p>
 
       <div class="hero-trust">
-        <div class="hero-trust-item"><?= icon('clipboard', 'icon') ?><span>Checklists</span></div>
-        <div class="hero-trust-item"><?= icon('box', 'icon') ?><span>Packing advice</span></div>
-        <div class="hero-trust-item"><?= icon('quote', 'icon') ?><span>Real costs</span></div>
+        <div class="hero-trust-item"><?= icon('clipboard', 'icon') ?><span><?= e(t('page.blog.trust1')) ?></span></div>
+        <div class="hero-trust-item"><?= icon('box', 'icon') ?><span><?= e(t('page.blog.trust2')) ?></span></div>
+        <div class="hero-trust-item"><?= icon('quote', 'icon') ?><span><?= e(t('page.blog.trust3')) ?></span></div>
       </div>
 
       <div class="btn-row">
-        <?= cta_quote('btn btn-primary btn-lg', 'Get a Free Quote', '/contact-us/#quote') ?>
+        <?= cta_quote('btn btn-primary btn-lg', t('cta.quote'), lang_url('/contact-us/') . '#quote') ?>
         <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
-           <?= cta_id('phone') ?> aria-label="Call <?= e(PHONE_INTL) ?>">
+           <?= cta_id('phone') ?> aria-label="<?= e(t('cta.call', ['phone' => PHONE_INTL])) ?>">
           <?= icon('phone', 'icon') ?>
-          <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
+          <span class="btn-stack"><small><?= e(t('cta.call_now')) ?></small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
         </a>
       </div>
     </div>
@@ -62,7 +59,7 @@ require dirname(__DIR__) . '/includes/header.php';
 <section class="section">
   <div class="container">
     <div class="heading-rule">
-      <h2>Latest From Our Blog</h2>
+      <h2><?= e(t('sec.blog')) ?></h2>
     </div>
 
     <div class="grid grid-2">
@@ -76,12 +73,12 @@ require dirname(__DIR__) . '/includes/header.php';
           <span class="blog-card-body">
             <span class="post-meta">
               <span><?= e($post['category']) ?></span>
-              <span><time datetime="<?= e($published->format('Y-m-d')) ?>"><?= e($published->format('j M Y')) ?></time></span>
+              <span><time datetime="<?= e($published->format('Y-m-d')) ?>"><?= e(format_date($published, 'short')) ?></time></span>
               <span><?= e($post['read_time']) ?></span>
             </span>
             <h3><?= e($post['title']) ?></h3>
             <p class="card-text"><?= e($post['excerpt']) ?></p>
-            <span class="card-link">Read the guide <?= icon('arrow', 'icon icon-sm') ?></span>
+            <span class="card-link"><?= e(t('cta.read_guide')) ?> <?= icon('arrow', 'icon icon-sm') ?></span>
           </span>
         </a>
       <?php endforeach; ?>
@@ -93,7 +90,7 @@ require dirname(__DIR__) . '/includes/header.php';
 <section class="section section-alt">
   <div class="container">
     <div class="heading-rule">
-      <h2>Services Covered in These Guides</h2>
+      <h2><?= e(t('page.blog.covered_h2')) ?></h2>
     </div>
     <div class="service-strip" style="--cols:7">
       <?php foreach (['home-movers', 'packing-unpacking', 'villa-movers', 'local-moving', 'furniture-movers', 'warehousing-storage'] as $svcSlug): ?>
@@ -103,10 +100,10 @@ require dirname(__DIR__) . '/includes/header.php';
           <p><?= e($services[$svcSlug]['tile']) ?></p>
         </a>
       <?php endforeach; ?>
-      <a class="service-tile" href="/services/">
+      <a class="service-tile" href="<?= e(lang_url('/services/')) ?>">
         <span class="service-tile-icon"><?= service_icon('truck') ?></span>
-        <h3>And More Services</h3>
-        <p>Loading, assembly, local moving and car transport.</p>
+        <h3><?= e(t('sec.and_more')) ?></h3>
+        <p><?= e(t('sec.and_more_text')) ?></p>
       </a>
     </div>
   </div>
@@ -116,33 +113,16 @@ require dirname(__DIR__) . '/includes/header.php';
 <section class="section">
   <div class="container container-narrow">
     <?php
-    $quoteHeading = 'Rather Have Us Handle It?';
-    $quoteIntro   = 'Send us your move details and we will come back with a clear quotation — free, no obligation.';
+    $quoteHeading = t('page.blog.q_head');
+    $quoteIntro   = t('page.blog.q_intro');
     $quoteSource  = 'blog-index';
     require dirname(__DIR__) . '/includes/quote-form.php';
     ?>
   </div>
 </section>
 
-<!-- ======================================================= CTA band ====== -->
-<section class="cta-gold">
-  <div class="container cta-gold-inner">
-    <div class="cta-gold-media">
-      <?= img('cta-boxes.webp', '', ['width' => 600, 'height' => 450, 'icon' => 'box']) ?>
-    </div>
-    <div>
-      <h2>Planning a Move? Get Your Free Quote Today!</h2>
-      <p>Quick, easy and obligation-free.</p>
-    </div>
-    <div class="cta-gold-actions">
-      <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
-         aria-label="Call <?= e(PHONE_INTL) ?>">
-        <?= icon('phone', 'icon') ?>
-        <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
-      </a>
-      <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-white btn-lg') ?>
-    </div>
-  </div>
-</section>
+<?php
+require dirname(__DIR__) . '/includes/cta-band.php';
+?>
 
 <?php require dirname(__DIR__) . '/includes/footer.php'; ?>

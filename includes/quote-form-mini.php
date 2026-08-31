@@ -33,16 +33,16 @@ $err = static fn (string $k): string => isset($errors[$k]) ? e((string) $errors[
 $inv = static fn (string $k): string => isset($errors[$k]) ? ' aria-invalid="true"' : '';
 ?>
 <div class="quote-mini" id="quote">
-  <h2>Need a Moving Quote?</h2>
-  <p>Fill out the form and our team will get back to you shortly.</p>
+  <h2><?= e(t('form.mini_title')) ?></h2>
+  <p><?= e(t('form.mini_intro')) ?></p>
 
   <?php if ($flash && ($flash['type'] ?? '') === 'success'): ?>
     <div class="alert alert-success" role="status" data-focus>
-      <strong>Thank you — request received.</strong> <?= e($flash['message']) ?>
+      <strong><?= e(t('flash.success_title')) ?></strong> <?= e($flash['message']) ?>
     </div>
   <?php elseif ($flash && ($flash['type'] ?? '') === 'error'): ?>
     <div class="alert alert-error" role="alert" data-focus>
-      <strong>We could not send your request.</strong> <?= e($flash['message']) ?>
+      <strong><?= e(t('flash.error_title')) ?></strong> <?= e($flash['message']) ?>
     </div>
   <?php endif; ?>
 
@@ -51,6 +51,7 @@ $inv = static fn (string $k): string => isset($errors[$k]) ? ' aria-invalid="tru
     <input type="hidden" name="source" value="<?= e($miniSource) ?>">
     <input type="hidden" name="form_started" value="<?= e((string) time()) ?>">
     <input type="hidden" name="form_elapsed" value="">
+    <input type="hidden" name="form_lang" value="<?= e(lang()) ?>">
 
     <div class="hp-field" aria-hidden="true">
       <label for="m-company-website">Company website</label>
@@ -59,30 +60,30 @@ $inv = static fn (string $k): string => isset($errors[$k]) ? ' aria-invalid="tru
 
     <div class="form-grid">
       <div class="field">
-        <label class="sr-only" for="m-name">Your name</label>
+        <label class="sr-only" for="m-name"><?= e(t('form.name')) ?></label>
         <input type="text" id="m-name" name="name" required autocomplete="name"
-               placeholder="Your Name" value="<?= $val('name') ?>"<?= $inv('name') ?>>
+               placeholder="<?= e(t('form.name')) ?>" value="<?= $val('name') ?>"<?= $inv('name') ?>>
         <span class="field-error"><?= $err('name') ?></span>
       </div>
 
       <div class="field">
-        <label class="sr-only" for="m-phone">Phone number</label>
+        <label class="sr-only" for="m-phone"><?= e(t('form.phone')) ?></label>
         <input type="tel" id="m-phone" name="phone" required autocomplete="tel" inputmode="tel"
-               placeholder="Phone Number" value="<?= $val('phone') ?>"<?= $inv('phone') ?>>
+               placeholder="<?= e(t('form.phone')) ?>" value="<?= $val('phone') ?>"<?= $inv('phone') ?>>
         <span class="field-error"><?= $err('phone') ?></span>
       </div>
 
       <div class="field">
-        <label class="sr-only" for="m-from">Moving from</label>
+        <label class="sr-only" for="m-from"><?= e(t('form.from')) ?></label>
         <input type="text" id="m-from" name="moving_from" required
-               placeholder="Moving From" value="<?= $val('moving_from') ?>"<?= $inv('moving_from') ?>>
+               placeholder="<?= e(t('form.from')) ?>" value="<?= $val('moving_from') ?>"<?= $inv('moving_from') ?>>
         <span class="field-error"><?= $err('moving_from') ?></span>
       </div>
 
       <div class="field">
-        <label class="sr-only" for="m-to">Moving to</label>
+        <label class="sr-only" for="m-to"><?= e(t('form.to')) ?></label>
         <input type="text" id="m-to" name="moving_to" required
-               placeholder="Moving To" value="<?= $val('moving_to') ?>"<?= $inv('moving_to') ?>>
+               placeholder="<?= e(t('form.to')) ?>" value="<?= $val('moving_to') ?>"<?= $inv('moving_to') ?>>
         <span class="field-error"><?= $err('moving_to') ?></span>
       </div>
 
@@ -90,11 +91,11 @@ $inv = static fn (string $k): string => isset($errors[$k]) ? ' aria-invalid="tru
 
     <div class="form-foot">
       <button type="submit" class="btn btn-phone btn-block">
-        <?= icon('quote', 'icon icon-sm') ?><span>Get a Free Quote</span>
+        <?= icon('quote', 'icon icon-sm') ?><span><?= e(t('form.submit_short')) ?></span>
       </button>
       <p class="form-legal">
-        We use your details only to prepare your quote. See our
-        <a href="/privacy-policy/">Privacy Policy</a>.
+        <?= e(t('form.legal')) ?>
+        <a href="<?= e(lang_url('/privacy-policy/')) ?>"><?= e(t('form.privacy')) ?></a>.
       </p>
     </div>
   </form>

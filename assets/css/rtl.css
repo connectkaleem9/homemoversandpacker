@@ -1,0 +1,161 @@
+/* ==========================================================================
+   Right-to-left overrides — loaded by includes/header.php only when the
+   current language is Arabic.
+
+   A separate sheet rather than logical properties throughout style.css:
+   the English site is already built, measured and signed off, and rewriting
+   its physical properties risks moving pixels on pages nobody asked to
+   change. This file touches only what direction actually affects.
+
+   `dir="rtl"` on <html> already flips flex rows, grid column order, text
+   alignment and block flow. What is left is the handful of rules that name
+   a physical side explicitly.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Typography
+   Arabic needs its own stack — the Latin fallbacks render Arabic in whatever
+   the system substitutes, usually at the wrong optical size. A slightly
+   larger line-height because Arabic ascenders and descenders sit further out.
+   -------------------------------------------------------------------------- */
+:root {
+  --font-sans: "Segoe UI", Tahoma, "Noto Naskh Arabic", "Noto Sans Arabic",
+               "Geeza Pro", "Arabic Typesetting", -apple-system, BlinkMacSystemFont,
+               system-ui, sans-serif;
+}
+
+body { line-height: 1.75; }
+h1, h2, h3, h4 { line-height: 1.4; }
+
+/* Phone numbers, dates and the brand name stay left-to-right inside the
+   Arabic flow, otherwise the digits reorder and 055 658 1781 reads wrong. */
+[href^="tel:"],
+.topbar-phone a,
+.btn-stack strong,
+.help-box strong,
+.post-meta time,
+.footer-bottom p {
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
+/* --------------------------------------------------------------------------
+   2. Lists and prose indents
+   -------------------------------------------------------------------------- */
+ul, ol { padding-left: 0; padding-inline-start: 1.25rem; }
+.prose ul,
+.post-body ul,
+.post-body ol { padding-left: 0; padding-inline-start: 1.15rem; }
+.post-toc ol { padding-left: 0; padding-inline-start: 1.1rem; }
+.breadcrumb-list { padding-inline-start: 0; }
+
+/* --------------------------------------------------------------------------
+   3. Accent borders
+   -------------------------------------------------------------------------- */
+.panel-accent,
+.reviews-dev-note {
+  border-left: 0;
+  border-right: 4px solid var(--accent-500);
+}
+
+/* --------------------------------------------------------------------------
+   4. Arrows and chevrons
+   An arrow that means "onward" points left in Arabic. The FAQ chevron is
+   built from two borders, so it is mirrored rather than re-declared.
+   -------------------------------------------------------------------------- */
+.icon-arrow { transform: scaleX(-1); }
+a.card:hover .card-link .icon-arrow,
+a:hover > .card-link .icon-arrow { transform: scaleX(-1) translateX(3px); }
+
+.faq-question::after {
+  border-right: 0;
+  border-left: 2px solid var(--accent-500);
+  transform: rotate(-45deg) translateY(-2px);
+}
+.faq-item[open] .faq-question::after { transform: rotate(-225deg) translateY(-2px); }
+
+.process-item:not(:last-child)::after {
+  right: auto;
+  left: -6px;
+  border-right: 0;
+  border-left: 2px solid var(--line-strong);
+  transform: rotate(-45deg);
+}
+
+/* --------------------------------------------------------------------------
+   5. Header and navigation
+   -------------------------------------------------------------------------- */
+.primary-nav { margin-left: 0; margin-right: auto; }
+.skip-link { left: auto; right: -9999px; }
+.skip-link:focus { right: 0; }
+
+/* The language switcher reads in its own script, so it keeps its own
+   direction regardless of which side of the site it appears on. */
+.nav-lang { direction: ltr; unicode-bidi: isolate; }
+:root[dir="rtl"] .nav-lang { direction: ltr; }
+
+/* --------------------------------------------------------------------------
+   6. Forms
+   The native select arrow is drawn with background gradients pinned to the
+   right edge; in RTL the control's text starts on the right, so the arrow
+   moves to the left and the padding follows it.
+   -------------------------------------------------------------------------- */
+.field select {
+  background-position: 18px 21px, 23px 21px;
+  padding-right: var(--sp-3);
+  padding-left: 2.2rem;
+}
+.hp-field { left: auto; right: -9999px; }
+
+/* --------------------------------------------------------------------------
+   7. Hero
+   The photograph is anchored to the side the copy is NOT on, and the scrim
+   gradient runs the other way so the readable, near-opaque end sits under
+   the Arabic text on the right.
+   -------------------------------------------------------------------------- */
+.hero-home-media img:not(.hero-home-backdrop),
+.hero-home-media .img-placeholder {
+  object-position: left center;
+}
+.hero-home-media::after {
+  background:
+    linear-gradient(-100deg,
+      rgba(248, 250, 253, .97) 0%,
+      rgba(248, 250, 253, .95) 34%,
+      rgba(248, 250, 253, .88) 46%,
+      rgba(248, 250, 253, .48) 58%,
+      rgba(248, 250, 253, .12) 70%,
+      rgba(248, 250, 253, 0) 80%);
+}
+.btn-stack { text-align: right; }
+
+/* --------------------------------------------------------------------------
+   8. Why-choose-us photo
+   It bleeds off the edge of the viewport; in RTL that is the right edge.
+
+   The copy keeps `grid-column: 2` from style.css. A grid's column numbering
+   follows the writing direction, so column 2 is the right-hand column in LTR
+   and the left-hand one in RTL — which is the side the photo has just
+   vacated. Overriding it to column 1 here put the copy back underneath the
+   photograph.
+   -------------------------------------------------------------------------- */
+.why-media { left: auto; right: 0; }
+
+/* --------------------------------------------------------------------------
+   9. Mobile bar
+   -------------------------------------------------------------------------- */
+.mobile-bar-item { border-right: 0; border-left: 1px solid rgba(255, 255, 255, .12); }
+.mobile-bar-item:last-child { border-left: 0; }
+
+/* --------------------------------------------------------------------------
+   10. Small-screen overrides
+   These mirror the matching rules in responsive.css, which is loaded first.
+   -------------------------------------------------------------------------- */
+@media (max-width: 1023.98px) {
+  .primary-nav { margin-right: 0; }
+  .quote-mini .form-grid { text-align: right; }
+}
+
+@media (max-width: 599.98px) {
+  .service-tile { text-align: right; }
+}

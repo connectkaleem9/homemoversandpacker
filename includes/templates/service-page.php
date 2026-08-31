@@ -35,15 +35,15 @@ seo_set([
     'description' => $service['description'],
     'path'        => service_url($slug),
     'breadcrumbs' => [
-        ['label' => 'Home', 'url' => '/'],
-        ['label' => 'Services', 'url' => '/services/'],
+        ['label' => t('crumb.home'), 'url' => '/'],
+        ['label' => t('crumb.services'), 'url' => '/services/'],
         ['label' => $service['name'], 'url' => service_url($slug)],
     ],
     'schema'      => [schema_service($service), schema_faq($service['faqs'])],
     'quote_anchor'=> '#quote',
 ]);
 
-$waMessage = 'Hello, I need ' . lcfirst($service['name']) . ' in Dubai, Sharjah or Ajman.';
+$waMessage = t('wa.service', ['service' => $service['name']]);
 
 require dirname(__DIR__) . '/header.php';
 
@@ -67,17 +67,17 @@ $splitImg = image_exists('services/' . $slug . '-2.jpg') ? 'services/' . $slug .
       <p class="hero-home-sub"><?= e($service['hero_sub']) ?></p>
 
       <div class="hero-trust">
-        <div class="hero-trust-item"><?= icon('pin', 'icon') ?><span>Based in Sharjah</span></div>
-        <div class="hero-trust-item"><?= icon('quote', 'icon') ?><span>Free quotation</span></div>
-        <div class="hero-trust-item"><?= icon('shield', 'icon') ?><span>Careful handling</span></div>
+        <div class="hero-trust-item"><?= icon('pin', 'icon') ?><span><?= e(t('misc.based_sharjah')) ?></span></div>
+        <div class="hero-trust-item"><?= icon('quote', 'icon') ?><span><?= e(t('misc.free_quotation')) ?></span></div>
+        <div class="hero-trust-item"><?= icon('shield', 'icon') ?><span><?= e(t('misc.careful_handling')) ?></span></div>
       </div>
 
       <div class="btn-row">
-        <?= cta_quote('btn btn-primary btn-lg', 'Get a Free Quote', '#quote') ?>
+        <?= cta_quote('btn btn-primary btn-lg', t('cta.quote'), '#quote') ?>
         <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
-           <?= cta_id('phone') ?> aria-label="Call <?= e(PHONE_INTL) ?>">
+           <?= cta_id('phone') ?> aria-label="<?= e(t('cta.call', ['phone' => PHONE_INTL])) ?>">
           <?= icon('phone', 'icon') ?>
-          <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
+          <span class="btn-stack"><small><?= e(t('cta.call_now')) ?></small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
         </a>
       </div>
     </div>
@@ -99,14 +99,14 @@ $splitImg = image_exists('services/' . $slug . '-2.jpg') ? 'services/' . $slug .
       </div>
 
       <div>
-        <span class="eyebrow">What this covers</span>
+        <span class="eyebrow"><?= e(t('tpl.service.covers')) ?></span>
         <h2><?= e($service['what_it_is']['heading']) ?></h2>
         <?php foreach ($service['intro'] as $paragraph): ?>
           <p><?= e($paragraph) ?></p>
         <?php endforeach; ?>
 
         <div class="btn-row" style="margin-top: var(--sp-5);">
-          <?= cta_quote('btn btn-primary', 'Get a Free Quote', '#quote') ?>
+          <?= cta_quote('btn btn-primary', t('cta.quote'), '#quote') ?>
           <?= cta_whatsapp($waMessage, 'btn btn-whatsapp') ?>
         </div>
       </div>
@@ -140,8 +140,8 @@ $splitImg = image_exists('services/' . $slug . '-2.jpg') ? 'services/' . $slug .
             <?php endforeach; ?>
           </ul>
           <div class="grid" style="gap: var(--sp-3); margin-top: var(--sp-5);">
-            <?= cta_quote('btn btn-primary btn-block', 'Get a Free Quote', '#quote') ?>
-            <?= cta_phone('btn btn-phone btn-block', 'Call ' . PHONE_DISPLAY) ?>
+            <?= cta_quote('btn btn-primary btn-block', t('cta.quote'), '#quote') ?>
+            <?= cta_phone('btn btn-phone btn-block', t('cta.call', ['phone' => PHONE_DISPLAY])) ?>
           </div>
         </div>
       </aside>
@@ -171,7 +171,7 @@ $splitImg = image_exists('services/' . $slug . '-2.jpg') ? 'services/' . $slug .
 <section class="section">
   <div class="container">
     <div class="heading-rule">
-      <h2>How It Works</h2>
+      <h2><?= e(t('tpl.service.how_h2')) ?></h2>
     </div>
     <ol class="process-row">
       <?php foreach ($service['process'] as $i => $step): ?>
@@ -190,7 +190,7 @@ $splitImg = image_exists('services/' . $slug . '-2.jpg') ? 'services/' . $slug .
 <section class="section section-alt">
   <div class="container">
     <div class="heading-rule">
-      <h2>Why It Matters</h2>
+      <h2><?= e(t('tpl.service.why_h2')) ?></h2>
     </div>
     <div class="grid grid-4">
       <?php foreach ($service['benefits'] as $benefit): ?>
@@ -208,36 +208,23 @@ $splitImg = image_exists('services/' . $slug . '-2.jpg') ? 'services/' . $slug .
 <section class="section">
   <div class="container">
     <div class="heading-rule">
-      <h2><?= e($service['name']) ?> Across All Three Emirates</h2>
+      <h2><?= e(t('tpl.service.across', ['service' => $service['name']])) ?></h2>
     </div>
-    <div class="city-cards">
-      <?php foreach ($locations as $citySlug => $city): ?>
-        <a class="city-card" href="<?= e(location_url($citySlug)) ?>">
-          <span class="city-card-media">
-            <?= img('locations/' . $citySlug . '.webp',
-                    e($service['name']) . ' in ' . $city['name'] . ', UAE',
-                    ['width' => 900, 'height' => 600, 'icon' => 'building']) ?>
-          </span>
-          <span class="city-card-body">
-            <h3>Movers in <?= e($city['name']) ?></h3>
-            <p><?= e($city['short']) ?></p>
-            <span class="card-link">Learn more <?= icon('arrow', 'icon icon-sm') ?></span>
-          </span>
-        </a>
-      <?php endforeach; ?>
-    </div>
+    <?php
+    $cityAlt = $service['name'];
+    require __DIR__ . '/../city-cards.php';
+    ?>
   </div>
 </section>
 
-<?= faq_list($service['faqs'], e($service['name']) . ' — frequently asked questions') ?>
+<?= faq_list($service['faqs'], t('tpl.service.faq_h', ['service' => $service['name']])) ?>
 
 <!-- ==================================================== Quote form ====== -->
 <section class="section">
   <div class="container container-narrow">
     <?php
-    $quoteHeading = 'Get a Free Quote for ' . $service['name'];
-    $quoteIntro   = 'Tell us about your move and we will come back with a clear, specific quotation for '
-                  . lcfirst($service['name']) . '. No obligation.';
+    $quoteHeading = t('tpl.service.q_head', ['service' => $service['name']]);
+    $quoteIntro   = t('tpl.service.q_intro', ['service' => $service['name']]);
     $quoteSource  = 'service:' . $slug;
     $quoteService = $slug;
     require dirname(__DIR__) . '/quote-form.php';
@@ -249,7 +236,7 @@ $splitImg = image_exists('services/' . $slug . '-2.jpg') ? 'services/' . $slug .
 <section class="section section-alt">
   <div class="container">
     <div class="heading-rule">
-      <h2>Related Services</h2>
+      <h2><?= e(t('sec.related')) ?></h2>
     </div>
     <div class="service-strip" style="--cols:<?= count($service['related']) ?>">
       <?php
@@ -265,32 +252,18 @@ $splitImg = image_exists('services/' . $slug . '-2.jpg') ? 'services/' . $slug .
       <?php endforeach; ?>
     </div>
     <div class="service-strip-foot">
-      <a href="/services/" class="btn btn-phone">
-        <span>View All Services</span><?= icon('arrow', 'icon icon-sm') ?>
+      <a href="<?= e(lang_url('/services/')) ?>" class="btn btn-phone">
+        <span><?= e(t('cta.view_services')) ?></span><?= icon('arrow', 'icon icon-sm') ?>
       </a>
     </div>
   </div>
 </section>
 
-<!-- ======================================================= CTA band ====== -->
-<section class="cta-gold">
-  <div class="container cta-gold-inner">
-    <div class="cta-gold-media">
-      <?= img('cta-boxes.webp', '', ['width' => 600, 'height' => 450, 'icon' => 'box']) ?>
-    </div>
-    <div>
-      <h2>Need <?= e($service['name']) ?>?</h2>
-      <p>Call or WhatsApp us and we will tell you honestly what is available and what it will involve.</p>
-    </div>
-    <div class="cta-gold-actions">
-      <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
-         aria-label="Call <?= e(PHONE_INTL) ?>">
-        <?= icon('phone', 'icon') ?>
-        <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
-      </a>
-      <?= cta_whatsapp($waMessage, 'btn btn-white btn-lg') ?>
-    </div>
-  </div>
-</section>
+<?php
+$bandTitle    = t('band.service_title', ['service' => $service['name']]);
+$bandSub      = t('band.service_sub');
+$bandWhatsApp = $waMessage;
+require __DIR__ . '/../cta-band.php';
+?>
 
 <?php require dirname(__DIR__) . '/footer.php'; ?>

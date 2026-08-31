@@ -10,9 +10,11 @@ declare(strict_types=1);
 
 require_once dirname(__DIR__) . '/includes/lead-handler.php';
 
-const QUOTE_FALLBACK = '/contact-us/';
+lead_guard('/contact-us/');
 
-lead_guard(QUOTE_FALLBACK);
+/* lead_guard() has set the language from the posted form, so the fallback
+   lands the visitor back on the contact page in the language they were in. */
+define('QUOTE_FALLBACK', lang_url('/contact-us/'));
 
 /* ---------------------------------------------------------------- input */
 $input = [
@@ -32,26 +34,26 @@ $input = [
 $errors = [];
 
 if (mb_strlen($input['name']) < 2) {
-    $errors['name'] = 'Please enter your name.';
+    $errors['name'] = t('err.name');
 }
 if ($input['phone'] === '') {
-    $errors['phone'] = 'Please enter a phone number so we can reach you.';
+    $errors['phone'] = t('err.phone_missing');
 } elseif (!lead_valid_uae_phone($input['phone'])) {
-    $errors['phone'] = 'Enter a valid UAE mobile number, e.g. 055 658 1781.';
+    $errors['phone'] = t('err.phone_invalid');
 }
 if ($input['email'] !== '' && !filter_var($input['email'], FILTER_VALIDATE_EMAIL)) {
-    $errors['email'] = 'Enter a valid email address, or leave the field empty.';
+    $errors['email'] = t('err.email');
 }
 if ($input['moving_from'] === '') {
-    $errors['moving_from'] = 'Tell us where you are moving from.';
+    $errors['moving_from'] = t('err.from');
 }
 if ($input['moving_to'] === '') {
-    $errors['moving_to'] = 'Tell us where you are moving to.';
+    $errors['moving_to'] = t('err.to');
 }
 if ($input['moving_date'] !== '') {
     $date = DateTimeImmutable::createFromFormat('Y-m-d', $input['moving_date']);
     if ($date === false || $date->format('Y-m-d') !== $input['moving_date']) {
-        $errors['moving_date'] = 'Please choose a valid date.';
+        $errors['moving_date'] = t('err.date');
     }
 }
 
@@ -64,15 +66,22 @@ if ($errors !== []) {
     lead_redirect(
         QUOTE_FALLBACK,
         'error',
-        'Please check the highlighted fields and send the form again.',
+        t('err.check_form'),
         $input,
         $errors
     );
 }
 
 /* -------------------------------------------------------------- storage */
+/*
+ * The stored service name is always the English one, even when the form was
+ * filled in Arabic: the leads table and the notification email are read by one
+ * team in one inbox, and a column that switches language per row is unreadable.
+ */
+$serviceNames = require dirname(__DIR__) . '/includes/data/services.php';
+
 $service = $input['service'] !== '' && $input['service'] !== 'not-sure'
-    ? (get_service($input['service'])['name'] ?? $input['service'])
+    ? ($serviceNames[$input['service']]['name'] ?? $input['service'])
     : ($input['service'] === 'not-sure' ? 'Not sure — please advise' : '');
 
 $lead = [
@@ -98,7 +107,7 @@ if (!$stored) {
     lead_redirect(
         QUOTE_FALLBACK,
         'error',
-        'Something went wrong on our side. Please call or WhatsApp us on ' . PHONE_DISPLAY . ' and we will take your details directly.',
+        t('lead.store_failed', ['phone' => PHONE_DISPLAY]),
         $input
     );
 }
@@ -108,5 +117,5 @@ lead_notify('New quote request — ' . ($service !== '' ? $service : 'Moving enq
 lead_redirect(
     QUOTE_FALLBACK,
     'success',
-    'We have your details and will come back to you with a quotation. If your move is urgent, call or WhatsApp us on ' . PHONE_DISPLAY . '.'
+    t('lead.quote_ok', ['phone' => PHONE_DISPLAY])
 );

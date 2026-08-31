@@ -15,16 +15,30 @@ header('Content-Type: application/xml; charset=UTF-8');
 
 $today = date('Y-m-d');
 
-/** @var array<int, array{loc: string, lastmod: string, changefreq: string, priority: string}> $urls */
+/**
+ * Every page exists in both languages at the same path, one with the /ar
+ * prefix. Each entry is listed once per language with xhtml:link alternates
+ * pointing at the other, which is what Google asks for on a bilingual site.
+ *
+ * @var array<int, array{loc: string, lastmod: string, changefreq: string, priority: string, alternates: array<string, string>}> $urls
+ */
 $urls = [];
 
 $add = static function (string $path, string $lastmod, string $changefreq, string $priority) use (&$urls): void {
-    $urls[] = [
-        'loc'        => canonical($path),
-        'lastmod'    => $lastmod,
-        'changefreq' => $changefreq,
-        'priority'   => $priority,
-    ];
+    $alternates = [];
+    foreach (array_keys(LANGUAGES) as $altLang) {
+        $alternates[LANGUAGES[$altLang]['locale']] = canonical($path, $altLang);
+    }
+
+    foreach (array_keys(LANGUAGES) as $urlLang) {
+        $urls[] = [
+            'loc'        => canonical($path, $urlLang),
+            'lastmod'    => $lastmod,
+            'changefreq' => $changefreq,
+            'priority'   => $priority,
+            'alternates' => $alternates,
+        ];
+    }
 };
 
 /* Core pages */
@@ -35,7 +49,8 @@ $add('/about-us/', $today, 'yearly', '0.6');
 $add('/contact-us/', $today, 'monthly', '0.8');
 $add('/blog/', $today, 'weekly', '0.7');
 
-/* Service landing pages — the primary commercial targets */
+/* Service landing pages — the primary commercial targets.
+   The slugs are identical in both languages, so one loop covers both. */
 foreach (all_services() as $slug => $service) {
     $add(service_url($slug), $today, 'monthly', '0.9');
 }
@@ -56,13 +71,18 @@ $add('/terms-and-conditions/', $today, 'yearly', '0.3');
 
 echo '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL;
 ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
 <?php foreach ($urls as $url): ?>
   <url>
     <loc><?= e($url['loc']) ?></loc>
     <lastmod><?= e($url['lastmod']) ?></lastmod>
     <changefreq><?= e($url['changefreq']) ?></changefreq>
     <priority><?= e($url['priority']) ?></priority>
+<?php foreach ($url['alternates'] as $altLocale => $altUrl): ?>
+    <xhtml:link rel="alternate" hreflang="<?= e($altLocale) ?>" href="<?= e($altUrl) ?>"/>
+<?php endforeach; ?>
+    <xhtml:link rel="alternate" hreflang="x-default" href="<?= e($url['alternates'][LANGUAGES[DEFAULT_LANG]['locale']]) ?>"/>
   </url>
 <?php endforeach; ?>
 </urlset>

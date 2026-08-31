@@ -27,8 +27,8 @@ seo_set([
     'published'   => $post['published'],
     'modified'    => $post['modified'] ?? $post['published'],
     'breadcrumbs' => [
-        ['label' => 'Home', 'url' => '/'],
-        ['label' => 'Blog', 'url' => '/blog/'],
+        ['label' => t('crumb.home'), 'url' => '/'],
+        ['label' => t('crumb.blog'), 'url' => '/blog/'],
         ['label' => $post['title'], 'url' => post_url($slug)],
     ],
     'schema'      => [schema_article($post)],
@@ -51,16 +51,16 @@ $modified  = new DateTimeImmutable($post['modified'] ?? $post['published']);
       <span class="eyebrow"><?= e($post['category']) ?></span>
       <h1><?= e($post['title_h1'] ?? $post['title']) ?></h1>
       <p class="post-meta" style="margin-bottom: var(--sp-4);">
-        <span>Published <time datetime="<?= e($published->format('Y-m-d')) ?>"><?= e($published->format('j F Y')) ?></time></span>
+        <span><?= e(t('misc.published')) ?> <time datetime="<?= e($published->format('Y-m-d')) ?>"><?= e(format_date($published)) ?></time></span>
         <?php if ($modified > $published): ?>
-          <span>Updated <time datetime="<?= e($modified->format('Y-m-d')) ?>"><?= e($modified->format('j F Y')) ?></time></span>
+          <span><?= e(t('misc.updated')) ?> <time datetime="<?= e($modified->format('Y-m-d')) ?>"><?= e(format_date($modified)) ?></time></span>
         <?php endif; ?>
         <span><?= e($post['read_time']) ?></span>
       </p>
       <div class="btn-row">
-        <?= cta_quote('btn btn-primary', 'Get a Free Quote', '/contact-us/#quote') ?>
+        <?= cta_quote('btn btn-primary', t('cta.quote'), lang_url('/contact-us/') . '#quote') ?>
         <a href="<?= PHONE_LINK ?>" class="btn btn-phone js-track" data-cta="phone"
-           <?= cta_id('phone') ?> aria-label="Call <?= e(PHONE_INTL) ?>">
+           <?= cta_id('phone') ?> aria-label="<?= e(t('cta.call', ['phone' => PHONE_INTL])) ?>">
           <?= icon('phone', 'icon icon-sm') ?><span><?= e(PHONE_DISPLAY) ?></span>
         </a>
       </div>
@@ -88,8 +88,8 @@ $modified  = new DateTimeImmutable($post['modified'] ?? $post['published']);
           <p style="font-size: var(--fs-lg); color: var(--ink-500);"><?= e($paragraph) ?></p>
         <?php endforeach; ?>
 
-        <nav class="post-toc" aria-label="Article contents" style="margin: var(--sp-6) 0;">
-          <h2>What this article covers</h2>
+        <nav class="post-toc" aria-label="<?= e(t('tpl.post.toc_aria')) ?>" style="margin: var(--sp-6) 0;">
+          <h2><?= e(t('tpl.post.toc_h2')) ?></h2>
           <ol>
             <?php foreach ($post['sections'] as $i => $section): ?>
               <li><a href="#section-<?= (int) $i ?>"><?= e($section['heading']) ?></a></li>
@@ -127,7 +127,7 @@ $modified  = new DateTimeImmutable($post['modified'] ?? $post['published']);
 
                 case 'note': ?>
                   <div class="panel panel-accent" style="margin-block: var(--sp-5);">
-                    <p style="font-size: var(--fs-sm); margin:0;"><strong>Worth knowing:</strong> <?= e($block['content']) ?></p>
+                    <p style="font-size: var(--fs-sm); margin:0;"><strong><?= e(t('tpl.post.note_label')) ?></strong> <?= e($block['content']) ?></p>
                   </div>
                 <?php break;
             endswitch; ?>
@@ -135,22 +135,19 @@ $modified  = new DateTimeImmutable($post['modified'] ?? $post['published']);
         <?php endforeach; ?>
 
         <div class="panel panel-accent" style="margin-top: var(--sp-7);">
-          <h2 style="font-size: var(--fs-xl); margin-bottom: var(--sp-3);">Planning a move in <?= e(areas_sentence()) ?>?</h2>
-          <p style="font-size: var(--fs-sm); color: var(--ink-500);">
-            Send us your property details and we will come back with a specific quotation — free,
-            and with no obligation.
-          </p>
+          <h2 style="font-size: var(--fs-xl); margin-bottom: var(--sp-3);"><?= e(t('tpl.post.cta_h2', ['areas' => areas_sentence()])) ?></h2>
+          <p style="font-size: var(--fs-sm); color: var(--ink-500);"><?= e(t('tpl.post.cta_p')) ?></p>
           <div class="btn-row" style="margin-top: var(--sp-4);">
-            <?= cta_quote('btn btn-primary', 'Get a Free Quote', '/contact-us/#quote') ?>
-            <?= cta_phone('btn btn-outline', 'Call ' . PHONE_DISPLAY) ?>
-            <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-whatsapp') ?>
+            <?= cta_quote('btn btn-primary', t('cta.quote'), lang_url('/contact-us/') . '#quote') ?>
+            <?= cta_phone('btn btn-outline', t('cta.call', ['phone' => PHONE_DISPLAY])) ?>
+            <?= cta_whatsapp('', 'btn btn-whatsapp') ?>
           </div>
         </div>
       </div>
 
       <aside>
         <div class="panel">
-          <h3>Services in this guide</h3>
+          <h3><?= e(t('tpl.post.services_h3')) ?></h3>
           <ul class="checklist">
             <?php foreach ($post['related_services'] as $serviceSlug): ?>
               <?php if (isset($services[$serviceSlug])): ?>
@@ -164,22 +161,22 @@ $modified  = new DateTimeImmutable($post['modified'] ?? $post['published']);
         </div>
 
         <div class="panel" style="margin-top: var(--sp-5);">
-          <h3>Areas we cover</h3>
+          <h3><?= e(t('misc.areas_served')) ?></h3>
           <ul class="checklist">
             <?php foreach (all_locations() as $locSlug => $location): ?>
               <li>
                 <?= icon('pin', 'icon icon-sm') ?>
-                <a href="<?= e(location_url($locSlug)) ?>">Movers in <?= e($location['name']) ?></a>
+                <a href="<?= e(location_url($locSlug)) ?>"><?= e(t('nav.movers_in', ['city' => $location['name']])) ?></a>
               </li>
             <?php endforeach; ?>
           </ul>
         </div>
 
         <div class="panel panel-accent" style="margin-top: var(--sp-5);">
-          <h3>Talk to us</h3>
+          <h3><?= e(t('tpl.post.talk_h3')) ?></h3>
           <div class="grid" style="gap: var(--sp-3);">
-            <?= cta_phone('btn btn-phone btn-block', 'Call ' . PHONE_DISPLAY) ?>
-            <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-whatsapp btn-block') ?>
+            <?= cta_phone('btn btn-phone btn-block', t('cta.call', ['phone' => PHONE_DISPLAY])) ?>
+            <?= cta_whatsapp('', 'btn btn-whatsapp btn-block') ?>
           </div>
         </div>
       </aside>
@@ -189,7 +186,7 @@ $modified  = new DateTimeImmutable($post['modified'] ?? $post['published']);
 
 <section class="section section-alt">
   <div class="container">
-    <div class="heading-rule"><h2>More Moving Guides</h2></div>
+    <div class="heading-rule"><h2><?= e(t('sec.more_guides')) ?></h2></div>
     <div class="grid grid-3">
       <?php
       $others = 0;
@@ -201,32 +198,15 @@ $modified  = new DateTimeImmutable($post['modified'] ?? $post['published']);
           <span class="card-icon"><?= icon('quote', 'icon') ?></span>
           <h3 class="card-title"><?= e($other['title']) ?></h3>
           <p class="card-text"><?= e($other['excerpt']) ?></p>
-          <span class="card-link">Read the guide <?= icon('arrow', 'icon icon-sm') ?></span>
+          <span class="card-link"><?= e(t('cta.read_guide')) ?> <?= icon('arrow', 'icon icon-sm') ?></span>
         </a>
       <?php endforeach; ?>
     </div>
   </div>
 </section>
 
-<!-- ======================================================= CTA band ====== -->
-<section class="cta-gold">
-  <div class="container cta-gold-inner">
-    <div class="cta-gold-media">
-      <?= img('cta-boxes.webp', '', ['width' => 600, 'height' => 450, 'icon' => 'box']) ?>
-    </div>
-    <div>
-      <h2>Planning a Move? Get Your Free Quote Today!</h2>
-      <p>Quick, easy and obligation-free.</p>
-    </div>
-    <div class="cta-gold-actions">
-      <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
-         aria-label="Call <?= e(PHONE_INTL) ?>">
-        <?= icon('phone', 'icon') ?>
-        <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
-      </a>
-      <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-white btn-lg') ?>
-    </div>
-  </div>
-</section>
+<?php
+require __DIR__ . '/../cta-band.php';
+?>
 
 <?php require dirname(__DIR__) . '/footer.php'; ?>

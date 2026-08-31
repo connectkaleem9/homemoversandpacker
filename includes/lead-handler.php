@@ -212,10 +212,21 @@ function lead_redirect(
     $target = $fallback;
     $ref    = $_SERVER['HTTP_REFERER'] ?? '';
 
-    /* Only ever redirect to our own host. */
+    /*
+     * Only ever redirect to our own host — an open redirect here would let a
+     * third-party page bounce a visitor off our domain through a form post.
+     *
+     * The port is part of the comparison: HTTP_HOST carries it, parse_url()
+     * returns it separately, and without reassembling it the check fails on
+     * any non-standard port and every submission falls back to the contact
+     * page instead of returning to the form the visitor used.
+     */
     if ($ref !== '') {
         $parts = parse_url($ref);
         $host  = $parts['host'] ?? '';
+        if (isset($parts['port'])) {
+            $host .= ':' . $parts['port'];
+        }
         if ($host === '' || $host === ($_SERVER['HTTP_HOST'] ?? '')) {
             $target = ($parts['path'] ?? $fallback);
         }
@@ -228,28 +239,31 @@ function lead_redirect(
 /** Guard rails shared by both endpoints. Terminates the request on failure. */
 function lead_guard(string $fallback, string $form = 'quote'): void
 {
+    /* Reply in the language the form was rendered in, not the endpoint's. */
+    lang_set($_POST['form_lang'] ?? null);
+
     if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
         header('Location: ' . $fallback, true, 303);
         exit;
     }
 
     if (!csrf_verify($_POST['csrf_token'] ?? null)) {
-        lead_redirect($fallback, 'error', 'Your session expired before the form was sent. Please try again, or call us on ' . PHONE_DISPLAY . '.', [], [], $form);
+        lead_redirect($fallback, 'error', t('lead.expired', ['phone' => PHONE_DISPLAY]), [], [], $form);
     }
 
     /* Honeypot — a real person never fills a field they cannot see. */
     if (lead_clean($_POST['company_website'] ?? '') !== '') {
         /* Pretend it worked; do not tell a bot it was detected. */
-        lead_redirect($fallback, 'success', 'We will get back to you shortly.', [], [], $form);
+        lead_redirect($fallback, 'success', t('lead.soon'), [], [], $form);
     }
 
     /* Timing — a form completed faster than a human could type it. */
     $started = (int) ($_POST['form_started'] ?? 0);
     if ($started > 0 && (time() - $started) < FORM_MIN_SECONDS) {
-        lead_redirect($fallback, 'success', 'We will get back to you shortly.', [], [], $form);
+        lead_redirect($fallback, 'success', t('lead.soon'), [], [], $form);
     }
 
     if (!lead_rate_ok()) {
-        lead_redirect($fallback, 'error', 'Too many requests from this connection. Please wait a few minutes, or call us on ' . PHONE_DISPLAY . '.', [], [], $form);
+        lead_redirect($fallback, 'error', t('lead.rate', ['phone' => PHONE_DISPLAY]), [], [], $form);
     }
 }

@@ -17,15 +17,17 @@ declare(strict_types=1);
 $navServices  = all_services();
 $navLocations = all_locations();
 $navHasLogo   = image_exists('logo.png');
+$navHome      = lang_url('/');
+$navOther     = other_lang();
 ?>
 <div class="topbar">
   <div class="container topbar-inner">
     <span class="topbar-item topbar-left">
       <?= icon('shield', 'icon icon-sm') ?>
-      Your trusted movers &amp; packers in <?= e(areas_sentence()) ?>
+      <?= e(t('top.trusted', ['areas' => areas_sentence()])) ?>
     </span>
     <span class="topbar-item topbar-right">
-      <span class="topbar-item"><?= icon('pin', 'icon icon-sm') ?> <?= e(BUSINESS_ADDRESS) ?></span>
+      <span class="topbar-item"><?= icon('pin', 'icon icon-sm') ?> <?= e(business_address()) ?></span>
       <?php if (BUSINESS_HOURS_TEXT !== ''): ?>
         <span class="topbar-item"><?= icon('clock', 'icon icon-sm') ?> <?= e(BUSINESS_HOURS_TEXT) ?></span>
       <?php endif; ?>
@@ -39,7 +41,7 @@ $navHasLogo   = image_exists('logo.png');
 
 <header class="site-header" id="site-header">
   <div class="container header-inner">
-    <a class="brand" href="/" aria-label="<?= e(BUSINESS_NAME) ?> — home">
+    <a class="brand" href="<?= e($navHome) ?>" aria-label="<?= e(BUSINESS_NAME) ?>">
       <?php if ($navHasLogo): ?>
         <img class="brand-logo" src="<?= e(image_url('logo.png')) ?>"
              alt="<?= e(BUSINESS_NAME) ?>" width="200" height="60">
@@ -52,7 +54,8 @@ $navHasLogo   = image_exists('logo.png');
       <?php endif; ?>
     </a>
 
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav"
+            aria-label="<?= e(t('nav.open_menu')) ?>">
       <span class="nav-toggle-bar" aria-hidden="true"></span>
       <span class="nav-toggle-bar" aria-hidden="true"></span>
       <span class="nav-toggle-bar" aria-hidden="true"></span>
@@ -61,12 +64,13 @@ $navHasLogo   = image_exists('logo.png');
     <nav class="primary-nav" id="primary-nav" aria-label="Main">
       <ul class="nav-list">
         <li class="nav-item">
-          <a href="/" class="nav-link<?= is_current('/') ? ' is-current' : '' ?>">Home</a>
+          <a href="<?= e($navHome) ?>" class="nav-link<?= is_current('/') ? ' is-current' : '' ?>"><?= e(t('nav.home')) ?></a>
         </li>
 
         <li class="nav-item has-dropdown">
-          <a href="/services/" class="nav-link<?= is_section('/services') ? ' is-current' : '' ?>" aria-haspopup="true" aria-expanded="false">
-            Services <span class="nav-caret" aria-hidden="true"></span>
+          <a href="<?= e(lang_url('/services/')) ?>" class="nav-link<?= is_section('/services') ? ' is-current' : '' ?>"
+             aria-haspopup="true" aria-expanded="false">
+            <?= e(t('nav.services')) ?> <span class="nav-caret" aria-hidden="true"></span>
           </a>
           <div class="dropdown dropdown-wide">
             <ul class="dropdown-list">
@@ -79,21 +83,22 @@ $navHasLogo   = image_exists('logo.png');
               <?php endforeach; ?>
             </ul>
             <div class="dropdown-foot">
-              <a href="/services/" class="dropdown-all">View all services <?= icon('arrow', 'icon icon-sm') ?></a>
+              <a href="<?= e(lang_url('/services/')) ?>" class="dropdown-all"><?= e(t('nav.view_all')) ?> <?= icon('arrow', 'icon icon-sm') ?></a>
             </div>
           </div>
         </li>
 
         <li class="nav-item has-dropdown">
-          <a href="/locations/" class="nav-link<?= is_section('/locations') ? ' is-current' : '' ?>" aria-haspopup="true" aria-expanded="false">
-            Locations <span class="nav-caret" aria-hidden="true"></span>
+          <a href="<?= e(lang_url('/locations/')) ?>" class="nav-link<?= is_section('/locations') ? ' is-current' : '' ?>"
+             aria-haspopup="true" aria-expanded="false">
+            <?= e(t('nav.locations')) ?> <span class="nav-caret" aria-hidden="true"></span>
           </a>
           <div class="dropdown">
             <ul class="dropdown-list">
               <?php foreach ($navLocations as $navLocSlug => $navLocation): ?>
                 <li>
                   <a href="<?= e(location_url($navLocSlug)) ?>"<?= is_current(location_url($navLocSlug)) ? ' class="is-current"' : '' ?>>
-                    <?= icon('pin', 'icon icon-sm') ?><span>Movers in <?= e($navLocation['name']) ?></span>
+                    <?= icon('pin', 'icon icon-sm') ?><span><?= e(t('nav.movers_in', ['city' => $navLocation['name']])) ?></span>
                   </a>
                 </li>
               <?php endforeach; ?>
@@ -101,15 +106,27 @@ $navHasLogo   = image_exists('logo.png');
           </div>
         </li>
 
-        <li class="nav-item"><a href="/about-us/" class="nav-link<?= is_current('/about-us/') ? ' is-current' : '' ?>">About Us</a></li>
-        <li class="nav-item"><a href="/blog/" class="nav-link<?= is_section('/blog') ? ' is-current' : '' ?>">Blog</a></li>
-        <li class="nav-item"><a href="/contact-us/" class="nav-link<?= is_current('/contact-us/') ? ' is-current' : '' ?>">Contact Us</a></li>
+        <li class="nav-item">
+          <a href="<?= e(lang_url('/about-us/')) ?>" class="nav-link<?= is_current('/about-us/') ? ' is-current' : '' ?>"><?= e(t('nav.about')) ?></a>
+        </li>
+        <li class="nav-item">
+          <a href="<?= e(lang_url('/contact-us/')) ?>" class="nav-link<?= is_current('/contact-us/') ? ' is-current' : '' ?>"><?= e(t('nav.contact')) ?></a>
+        </li>
+
+        <?php /* Same page, other language — a real link, so it is crawlable. */ ?>
+        <li class="nav-item nav-item-lang">
+          <a href="<?= e(alternate_url($navOther)) ?>" class="nav-link nav-lang"
+             lang="<?= e($navOther) ?>" hreflang="<?= e(LANGUAGES[$navOther]['locale']) ?>"
+             aria-label="<?= e(t('nav.switch_aria')) ?>" rel="alternate">
+            <?= icon('globe', 'icon icon-sm') ?><span><?= e(t('nav.switch_language')) ?></span>
+          </a>
+        </li>
       </ul>
 
       <div class="nav-cta-mobile">
-        <?= cta_phone('btn btn-phone btn-block', 'Call ' . PHONE_DISPLAY) ?>
-        <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-whatsapp btn-block') ?>
-        <?= cta_quote('btn btn-primary btn-block', 'Get a Free Quote', '/contact-us/#quote') ?>
+        <?= cta_phone('btn btn-phone btn-block', t('cta.call', ['phone' => PHONE_DISPLAY])) ?>
+        <?= cta_whatsapp('', 'btn btn-whatsapp btn-block', t('cta.whatsapp')) ?>
+        <?= cta_quote('btn btn-primary btn-block', t('cta.quote'), lang_url('/contact-us/') . '#quote') ?>
       </div>
     </nav>
 
@@ -117,9 +134,9 @@ $navHasLogo   = image_exists('logo.png');
       <a href="<?= PHONE_LINK ?>" class="btn btn-phone js-track" data-cta="phone">
         <?= icon('phone', 'icon icon-sm') ?><span><?= e(PHONE_DISPLAY) ?></span>
       </a>
-      <a href="<?= e(whatsapp_url('Hello, I need a moving quote.')) ?>" class="btn btn-gold js-track"
+      <a href="<?= e(whatsapp_url()) ?>" class="btn btn-gold js-track"
          data-cta="whatsapp" target="_blank" rel="noopener">
-        <?= icon('whatsapp', 'icon icon-sm') ?><span>WhatsApp Us</span>
+        <?= icon('whatsapp', 'icon icon-sm') ?><span><?= e(t('cta.whatsapp')) ?></span>
       </a>
     </div>
   </div>

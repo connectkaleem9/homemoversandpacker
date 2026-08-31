@@ -7,6 +7,9 @@ Built as a lead-generation site: local SEO, Google Ads landing-page structure an
 conversion (call / WhatsApp / quote form) drive the architecture rather than being
 bolted on afterwards.
 
+The site is bilingual: **English at `/`, Arabic at `/ar/`**, each with its own
+canonical URL, hreflang alternates and sitemap entries.
+
 ---
 
 ## Stack
@@ -102,13 +105,28 @@ DB_ENABLED=true DB_HOST=127.0.0.1 DB_NAME=homemoverandpaker DB_USER=root DB_PASS
 │   ├── breadcrumbs.php
 │   ├── database.php           PDO, prepared statements only
 │   ├── lead-handler.php       Validation, spam defence, storage, notification
+│   ├── i18n.php               Language detection, t(), lang_url(), format_date()
 │   ├── header.php / navigation.php / footer.php
 │   ├── quote-form.php         Primary conversion form
+│   ├── quote-form-mini.php    Compact 4-field version
 │   ├── contact-form.php       Secondary message form
+│   ├── cta-band.php           Shared gold call-to-action band
+│   ├── city-cards.php         Shared three-emirate card row
+│   ├── legal-body.php         Renders a document from data/legal.php
+│   ├── lang/
+│   │   ├── en.php             English UI chrome — buttons, labels, nav
+│   │   ├── en.pages.php       English page copy, keyed page.* and tpl.*
+│   │   ├── ar.php             Arabic chrome
+│   │   └── ar.pages.php       Arabic page copy
 │   ├── data/
 │   │   ├── services.php       All 12 services — content lives here
+│   │   ├── services.ar.php    Arabic mirror
 │   │   ├── locations.php      All 3 emirates — content lives here
-│   │   └── blog.php           All articles — content lives here
+│   │   ├── locations.ar.php   Arabic mirror
+│   │   ├── blog.php           All articles — content lives here
+│   │   ├── blog.ar.php        Arabic mirror
+│   │   ├── legal.php          Privacy Policy + Terms as typed blocks
+│   │   └── legal.ar.php       Arabic mirror
 │   └── templates/
 │       ├── service-page.php
 │       ├── location-page.php
@@ -119,6 +137,7 @@ DB_ENABLED=true DB_HOST=127.0.0.1 DB_NAME=homemoverandpaker DB_USER=root DB_PASS
 │   └── contact-submit.php
 │
 ├── assets/css | js | images | fonts
+│      css/rtl.css             Loaded only when the page language is Arabic
 ├── database/schema.sql
 ├── storage/                   Leads + logs. Never web-accessible.
 └── uploads/
@@ -141,12 +160,79 @@ It then appears automatically in the navigation dropdown, the homepage grid, the
 footer, the services index, the quote form's service list and the XML sitemap.
 Locations and blog posts work the same way.
 
+Add the matching entry to `includes/data/services.ar.php` under the same slug at the
+same time — see [Bilingual](#bilingual-english--arabic) below.
+
 **One rule when editing partials:** `navigation.php`, `footer.php` and the form
 partials are included into the *page's* variable scope. Every variable they declare
 is prefixed (`$nav*`, `$foot*`, `$qf*`) for that reason. An unprefixed `$service` or
 `$location` in a partial silently overwrites the page's own data and the page renders
 the wrong content. The page templates also re-resolve their data after the header as
 a second line of defence.
+
+---
+
+## Bilingual (English + Arabic)
+
+English lives at `/`, Arabic at `/ar/`. A path prefix rather than a cookie or a
+query string, because it gives each language its own canonical URL — which is what
+Google needs to index and rank them separately, and what makes a shared link keep
+its language.
+
+### How a request resolves
+
+`.htaccess` (production) and `router.php` (local) strip the `/ar` prefix internally
+and serve the same PHP file. The rewrite is internal, so `REQUEST_URI` still carries
+the prefix, and `includes/i18n.php` reads the language back out of it. One set of
+templates renders both languages.
+
+### Where the words live
+
+| Kind of text | English | Arabic |
+|---|---|---|
+| Buttons, labels, navigation | `includes/lang/en.php` | `includes/lang/ar.php` |
+| Page headings and paragraphs | `includes/lang/en.pages.php` | `includes/lang/ar.pages.php` |
+| Services, locations, articles | `includes/data/*.php` | `includes/data/*.ar.php` |
+| Privacy Policy, Terms | `includes/data/legal.php` | `includes/data/legal.ar.php` |
+
+`t('key')` returns a UI string, substituting `{placeholders}` from its second
+argument. A missing Arabic key falls back to English rather than rendering the key,
+so a half-finished translation degrades quietly instead of breaking a page.
+
+`lang_data('services')` loads `services.ar.php` when the page is Arabic and
+`services.php` otherwise. The `.ar.php` files mirror their English counterpart key
+for key — same slugs, same array lengths, same block types — so both languages
+render through the same templates.
+
+### Editing content
+
+To change wording, edit the language file, not the template. To add a service,
+add the entry to **both** `services.php` and `services.ar.php` using the same slug;
+`icon` and `related` hold slugs and stay identical in both.
+
+### Right-to-left
+
+`<html>` carries `dir="rtl"` and `lang="ar-AE"` on Arabic pages, which flips flex
+rows, grid column order and text alignment on its own. `assets/css/rtl.css` — loaded
+only for Arabic — handles the rest: the physical-side rules, the arrow and chevron
+mirroring, the hero photograph anchor and scrim direction, and the Arabic font stack.
+Phone numbers, dates and the brand name are marked `direction: ltr` so their digits
+do not reorder.
+
+Grid column *numbers* follow the writing direction, so a rule like
+`grid-column: 2` already means the mirrored column in RTL — do not override it.
+
+### Forms
+
+The form endpoints live at `/forms/*.php`, a path with no language prefix, so they
+cannot infer the language from the URL. Each form posts a hidden `form_lang` field
+and `lead_guard()` calls `lang_set()` with it, so validation errors and confirmation
+messages come back in the language the visitor was reading, on the page they
+submitted from.
+
+Stored leads keep English values — the property type and the service name — so the
+leads table and the notification email read consistently whichever language the form
+was filled in.
 
 ---
 
@@ -200,10 +286,13 @@ easiest thing in the world for a competitor to report.
 
 ### 4. Legal pages
 
-`terms-and-conditions.php` contains clearly marked placeholders for payment terms,
-cancellation terms and liability/insurance. These are commercial and legal decisions
-— they must be completed by the business and reviewed by a lawyer.
-`privacy-policy.php` has one placeholder for the data retention period.
+`includes/data/legal.php` contains clearly marked `placeholder` blocks for payment
+terms, cancellation terms and liability/insurance. These are commercial and legal
+decisions — they must be completed by the business and reviewed by a lawyer. There
+is one more placeholder for the data retention period in the privacy policy.
+
+The same placeholders exist in `includes/data/legal.ar.php`. Complete both, and have
+both reviewed: an Arabic contract page is as binding as an English one.
 
 ### 5. Imagery
 
@@ -272,10 +361,16 @@ Keyword-to-page mapping, kept deliberately non-overlapping to avoid cannibalisat
 | `/locations/ajman/` | Movers in Ajman |
 | `/services/<slug>/` | The service intent only (e.g. Villa Movers) |
 
+The Arabic pages target the Arabic terms people actually search in the UAE —
+"نقل أثاث", "شركة نقل عفش" — rather than a literal translation of the English
+titles, and they sit at the mirrored path (`/ar/locations/dubai/` and so on).
+
 Every indexable page has a unique title (≤60 characters), a unique meta description,
 a self-referencing canonical on the production domain, exactly one H1, breadcrumbs
 with matching `BreadcrumbList` schema, and `FAQPage` schema that matches the FAQs
-visible on the page.
+visible on the page — in both languages, each with `hreflang` alternates pointing at
+the other plus `x-default` at English, and both listed in the sitemap with matching
+`xhtml:link` alternates.
 
 The architecture supports future `/dubai/villa-movers/`-style service+location pages,
 but these should only be created where there is genuinely unique content for them.

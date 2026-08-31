@@ -37,29 +37,20 @@ function json_ld(array $data): string
 
 function all_services(): array
 {
-    static $services = null;
-    if ($services === null) {
-        $services = require __DIR__ . '/data/services.php';
-    }
-    return $services;
+    static $services = [];
+    return $services[lang()] ??= lang_data('services');
 }
 
 function all_locations(): array
 {
-    static $locations = null;
-    if ($locations === null) {
-        $locations = require __DIR__ . '/data/locations.php';
-    }
-    return $locations;
+    static $locations = [];
+    return $locations[lang()] ??= lang_data('locations');
 }
 
 function all_posts(): array
 {
-    static $posts = null;
-    if ($posts === null) {
-        $posts = require __DIR__ . '/data/blog.php';
-    }
-    return $posts;
+    static $posts = [];
+    return $posts[lang()] ??= lang_data('blog');
 }
 
 /**
@@ -90,14 +81,22 @@ function all_testimonials(): array
  */
 function example_testimonials(): array
 {
-    return [
-        ['quote' => 'Example text so the card layout can be checked. Replace with a real customer review before going live.',
-         'name' => 'Example Customer', 'city' => 'Dubai', 'rating' => 5, 'date' => '2026-01-10', 'photo' => '', 'source' => 'Example'],
-        ['quote' => 'Placeholder two. Copy your genuine Google reviews into includes/data/testimonials.php.',
-         'name' => 'Example Customer', 'city' => 'Sharjah', 'rating' => 5, 'date' => '2026-01-12', 'photo' => '', 'source' => 'Example'],
-        ['quote' => 'Placeholder three, here only to show the card design. It never appears on the live site.',
-         'name' => 'Example Customer', 'city' => 'Ajman', 'rating' => 5, 'date' => '2026-01-18', 'photo' => '', 'source' => 'Example'],
-    ];
+    $cities = array_values(areas_list());
+    $cards  = [];
+
+    foreach ([1, 2, 3] as $n) {
+        $cards[] = [
+            'quote'  => t('example.quote' . $n),
+            'name'   => t('example.name'),
+            'city'   => $cities[$n - 1] ?? '',
+            'rating' => 5,
+            'date'   => '2026-01-' . str_pad((string) (10 + $n * 2), 2, '0', STR_PAD_LEFT),
+            'photo'  => '',
+            'source' => t('example.source'),
+        ];
+    }
+
+    return $cards;
 }
 
 /**
@@ -172,22 +171,26 @@ function url(string $path = ''): string
 
 function service_url(string $slug): string
 {
-    return '/services/' . $slug . '/';
+    return lang_url('/services/' . $slug . '/');
 }
 
 function location_url(string $slug): string
 {
-    return '/locations/' . $slug . '/';
+    return lang_url('/locations/' . $slug . '/');
 }
 
 function post_url(string $slug): string
 {
-    return '/blog/' . $slug . '/';
+    return lang_url('/blog/' . $slug . '/');
 }
 
-function canonical(string $path): string
+/**
+ * Absolute canonical URL. $path is language-neutral; the current language's
+ * prefix is applied here so each language canonicalises to its own URL.
+ */
+function canonical(string $path, ?string $forLang = null): string
 {
-    return rtrim(CANONICAL_BASE, '/') . url($path);
+    return rtrim(CANONICAL_BASE, '/') . lang_url(url($path), $forLang);
 }
 
 function asset(string $path): string
@@ -278,19 +281,23 @@ function img(string $path, string $alt, array $opts = []): string
         . '</div>';
 }
 
-/** True when $path matches the current request path (for nav highlighting). */
+/**
+ * True when $path matches the current request path (for nav highlighting).
+ * Both sides are compared with the language prefix removed, so /ar/services/
+ * highlights the same nav item as /services/.
+ */
 function is_current(string $path): bool
 {
-    $current = rtrim(strtok($_SERVER['REQUEST_URI'] ?? '/', '?'), '/') ?: '/';
-    $target  = rtrim($path, '/') ?: '/';
+    $current = rtrim(current_path(), '/') ?: '/';
+    $target  = rtrim(preg_replace('#^/ar(?=/|$)#', '', $path) ?? $path, '/') ?: '/';
     return $current === $target;
 }
 
 /** True when the current request sits underneath $path. */
 function is_section(string $path): bool
 {
-    $current = rtrim(strtok($_SERVER['REQUEST_URI'] ?? '/', '?'), '/') ?: '/';
-    $target  = rtrim($path, '/');
+    $current = rtrim(current_path(), '/') ?: '/';
+    $target  = rtrim(preg_replace('#^/ar(?=/|$)#', '', $path) ?? $path, '/');
     return $target !== '' && str_starts_with($current, $target);
 }
 
@@ -301,7 +308,7 @@ function is_section(string $path): bool
 /** Build a WhatsApp deep link with a short, contextual pre-filled message. */
 function whatsapp_url(string $message = ''): string
 {
-    $message = $message !== '' ? $message : 'Hello, I need a moving quote.';
+    $message = $message !== '' ? $message : t('wa.default');
     return WHATSAPP_BASE . '?text=' . rawurlencode($message);
 }
 
@@ -355,12 +362,34 @@ function excerpt(string $text, int $length = 160): string
     return rtrim($pos !== false ? mb_substr($cut, 0, $pos) : $cut, ' ,.;:') . '…';
 }
 
+/**
+ * The service-area city names, in the current language.
+ *
+ * Taken from the locations data rather than the AREAS_SERVED constant, so the
+ * Arabic pages read Arabic city names. The constant stays the fallback and is
+ * still what the structured data uses, where English is correct.
+ */
+function areas_list(): array
+{
+    $names = array_column(all_locations(), 'name');
+    return $names !== [] ? $names : AREAS_SERVED;
+}
+
 /** Human sentence listing the service areas: "Dubai, Sharjah and Ajman". */
 function areas_sentence(): string
 {
-    $areas = AREAS_SERVED;
+    $areas = areas_list();
     $last  = array_pop($areas);
-    return implode(', ', $areas) . ' and ' . $last;
+
+    return $areas === []
+        ? (string) $last
+        : implode(t('misc.list_sep'), $areas) . t('misc.list_and') . $last;
+}
+
+/** The business address as it should read on the page, in the current language. */
+function business_address(): string
+{
+    return t('misc.address');
 }
 
 /* ------------------------------------------------------------------
@@ -399,6 +428,7 @@ function icon(string $name, string $class = 'icon'): string
         'headset'   => '<path d="M4 13v-1a8 8 0 0 1 16 0v1"/><path d="M4 13h2.5a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M20 13h-2.5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1H19a1 1 0 0 0 1-1z"/><path d="M20 19v.5a2.5 2.5 0 0 1-2.5 2.5H13"/>',
         'clipboard' => '<path d="M9 4h6v3H9z"/><path d="M15 5.5h2.5A1.5 1.5 0 0 1 19 7v12.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 19.5V7a1.5 1.5 0 0 1 1.5-1.5H9"/><path d="M8.5 11h7M8.5 14.5h7M8.5 18h4"/>',
         'sparkle'   => '<path d="M12 3.5 13.7 9l5.5 1.7-5.5 1.8L12 18l-1.7-5.5L4.8 10.7 10.3 9z"/><path d="M18.5 3.5 19 5l1.5.5L19 6l-.5 1.5L18 6l-1.5-.5L18 5z"/>',
+        'globe'     => '<circle cx="12" cy="12" r="9"/><path d="M3.2 9.5h17.6M3.2 14.5h17.6"/><path d="M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z"/>',
         'facebook'  => '<path d="M14.5 8.5V6.8c0-.7.5-1.3 1.2-1.3h1.6V2.6h-2.4c-2.2 0-3.6 1.5-3.6 3.8v2.1H8.7v3.1h2.6V21h3.2v-9.4h2.5l.4-3.1z" fill="currentColor" stroke="none"/>',
         'instagram' => '<rect x="3.5" y="3.5" width="17" height="17" rx="4.6"/><circle cx="12" cy="12" r="3.9"/><circle cx="17.1" cy="6.9" r="1.1" fill="currentColor" stroke="none"/>',
         'youtube'   => '<rect x="2.5" y="5.5" width="19" height="13" rx="3.6"/><path d="m10.3 9.4 5 2.6-5 2.6z" fill="currentColor" stroke="none"/>',
@@ -406,6 +436,12 @@ function icon(string $name, string $class = 'icon'): string
     ];
 
     $body = $paths[$name] ?? $paths['check'];
+
+    /* The arrow is the one icon whose meaning is directional — rtl.css
+       mirrors it in Arabic, and needs a hook to select it by. */
+    if ($name === 'arrow') {
+        $class .= ' icon-arrow';
+    }
 
     return '<svg class="' . e($class) . '" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
         . 'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'
@@ -546,22 +582,25 @@ function service_icon(string $name, string $class = 'svc-icon'): string
 /** Phone call-to-action button. */
 function cta_phone(string $style = 'btn btn-phone', string $label = ''): string
 {
-    $label = $label !== '' ? $label : 'Call ' . PHONE_DISPLAY;
+    $label = $label !== '' ? $label : t('cta.call', ['phone' => PHONE_DISPLAY]);
     return '<a href="' . PHONE_LINK . '" class="' . e($style) . ' js-track" data-cta="phone"' . cta_id('phone')
-        . ' aria-label="Call ' . e(PHONE_INTL) . '">' . icon('phone', 'icon icon-sm') . '<span>' . e($label) . '</span></a>';
+        . ' aria-label="' . e(t('cta.call', ['phone' => PHONE_INTL])) . '">'
+        . icon('phone', 'icon icon-sm') . '<span>' . e($label) . '</span></a>';
 }
 
 /** WhatsApp call-to-action button with a contextual message. */
-function cta_whatsapp(string $message = '', string $style = 'btn btn-whatsapp', string $label = 'WhatsApp Us'): string
+function cta_whatsapp(string $message = '', string $style = 'btn btn-whatsapp', string $label = ''): string
 {
+    $label = $label !== '' ? $label : t('cta.whatsapp');
     return '<a href="' . e(whatsapp_url($message)) . '" class="' . e($style) . ' js-track" data-cta="whatsapp"'
-        . cta_id('whatsapp') . ' target="_blank" rel="noopener" aria-label="Message us on WhatsApp">'
+        . cta_id('whatsapp') . ' target="_blank" rel="noopener" aria-label="' . e(t('foot.whatsapp_us')) . '">'
         . icon('whatsapp', 'icon icon-sm') . '<span>' . e($label) . '</span></a>';
 }
 
 /** Quote call-to-action button pointing at the quote form. */
-function cta_quote(string $style = 'btn btn-primary', string $label = 'Get a Free Moving Quote', string $href = '#quote'): string
+function cta_quote(string $style = 'btn btn-primary', string $label = '', string $href = '#quote'): string
 {
+    $label = $label !== '' ? $label : t('cta.quote_long');
     return '<a href="' . e($href) . '" class="' . e($style) . ' js-track" data-cta="quote"' . cta_id('quote') . '>'
         . icon('quote', 'icon icon-sm') . '<span>' . e($label) . '</span></a>';
 }
@@ -573,7 +612,7 @@ function service_card(string $slug, array $service): string
     $html .= '<span class="card-icon">' . icon($service['icon'] ?? 'check', 'icon') . '</span>';
     $html .= '<h3 class="card-title">' . e($service['name']) . '</h3>';
     $html .= '<p class="card-text">' . e($service['short']) . '</p>';
-    $html .= '<span class="card-link">Learn more ' . icon('arrow', 'icon icon-sm') . '</span>';
+    $html .= '<span class="card-link">' . e(t('cta.learn_more')) . ' ' . icon('arrow', 'icon icon-sm') . '</span>';
     $html .= '</a>';
     return $html;
 }
@@ -583,9 +622,9 @@ function location_card(string $slug, array $location): string
 {
     $html  = '<a class="card card-location" href="' . e(location_url($slug)) . '">';
     $html .= '<span class="card-icon">' . icon('pin', 'icon') . '</span>';
-    $html .= '<h3 class="card-title">Movers in ' . e($location['name']) . '</h3>';
+    $html .= '<h3 class="card-title">' . e(t('nav.movers_in', ['city' => $location['name']])) . '</h3>';
     $html .= '<p class="card-text">' . e($location['short']) . '</p>';
-    $html .= '<span class="card-link">View ' . e($location['name']) . ' page ' . icon('arrow', 'icon icon-sm') . '</span>';
+    $html .= '<span class="card-link">' . e(t('cta.learn_more')) . ' ' . icon('arrow', 'icon icon-sm') . '</span>';
     $html .= '</a>';
     return $html;
 }
@@ -594,11 +633,12 @@ function location_card(string $slug, array $location): string
  * Accessible FAQ list. Uses native <details> so it works without JavaScript
  * and stays crawlable — the visible text always matches the FAQPage schema.
  */
-function faq_list(array $faqs, string $heading = 'Frequently asked questions'): string
+function faq_list(array $faqs, string $heading = ''): string
 {
     if ($faqs === []) {
         return '';
     }
+    $heading = $heading !== '' ? $heading : t('sec.faq');
     $html  = '<section class="section section-faq" aria-labelledby="faq-heading">';
     $html .= '<div class="container container-narrow">';
     $html .= '<h2 class="section-title" id="faq-heading">' . e($heading) . '</h2>';
@@ -614,8 +654,9 @@ function faq_list(array $faqs, string $heading = 'Frequently asked questions'): 
 }
 
 /** Related services strip. */
-function related_services(array $slugs, string $heading = 'Related services'): string
+function related_services(array $slugs, string $heading = ''): string
 {
+    $heading  = $heading !== '' ? $heading : t('sec.related');
     $services = all_services();
     $cards    = '';
     foreach ($slugs as $slug) {
@@ -633,9 +674,10 @@ function related_services(array $slugs, string $heading = 'Related services'): s
 }
 
 /** Related locations strip. */
-function related_locations(string $heading = 'Areas we cover'): string
+function related_locations(string $heading = ''): string
 {
-    $cards = '';
+    $heading = $heading !== '' ? $heading : t('misc.areas_served');
+    $cards   = '';
     foreach (all_locations() as $slug => $location) {
         $cards .= location_card($slug, $location);
     }

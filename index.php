@@ -27,10 +27,10 @@ $featured = ['home-movers', 'furniture-movers', 'office-commercial-movers', 'stu
              'villa-movers', 'warehousing-storage', 'packing-unpacking'];
 
 seo_set([
-    'title'       => 'Movers and Packers in Dubai, Sharjah & Ajman',
-    'description' => 'Movers and packers based in Sharjah, serving Dubai, Sharjah and Ajman. Home, villa, apartment and office moving with packing and storage. Call 055 658 1781.',
+    'title'       => t('page.home.title'),
+    'description' => t('page.home.desc'),
     'path'        => '/',
-    'breadcrumbs' => [['label' => 'Home', 'url' => '/']],
+    'breadcrumbs' => [['label' => t('crumb.home'), 'url' => '/']],
     'quote_anchor'=> '#quote',
 ]);
 
@@ -41,35 +41,32 @@ require __DIR__ . '/includes/header.php';
 <section class="hero-home">
   <div class="container hero-home-inner">
     <div class="hero-home-copy">
-      <span class="eyebrow">Safe, reliable, affordable</span>
-      <h1>Professional Movers &amp; Packers in Dubai, Sharjah &amp; Ajman</h1>
-      <p class="hero-home-sub">
-        We make your move simple, safe and stress-free — with expert packing, careful
-        furniture handling and on-time delivery.
-      </p>
+      <span class="eyebrow"><?= e(t('page.home.eyebrow')) ?></span>
+      <h1><?= e(t('page.home.h1')) ?></h1>
+      <p class="hero-home-sub"><?= e(t('page.home.sub')) ?></p>
 
       <div class="hero-trust">
         <div class="hero-trust-item">
-          <?= icon('users', 'icon') ?><span>Trained professionals</span>
+          <?= icon('users', 'icon') ?><span><?= e(t('page.home.trust1')) ?></span>
         </div>
         <div class="hero-trust-item">
-          <?= icon('shield', 'icon') ?><span>Safe &amp; secure handling</span>
+          <?= icon('shield', 'icon') ?><span><?= e(t('page.home.trust2')) ?></span>
         </div>
         <div class="hero-trust-item">
-          <?= icon('clock', 'icon') ?><span>On-time delivery</span>
+          <?= icon('clock', 'icon') ?><span><?= e(t('page.home.trust3')) ?></span>
         </div>
       </div>
 
       <div class="btn-row">
         <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
-           <?= cta_id('phone') ?> aria-label="Call <?= e(PHONE_INTL) ?>">
+           <?= cta_id('phone') ?> aria-label="<?= e(t('cta.call', ['phone' => PHONE_INTL])) ?>">
           <?= icon('phone', 'icon') ?>
           <span class="btn-stack">
-            <small>Call Now</small>
+            <small><?= e(t('cta.call_now')) ?></small>
             <strong><?= e(PHONE_DISPLAY) ?></strong>
           </span>
         </a>
-        <?= cta_quote('btn btn-primary btn-lg', 'Get a Free Quote', '#quote') ?>
+        <?= cta_quote('btn btn-primary btn-lg', t('cta.quote'), '#quote') ?>
       </div>
     </div>
 
@@ -83,7 +80,7 @@ require __DIR__ . '/includes/header.php';
 <section class="section" id="services">
   <div class="container">
     <div class="heading-rule">
-      <h2>Our Moving Services</h2>
+      <h2><?= e(t('sec.services')) ?></h2>
     </div>
 
     <div class="service-strip" style="--cols:8">
@@ -95,16 +92,16 @@ require __DIR__ . '/includes/header.php';
         </a>
       <?php endforeach; ?>
 
-      <a class="service-tile" href="/services/">
+      <a class="service-tile" href="<?= e(lang_url('/services/')) ?>">
         <span class="service-tile-icon"><?= service_icon('truck') ?></span>
-        <h3>And More Services</h3>
-        <p>Loading, assembly, local moving and car transport.</p>
+        <h3><?= e(t('sec.and_more')) ?></h3>
+        <p><?= e(t('sec.and_more_text')) ?></p>
       </a>
     </div>
 
     <div class="service-strip-foot">
-      <a href="/services/" class="btn btn-phone">
-        <span>View All Services</span><?= icon('arrow', 'icon icon-sm') ?>
+      <a href="<?= e(lang_url('/services/')) ?>" class="btn btn-phone">
+        <span><?= e(t('cta.view_services')) ?></span><?= icon('arrow', 'icon icon-sm') ?>
       </a>
     </div>
   </div>
@@ -121,26 +118,20 @@ require __DIR__ . '/includes/header.php';
       </div>
 
       <div>
-        <span class="eyebrow">Why choose us</span>
-        <h2>We Make Moving Easy For You</h2>
-        <p>
-          With trained crews, proper packing materials and a plan made before the day starts,
-          your belongings are in safe hands — and you know what the move will cost before
-          anyone lifts anything.
-        </p>
+        <span class="eyebrow"><?= e(t('page.home.why_eyebrow')) ?></span>
+        <h2><?= e(t('page.home.why_h2')) ?></h2>
+        <p><?= e(t('page.home.why_p')) ?></p>
 
         <ul class="why-list">
-          <li><?= icon('check', 'icon') ?><span>Trained, experienced moving crews</span></li>
-          <li><?= icon('check', 'icon') ?><span>On-time arrival and delivery</span></li>
-          <li><?= icon('check', 'icon') ?><span>Careful, fully protected handling</span></li>
-          <li><?= icon('check', 'icon') ?><span>Furniture dismantling and reassembly</span></li>
-          <li><?= icon('check', 'icon') ?><span>Transparent pricing, quoted in advance</span></li>
-          <li><?= icon('check', 'icon') ?><span><?= e(areas_sentence()) ?> coverage</span></li>
+          <?php foreach (['why1', 'why2', 'why3', 'why4', 'why5'] as $homeWhy): ?>
+            <li><?= icon('check', 'icon') ?><span><?= e(t('page.home.' . $homeWhy)) ?></span></li>
+          <?php endforeach; ?>
+          <li><?= icon('check', 'icon') ?><span><?= e(t('page.home.why6', ['areas' => areas_sentence()])) ?></span></li>
         </ul>
 
         <div class="btn-row" style="margin-top: var(--sp-6);">
-          <?= cta_quote('btn btn-primary', 'Get a Free Quote', '#quote') ?>
-          <a href="/about-us/" class="btn btn-outline">More about us</a>
+          <?= cta_quote('btn btn-primary', t('cta.quote'), '#quote') ?>
+          <a href="<?= e(lang_url('/about-us/')) ?>" class="btn btn-outline"><?= e(t('cta.more_about')) ?></a>
         </div>
       </div>
     </div>
@@ -151,40 +142,18 @@ require __DIR__ . '/includes/header.php';
 <section class="section">
   <div class="container">
     <div class="heading-rule">
-      <h2>Our Moving Process</h2>
+      <h2><?= e(t('sec.process')) ?></h2>
     </div>
 
     <ol class="process-row">
-      <li class="process-item">
-        <span class="process-icon"><?= icon('phone', 'icon') ?></span>
-        <span class="process-num">01</span>
-        <h3>Contact Us</h3>
-        <p>Reach out by call, WhatsApp or the form on this page.</p>
-      </li>
-      <li class="process-item">
-        <span class="process-icon"><?= icon('clipboard', 'icon') ?></span>
-        <span class="process-num">02</span>
-        <h3>Get a Free Quote</h3>
-        <p>Share your move details and we quote against what is actually there.</p>
-      </li>
-      <li class="process-item">
-        <span class="process-icon"><?= icon('box', 'icon') ?></span>
-        <span class="process-num">03</span>
-        <h3>Plan Your Move</h3>
-        <p>We confirm crew, vehicle, access and timing, then pack and protect.</p>
-      </li>
-      <li class="process-item">
-        <span class="process-icon"><?= icon('truck', 'icon') ?></span>
-        <span class="process-num">04</span>
-        <h3>We Move Safely</h3>
-        <p>Loaded in a planned order, strapped, and driven straight to the new address.</p>
-      </li>
-      <li class="process-item">
-        <span class="process-icon"><?= icon('home', 'icon') ?></span>
-        <span class="process-num">05</span>
-        <h3>Settle In</h3>
-        <p>Furniture reassembled, cartons in their rooms, and a final check with you.</p>
-      </li>
+      <?php foreach (['phone', 'clipboard', 'box', 'truck', 'home'] as $homeStep => $homeIcon): ?>
+        <li class="process-item">
+          <span class="process-icon"><?= icon($homeIcon, 'icon') ?></span>
+          <span class="process-num"><?= str_pad((string) ($homeStep + 1), 2, '0', STR_PAD_LEFT) ?></span>
+          <h3><?= e(t('page.home.step' . ($homeStep + 1) . '_t')) ?></h3>
+          <p><?= e(t('page.home.step' . ($homeStep + 1) . '_p')) ?></p>
+        </li>
+      <?php endforeach; ?>
     </ol>
   </div>
 </section>
@@ -194,41 +163,26 @@ require __DIR__ . '/includes/header.php';
   <div class="container">
     <div class="serve-grid">
       <div>
-        <span class="eyebrow">We serve</span>
+        <span class="eyebrow"><?= e(t('sec.serve')) ?></span>
         <h2 class="serve-cities">
-          Dubai <span class="dot">&bull;</span> Sharjah <span class="dot">&bull;</span> Ajman
+          <?php foreach (areas_list() as $homeArea => $homeCity): ?>
+            <?= $homeArea > 0 ? '<span class="dot">&bull;</span>' : '' ?><?= e($homeCity) ?>
+          <?php endforeach; ?>
         </h2>
-        <p>
-          Wherever you are moving within Dubai, Sharjah or Ajman — or between them — we
-          treat all three emirates as one service area, so a cross-emirate move is a
-          single-day job rather than a handover between companies.
-        </p>
+        <p><?= e(t('page.home.serve_p')) ?></p>
 
         <div class="help-box">
           <?= icon('headset', 'icon') ?>
           <div>
-            <small>Need help? Call us anytime</small>
+            <small><?= e(t('page.home.help_label')) ?></small>
             <strong><a href="<?= PHONE_LINK ?>" class="js-track" data-cta="phone"><?= e(PHONE_DISPLAY) ?></a></strong>
           </div>
         </div>
       </div>
 
-      <div class="city-cards">
-        <?php foreach ($locations as $citySlug => $city): ?>
-          <a class="city-card" href="<?= e(location_url($citySlug)) ?>">
-            <span class="city-card-media">
-              <?= img('locations/' . $citySlug . '.webp',
-                      'Movers and packers serving ' . $city['name'] . ', UAE',
-                      ['width' => 800, 'height' => 600, 'icon' => 'building']) ?>
-            </span>
-            <span class="city-card-body">
-              <h3>Movers in <?= e($city['name']) ?></h3>
-              <p><?= e($city['short']) ?></p>
-              <span class="card-link">Learn more <?= icon('arrow', 'icon icon-sm') ?></span>
-            </span>
-          </a>
-        <?php endforeach; ?>
-      </div>
+      <?php
+      require __DIR__ . '/includes/city-cards.php';
+      ?>
     </div>
   </div>
 </section>
@@ -249,30 +203,29 @@ $pages   = (int) ceil(count($reviews) / 3);
 <section class="section reviews" aria-labelledby="reviews-heading">
   <div class="container reviews-grid">
     <div class="reviews-intro">
-      <h2 id="reviews-heading"><?= e(REVIEWS_HEADING) ?></h2>
+      <h2 id="reviews-heading"><?= e(t('sec.reviews')) ?></h2>
 
       <?php if ($average !== null): ?>
         <div class="stars" role="img"
-             aria-label="Average rating <?= e((string) $average) ?> out of 5 from <?= count($reviews) ?> reviews">
+             aria-label="<?= e(t('page.home.rating_aria', ['score' => $average, 'count' => count($reviews)])) ?>">
           <?php for ($i = 1; $i <= 5; $i++): ?>
             <?= icon('star', 'icon' . ($i <= round($average) ? '' : ' is-empty')) ?>
           <?php endfor; ?>
         </div>
         <p class="reviews-score">
-          <strong><?= e(number_format($average, 1)) ?></strong> out of 5
-          &middot; <?= count($reviews) ?> <?= count($reviews) === 1 ? 'review' : 'reviews' ?>
+          <strong><?= e(number_format($average, 1)) ?></strong> <?= e(t('page.home.out_of')) ?>
+          &middot; <?= count($reviews) ?>
+          <?= e(t(count($reviews) === 1 ? 'page.home.review_one' : 'page.home.review_many')) ?>
         </p>
       <?php endif; ?>
 
-      <p>Rated by our customers for careful handling, clear pricing and turning up on time.</p>
+      <p><?= e(t('page.home.reviews_lead')) ?></p>
     </div>
 
     <div class="reviews-main">
       <?php if ($isExample): ?>
         <p class="reviews-dev-note">
-          <strong>Local preview only.</strong> These cards are placeholders so you can see the
-          design. Add your real reviews to <code>includes/data/testimonials.php</code> — on the
-          live site this section stays hidden until you do.
+          <strong><?= e(t('page.home.dev_note_t')) ?></strong> <?= e(t('page.home.dev_note')) ?>
         </p>
       <?php endif; ?>
 
@@ -282,7 +235,7 @@ $pages   = (int) ceil(count($reviews) / 3);
             <span class="review-mark" aria-hidden="true">&ldquo;</span>
 
             <?php if (!empty($review['rating'])): ?>
-              <div class="stars stars-sm" role="img" aria-label="<?= (int) $review['rating'] ?> out of 5 stars">
+              <div class="stars stars-sm" role="img" aria-label="<?= e(t('page.home.stars_aria', ['n' => (int) $review['rating']])) ?>">
                 <?php for ($n = 1; $n <= 5; $n++): ?>
                   <?= icon('star', 'icon' . ($n <= (int) $review['rating'] ? '' : ' is-empty')) ?>
                 <?php endfor; ?>
@@ -308,11 +261,11 @@ $pages   = (int) ceil(count($reviews) / 3);
       </div>
 
       <?php if ($pages > 1): ?>
-        <div class="review-dots" role="tablist" aria-label="Review pages">
+        <div class="review-dots" role="tablist" aria-label="<?= e(t('page.home.pages_aria')) ?>">
           <?php for ($p = 0; $p < $pages; $p++): ?>
             <button type="button" class="review-dot<?= $p === 0 ? ' is-active' : '' ?>"
                     role="tab" aria-selected="<?= $p === 0 ? 'true' : 'false' ?>"
-                    data-page="<?= $p ?>" aria-label="Show reviews page <?= $p + 1 ?>"></button>
+                    data-page="<?= $p ?>" aria-label="<?= e(t('page.home.page_aria', ['n' => $p + 1])) ?>"></button>
           <?php endfor; ?>
         </div>
       <?php endif; ?>
@@ -321,29 +274,9 @@ $pages   = (int) ceil(count($reviews) / 3);
 </section>
 <?php endif; ?>
 
-<!-- ======================================================= CTA band ====== -->
-<section class="cta-gold">
-  <div class="container cta-gold-inner">
-    <div class="cta-gold-media">
-      <?= img('cta-boxes.webp', '', ['width' => 600, 'height' => 450, 'icon' => 'box']) ?>
-    </div>
-    <div>
-      <h2>Planning a Move? Get Your Free Quote Today!</h2>
-      <p>Quick, easy and obligation-free.</p>
-    </div>
-    <div class="cta-gold-actions">
-      <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
-         aria-label="Call <?= e(PHONE_INTL) ?>">
-        <?= icon('phone', 'icon') ?>
-        <span class="btn-stack">
-          <small>Call Now</small>
-          <strong><?= e(PHONE_DISPLAY) ?></strong>
-        </span>
-      </a>
-      <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-white btn-lg') ?>
-    </div>
-  </div>
-</section>
+<?php
+require __DIR__ . '/includes/cta-band.php';
+?>
 
 <!-- ==================================================== Quote form ====== -->
 <section class="section section-alt">

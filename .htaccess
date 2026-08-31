@@ -53,7 +53,29 @@ RewriteRule ^(.+)$ /$1/ [R=301,L,NE]
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
 # ------------------------------------------------------------------------
-# 6. Clean URLs -> real files
+# 6. Arabic — /ar/... is served by the same PHP files as English
+#    /ar/                            -> index.php
+#    /ar/services/                   -> services/index.php
+#    /ar/services/villa-movers/      -> services/villa-movers.php
+#
+#    The rewrite is internal, so REQUEST_URI still carries the /ar prefix and
+#    includes/i18n.php reads the language back out of it. router.php does the
+#    same thing for the local development server.
+# ------------------------------------------------------------------------
+RewriteRule ^ar/?$ index.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/$1index.php -f
+RewriteRule ^ar/(.*/)?$ $1index.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/$1.php -f
+RewriteRule ^ar/(.+?)/?$ $1.php [L]
+
+# ------------------------------------------------------------------------
+# 7. Clean URLs -> real files
 #    /about-us/                  -> about-us.php
 #    /services/villa-movers/     -> services/villa-movers.php
 #    /locations/dubai/           -> locations/dubai.php
@@ -72,13 +94,13 @@ RewriteRule ^(.+?)/?$ $1.php [L]
 </IfModule>
 
 # ------------------------------------------------------------------------
-# 7. Error documents
+# 8. Error documents
 # ------------------------------------------------------------------------
 ErrorDocument 404 /404.php
 ErrorDocument 403 /404.php
 
 # ------------------------------------------------------------------------
-# 8. Security headers
+# 9. Security headers
 # ------------------------------------------------------------------------
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"
@@ -104,7 +126,7 @@ ErrorDocument 403 /404.php
 </IfModule>
 
 # ------------------------------------------------------------------------
-# 9. Protect sensitive files and directories
+# 10. Protect sensitive files and directories
 # ------------------------------------------------------------------------
 <FilesMatch "^\.">
   Require all denied
@@ -117,7 +139,7 @@ ErrorDocument 403 /404.php
 RedirectMatch 404 ^/(storage|database|includes)(/|$)
 
 # ------------------------------------------------------------------------
-# 10. Compression
+# 11. Compression
 # ------------------------------------------------------------------------
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
@@ -134,7 +156,7 @@ RedirectMatch 404 ^/(storage|database|includes)(/|$)
 </IfModule>
 
 # ------------------------------------------------------------------------
-# 11. Browser caching
+# 12. Browser caching
 #     Assets are versioned with ?v= in the markup, so they can cache hard.
 # ------------------------------------------------------------------------
 <IfModule mod_expires.c>
@@ -170,7 +192,7 @@ RedirectMatch 404 ^/(storage|database|includes)(/|$)
 </IfModule>
 
 # ------------------------------------------------------------------------
-# 12. Correct MIME types
+# 13. Correct MIME types
 # ------------------------------------------------------------------------
 <IfModule mod_mime.c>
   AddType image/webp            .webp

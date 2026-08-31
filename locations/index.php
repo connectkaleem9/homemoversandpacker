@@ -11,20 +11,18 @@ require_once dirname(__DIR__) . '/includes/bootstrap.php';
 $locations = all_locations();
 $services  = all_services();
 
-$faqs = [
-    ['q' => 'Which emirates do you serve?', 'a' => 'Dubai, Sharjah and Ajman. We are based in Sharjah, UAE, and moves between all three emirates are part of our normal service rather than a special arrangement.'],
-    ['q' => 'Do you move between emirates in one day?', 'a' => 'For most households, yes. Dubai, Sharjah and Ajman are close enough that a full household move along any of those routes is usually completed in a single day, subject to the volume of contents and the building access at both ends.'],
-    ['q' => 'Do you charge more for a cross-emirate move?', 'a' => 'The distance is only one factor and, over these routes, a small one. The bigger cost drivers are the volume of belongings, the packing required and the access at each address. Tell us both addresses and we will quote the actual job.'],
-    ['q' => 'Do you cover areas outside these three emirates?', 'a' => 'Dubai, Sharjah and Ajman are our service area, which is what lets us keep response times short and schedules reliable. If your move involves an address just outside it, call us and we will tell you honestly whether we can help.'],
-];
+$faqs = [];
+foreach ([1, 2, 3, 4] as $n) {
+    $faqs[] = ['q' => t('page.locations.faq' . $n . '_q'), 'a' => t('page.locations.faq' . $n . '_a')];
+}
 
 seo_set([
-    'title'       => 'Movers in Dubai, Sharjah & Ajman | Service Areas',
-    'description' => 'Movers and packers serving Dubai, Sharjah and Ajman from our Sharjah base. Local and cross-emirate household and commercial moves. Call 055 658 1781.',
+    'title'       => t('page.locations.title'),
+    'description' => t('page.locations.desc'),
     'path'        => '/locations/',
     'breadcrumbs' => [
-        ['label' => 'Home', 'url' => '/'],
-        ['label' => 'Locations', 'url' => '/locations/'],
+        ['label' => t('crumb.home'), 'url' => '/'],
+        ['label' => t('crumb.locations'), 'url' => '/locations/'],
     ],
     'schema'      => [schema_faq($faqs)],
     'quote_anchor'=> '#quote',
@@ -37,25 +35,22 @@ require dirname(__DIR__) . '/includes/header.php';
 <section class="hero-home hero-compact">
   <div class="container hero-home-inner">
     <div class="hero-home-copy">
-      <span class="eyebrow">Service areas</span>
-      <h1>Movers &amp; Packers Serving Dubai, Sharjah &amp; Ajman</h1>
-      <p class="hero-home-sub">
-        We are based in <?= e(BUSINESS_ADDRESS) ?> and work across all three emirates daily —
-        which is why cross-emirate moves are ordinary work for us.
-      </p>
+      <span class="eyebrow"><?= e(t('page.locations.eyebrow')) ?></span>
+      <h1><?= e(t('page.locations.h1')) ?></h1>
+      <p class="hero-home-sub"><?= e(t('page.locations.sub', ['address' => business_address()])) ?></p>
 
       <div class="hero-trust">
-        <div class="hero-trust-item"><?= icon('pin', 'icon') ?><span>Three emirates</span></div>
-        <div class="hero-trust-item"><?= icon('route', 'icon') ?><span>Single-day moves</span></div>
-        <div class="hero-trust-item"><?= icon('quote', 'icon') ?><span>Free quotation</span></div>
+        <div class="hero-trust-item"><?= icon('pin', 'icon') ?><span><?= e(t('misc.three_emirates')) ?></span></div>
+        <div class="hero-trust-item"><?= icon('route', 'icon') ?><span><?= e(t('page.locations.trust2')) ?></span></div>
+        <div class="hero-trust-item"><?= icon('quote', 'icon') ?><span><?= e(t('misc.free_quotation')) ?></span></div>
       </div>
 
       <div class="btn-row">
-        <?= cta_quote('btn btn-primary btn-lg', 'Get a Free Quote', '#quote') ?>
+        <?= cta_quote('btn btn-primary btn-lg', t('cta.quote'), '#quote') ?>
         <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
-           <?= cta_id('phone') ?> aria-label="Call <?= e(PHONE_INTL) ?>">
+           <?= cta_id('phone') ?> aria-label="<?= e(t('cta.call', ['phone' => PHONE_INTL])) ?>">
           <?= icon('phone', 'icon') ?>
-          <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
+          <span class="btn-stack"><small><?= e(t('cta.call_now')) ?></small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
         </a>
       </div>
     </div>
@@ -71,29 +66,15 @@ require dirname(__DIR__) . '/includes/header.php';
 <section class="section">
   <div class="container">
     <div class="heading-rule">
-      <h2>Choose Your Emirate</h2>
+      <h2><?= e(t('sec.choose_emirate')) ?></h2>
     </div>
     <p class="section-lead" style="text-align:center; margin-bottom: var(--sp-5);">
-      Each page covers the moving scenarios, property types and practical considerations
-      specific to that emirate.
+      <?= e(t('page.locations.choose_lead')) ?>
     </p>
 
-    <div class="city-cards">
-      <?php foreach ($locations as $citySlug => $city): ?>
-        <a class="city-card" href="<?= e(location_url($citySlug)) ?>">
-          <span class="city-card-media">
-            <?= img('locations/' . $citySlug . '.webp',
-                    'Movers and packers serving ' . $city['name'] . ', UAE',
-                    ['width' => 900, 'height' => 600, 'icon' => 'building']) ?>
-          </span>
-          <span class="city-card-body">
-            <h3>Movers in <?= e($city['name']) ?></h3>
-            <p><?= e($city['short']) ?></p>
-            <span class="card-link">Learn more <?= icon('arrow', 'icon icon-sm') ?></span>
-          </span>
-        </a>
-      <?php endforeach; ?>
-    </div>
+    <?php
+    require dirname(__DIR__) . '/includes/city-cards.php';
+    ?>
   </div>
 </section>
 
@@ -107,27 +88,15 @@ require dirname(__DIR__) . '/includes/header.php';
       </div>
 
       <div>
-        <span class="eyebrow">Why it matters</span>
-        <h2>One Service Area, Three Emirates</h2>
-        <p>
-          Dubai, Sharjah and Ajman sit close enough together that people move between them
-          constantly. Treating the three as a single service area is what makes those moves
-          straightforward: one crew, one vehicle, one day, rather than a handover between
-          companies at an emirate border.
-        </p>
-        <p>
-          Being based in Sharjah puts us in the middle of that area. Sharjah jobs get the
-          shortest response times, Ajman is a short run north, and Dubai is close enough that
-          we work there every day.
-        </p>
+        <span class="eyebrow"><?= e(t('page.locations.why_eyebrow')) ?></span>
+        <h2><?= e(t('page.locations.why_h2')) ?></h2>
+        <p><?= e(t('page.locations.why_p1')) ?></p>
+        <p><?= e(t('page.locations.why_p2')) ?></p>
 
         <ul class="why-list">
-          <li><?= icon('check', 'icon') ?><span>Sharjah to Dubai — our most frequent route</span></li>
-          <li><?= icon('check', 'icon') ?><span>Dubai to Sharjah — same-day for most homes</span></li>
-          <li><?= icon('check', 'icon') ?><span>Ajman to Sharjah — a short run</span></li>
-          <li><?= icon('check', 'icon') ?><span>Ajman to Dubai — a single-day move</span></li>
-          <li><?= icon('check', 'icon') ?><span>Dubai to Ajman — planned around access</span></li>
-          <li><?= icon('check', 'icon') ?><span>Within any one emirate</span></li>
+          <?php foreach (range(1, 6) as $locWhy): ?>
+            <li><?= icon('check', 'icon') ?><span><?= e(t('page.locations.why' . $locWhy)) ?></span></li>
+          <?php endforeach; ?>
         </ul>
       </div>
     </div>
@@ -138,7 +107,7 @@ require dirname(__DIR__) . '/includes/header.php';
 <section class="section">
   <div class="container">
     <div class="heading-rule">
-      <h2>Available Across All Three</h2>
+      <h2><?= e(t('page.locations.avail_h2')) ?></h2>
     </div>
     <div class="service-strip service-strip-wrap">
       <?php foreach ($services as $svcSlug => $svc): ?>
@@ -152,39 +121,24 @@ require dirname(__DIR__) . '/includes/header.php';
   </div>
 </section>
 
-<?= faq_list($faqs, 'Questions about our service areas') ?>
+<?= faq_list($faqs, t('page.locations.faq_h')) ?>
 
 <!-- ==================================================== Quote form ====== -->
 <section class="section">
   <div class="container container-narrow">
     <?php
-    $quoteHeading = 'Get a Free Moving Quote';
-    $quoteIntro   = 'Tell us both addresses and we will confirm access, timing and price for that specific route.';
+    $quoteHeading = t('page.locations.q_head');
+    $quoteIntro   = t('page.locations.q_intro');
     $quoteSource  = 'locations-index';
     require dirname(__DIR__) . '/includes/quote-form.php';
     ?>
   </div>
 </section>
 
-<!-- ======================================================= CTA band ====== -->
-<section class="cta-gold">
-  <div class="container cta-gold-inner">
-    <div class="cta-gold-media">
-      <?= img('cta-boxes.webp', '', ['width' => 600, 'height' => 450, 'icon' => 'box']) ?>
-    </div>
-    <div>
-      <h2>Moving Between Emirates?</h2>
-      <p>Most household moves between Dubai, Sharjah and Ajman are done in a single day.</p>
-    </div>
-    <div class="cta-gold-actions">
-      <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
-         aria-label="Call <?= e(PHONE_INTL) ?>">
-        <?= icon('phone', 'icon') ?>
-        <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
-      </a>
-      <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-white btn-lg') ?>
-    </div>
-  </div>
-</section>
+<?php
+$bandTitle    = t('band.between_title');
+$bandSub      = t('band.between_sub');
+require dirname(__DIR__) . '/includes/cta-band.php';
+?>
 
 <?php require dirname(__DIR__) . '/includes/footer.php'; ?>

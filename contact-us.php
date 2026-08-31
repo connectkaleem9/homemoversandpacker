@@ -15,20 +15,18 @@ $locations = all_locations();
 
 $contactHero = image_exists('contact-hero.jpg') ? 'contact-hero.jpg' : 'hero-movers-dubai.jpg';
 
-$faqs = [
-    ['q' => 'What is the fastest way to get a quote?', 'a' => 'WhatsApp. Send a short video walkthrough of the property along with your two addresses and preferred date, and we can usually respond with a specific quotation quickly. Calling works equally well if you would rather talk it through.'],
-    ['q' => 'Do you charge for a survey or quotation?', 'a' => 'No. Quotations are free and carry no obligation, including on-site surveys for villas and commercial premises.'],
-    ['q' => 'What information should I have ready?', 'a' => 'The current and new addresses, the property type, the floor and lift situation at both ends, your preferred date, and whether you want packing included. That is usually enough for an accurate quotation.'],
-    ['q' => 'Do you serve Dubai, Sharjah and Ajman?', 'a' => 'Yes, all three, including moves between them. We are based in Sharjah, UAE.'],
-];
+$faqs = [];
+foreach ([1, 2, 3, 4] as $n) {
+    $faqs[] = ['q' => t('page.contact.faq' . $n . '_q'), 'a' => t('page.contact.faq' . $n . '_a')];
+}
 
 seo_set([
-    'title'       => 'Contact Us | Get a Free Moving Quote',
-    'description' => 'Contact Home Movers & Packers for a free moving quote. Call 055 658 1781 or WhatsApp us. Based in Sharjah, UAE, serving Dubai, Sharjah and Ajman.',
+    'title'       => t('page.contact.title'),
+    'description' => t('page.contact.desc'),
     'path'        => '/contact-us/',
     'breadcrumbs' => [
-        ['label' => 'Home', 'url' => '/'],
-        ['label' => 'Contact Us', 'url' => '/contact-us/'],
+        ['label' => t('crumb.home'), 'url' => '/'],
+        ['label' => t('nav.contact'), 'url' => '/contact-us/'],
     ],
     'schema'      => [schema_faq($faqs)],
     'quote_anchor'=> '#quote',
@@ -41,26 +39,23 @@ require __DIR__ . '/includes/header.php';
 <section class="hero-home hero-compact">
   <div class="container hero-home-inner">
     <div class="hero-home-copy">
-      <span class="eyebrow">Contact us</span>
-      <h1>Get a Free Moving Quote</h1>
-      <p class="hero-home-sub">
-        Call, WhatsApp or send us your move details. We will confirm what is involved and
-        come back with a clear, specific quotation — no obligation.
-      </p>
+      <span class="eyebrow"><?= e(t('page.contact.eyebrow')) ?></span>
+      <h1><?= e(t('page.contact.h1')) ?></h1>
+      <p class="hero-home-sub"><?= e(t('page.contact.sub')) ?></p>
 
       <div class="hero-trust">
-        <div class="hero-trust-item"><?= icon('quote', 'icon') ?><span>Free quotation</span></div>
-        <div class="hero-trust-item"><?= icon('clock', 'icon') ?><span>Quick response</span></div>
+        <div class="hero-trust-item"><?= icon('quote', 'icon') ?><span><?= e(t('misc.free_quotation')) ?></span></div>
+        <div class="hero-trust-item"><?= icon('clock', 'icon') ?><span><?= e(t('page.contact.trust2')) ?></span></div>
         <div class="hero-trust-item"><?= icon('pin', 'icon') ?><span><?= e(areas_sentence()) ?></span></div>
       </div>
 
       <div class="btn-row">
         <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
-           <?= cta_id('phone') ?> aria-label="Call <?= e(PHONE_INTL) ?>">
+           <?= cta_id('phone') ?> aria-label="<?= e(t('cta.call', ['phone' => PHONE_INTL])) ?>">
           <?= icon('phone', 'icon') ?>
-          <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
+          <span class="btn-stack"><small><?= e(t('cta.call_now')) ?></small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
         </a>
-        <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-whatsapp btn-lg') ?>
+        <?= cta_whatsapp('', 'btn btn-whatsapp btn-lg') ?>
       </div>
     </div>
 
@@ -75,37 +70,37 @@ require __DIR__ . '/includes/header.php';
 <section class="section">
   <div class="container">
     <div class="heading-rule">
-      <h2>How to Reach Us</h2>
+      <h2><?= e(t('page.contact.reach_h2')) ?></h2>
     </div>
 
     <div class="grid grid-4 contact-methods">
       <a class="card contact-card js-track" href="<?= PHONE_LINK ?>" data-cta="phone">
         <span class="card-icon-plain"><?= service_icon('route') ?></span>
-        <h3 class="card-title">Call us</h3>
+        <h3 class="card-title"><?= e(t('page.contact.m1_t')) ?></h3>
         <p class="contact-value"><?= e(PHONE_DISPLAY) ?></p>
-        <p class="card-text">Fastest for anything urgent or complicated.</p>
+        <p class="card-text"><?= e(t('page.contact.m1_p')) ?></p>
       </a>
 
-      <a class="card contact-card js-track" href="<?= e(whatsapp_url('Hello, I need a moving quote.')) ?>"
+      <a class="card contact-card js-track" href="<?= e(whatsapp_url()) ?>"
          data-cta="whatsapp" target="_blank" rel="noopener">
         <span class="card-icon-plain"><?= service_icon('box') ?></span>
-        <h3 class="card-title">WhatsApp</h3>
+        <h3 class="card-title"><?= e(t('page.contact.m2_t')) ?></h3>
         <p class="contact-value"><?= e(PHONE_DISPLAY) ?></p>
-        <p class="card-text">Send a short video of the property for the quickest quote.</p>
+        <p class="card-text"><?= e(t('page.contact.m2_p')) ?></p>
       </a>
 
       <a class="card contact-card js-track" href="mailto:<?= e(EMAIL_ADDRESS) ?>" data-cta="email">
         <span class="card-icon-plain"><?= service_icon('tools') ?></span>
-        <h3 class="card-title">Email</h3>
+        <h3 class="card-title"><?= e(t('page.contact.m3_t')) ?></h3>
         <p class="contact-value contact-value-sm"><?= e(EMAIL_ADDRESS) ?></p>
-        <p class="card-text">Good for detailed enquiries and office relocations.</p>
+        <p class="card-text"><?= e(t('page.contact.m3_p')) ?></p>
       </a>
 
       <div class="card contact-card">
         <span class="card-icon-plain"><?= service_icon('home') ?></span>
-        <h3 class="card-title">Where we are</h3>
-        <p class="contact-value"><?= e(BUSINESS_ADDRESS) ?></p>
-        <p class="card-text">Serving <?= e(areas_sentence()) ?>.</p>
+        <h3 class="card-title"><?= e(t('page.contact.m4_t')) ?></h3>
+        <p class="contact-value"><?= e(business_address()) ?></p>
+        <p class="card-text"><?= e(t('page.contact.m4_p', ['areas' => areas_sentence()])) ?></p>
       </div>
     </div>
   </div>
@@ -115,14 +110,14 @@ require __DIR__ . '/includes/header.php';
 <section class="section section-alt">
   <div class="container">
     <div class="heading-rule">
-      <h2>Request Your Free Quote</h2>
+      <h2><?= e(t('page.contact.req_h2')) ?></h2>
     </div>
 
     <div class="contact-grid">
       <div>
         <?php
-        $quoteHeading = 'Tell us about your move';
-        $quoteIntro   = 'Fill in what you know — we will follow up for anything else. Required fields are marked.';
+        $quoteHeading = t('page.contact.q_head');
+        $quoteIntro   = t('page.contact.q_intro');
         $quoteSource  = 'contact-page';
         require __DIR__ . '/includes/quote-form.php';
         ?>
@@ -130,36 +125,31 @@ require __DIR__ . '/includes/header.php';
 
       <aside>
         <div class="panel panel-accent">
-          <h3>Speed up your quote</h3>
-          <p style="font-size: var(--fs-sm); color: var(--ink-500);">
-            The fastest way to an accurate figure is a short video walkthrough sent over
-            WhatsApp, along with:
-          </p>
+          <h3><?= e(t('page.contact.speed_h3')) ?></h3>
+          <p style="font-size: var(--fs-sm); color: var(--ink-500);"><?= e(t('page.contact.speed_p')) ?></p>
           <ul class="checklist">
-            <li><?= icon('check', 'icon icon-sm') ?><span>Both addresses</span></li>
-            <li><?= icon('check', 'icon icon-sm') ?><span>Floor number and lift availability at each</span></li>
-            <li><?= icon('check', 'icon icon-sm') ?><span>Your preferred moving date</span></li>
-            <li><?= icon('check', 'icon icon-sm') ?><span>Whether you want packing included</span></li>
-            <li><?= icon('check', 'icon icon-sm') ?><span>Anything unusually large, heavy or fragile</span></li>
+            <?php foreach (range(1, 5) as $contactTip): ?>
+              <li><?= icon('check', 'icon icon-sm') ?><span><?= e(t('page.contact.sp' . $contactTip)) ?></span></li>
+            <?php endforeach; ?>
           </ul>
           <div class="grid" style="gap: var(--sp-3); margin-top: var(--sp-5);">
-            <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-whatsapp btn-block') ?>
-            <?= cta_phone('btn btn-phone btn-block', 'Call ' . PHONE_DISPLAY) ?>
+            <?= cta_whatsapp('', 'btn btn-whatsapp btn-block') ?>
+            <?= cta_phone('btn btn-phone btn-block', t('cta.call', ['phone' => PHONE_DISPLAY])) ?>
           </div>
         </div>
 
         <div class="panel" style="margin-top: var(--sp-5);">
-          <h3>Areas we serve</h3>
+          <h3><?= e(t('misc.areas_served')) ?></h3>
           <ul class="checklist">
             <?php foreach ($locations as $locSlug => $location): ?>
               <li>
                 <?= icon('pin', 'icon icon-sm') ?>
-                <a href="<?= e(location_url($locSlug)) ?>">Movers in <?= e($location['name']) ?></a>
+                <a href="<?= e(location_url($locSlug)) ?>"><?= e(t('nav.movers_in', ['city' => $location['name']])) ?></a>
               </li>
             <?php endforeach; ?>
           </ul>
           <p style="font-size: var(--fs-sm); color: var(--ink-500); margin-top: var(--sp-4);">
-            Including moves between all three emirates, usually completed in a single day.
+            <?= e(t('page.contact.areas_note')) ?>
           </p>
         </div>
       </aside>
@@ -179,21 +169,14 @@ require __DIR__ . '/includes/header.php';
       </div>
 
       <div>
-        <span class="eyebrow">Not a quote request?</span>
-        <h2>Ask us anything about your move</h2>
-        <p>
-          Not everyone who gets in touch is ready to book. If you are still working out
-          whether you need packing, how far ahead to book, or what a villa move actually
-          involves, send the question over and we will answer it.
-        </p>
-        <p>
-          We would rather tell you honestly that your move is smaller than you think than
-          sell you a service you do not need.
-        </p>
+        <span class="eyebrow"><?= e(t('page.contact.ask_eyebrow')) ?></span>
+        <h2><?= e(t('page.contact.ask_h2')) ?></h2>
+        <p><?= e(t('page.contact.ask_p1')) ?></p>
+        <p><?= e(t('page.contact.ask_p2')) ?></p>
 
         <div class="btn-row" style="margin-top: var(--sp-5);">
-          <?= cta_phone('btn btn-phone', 'Call ' . PHONE_DISPLAY) ?>
-          <?= cta_whatsapp('Hello, I have a question about moving.', 'btn btn-whatsapp') ?>
+          <?= cta_phone('btn btn-phone', t('cta.call', ['phone' => PHONE_DISPLAY])) ?>
+          <?= cta_whatsapp(t('wa.question'), 'btn btn-whatsapp') ?>
         </div>
       </div>
     </div>
@@ -204,49 +187,21 @@ require __DIR__ . '/includes/header.php';
 <section class="section section-alt">
   <div class="container">
     <div class="heading-rule">
-      <h2>Where We Work</h2>
+      <h2><?= e(t('sec.where')) ?></h2>
     </div>
 
-    <div class="city-cards">
-      <?php foreach ($locations as $citySlug => $city): ?>
-        <a class="city-card" href="<?= e(location_url($citySlug)) ?>">
-          <span class="city-card-media">
-            <?= img('locations/' . $citySlug . '.webp',
-                    'Movers and packers serving ' . $city['name'] . ', UAE',
-                    ['width' => 900, 'height' => 600, 'icon' => 'building']) ?>
-          </span>
-          <span class="city-card-body">
-            <h3>Movers in <?= e($city['name']) ?></h3>
-            <p><?= e($city['short']) ?></p>
-            <span class="card-link">Learn more <?= icon('arrow', 'icon icon-sm') ?></span>
-          </span>
-        </a>
-      <?php endforeach; ?>
-    </div>
+    <?php
+    require __DIR__ . '/includes/city-cards.php';
+    ?>
   </div>
 </section>
 
-<?= faq_list($faqs, 'Contacting us — common questions') ?>
+<?= faq_list($faqs, t('page.contact.faq_h')) ?>
 
-<!-- ======================================================= CTA band ====== -->
-<section class="cta-gold">
-  <div class="container cta-gold-inner">
-    <div class="cta-gold-media">
-      <?= img('cta-boxes.webp', '', ['width' => 600, 'height' => 450, 'icon' => 'box']) ?>
-    </div>
-    <div>
-      <h2>Prefer to Just Call?</h2>
-      <p>We would rather talk through your move than exchange messages about it.</p>
-    </div>
-    <div class="cta-gold-actions">
-      <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
-         aria-label="Call <?= e(PHONE_INTL) ?>">
-        <?= icon('phone', 'icon') ?>
-        <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
-      </a>
-      <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-white btn-lg') ?>
-    </div>
-  </div>
-</section>
+<?php
+$bandTitle    = t('band.contact_title');
+$bandSub      = t('band.contact_sub');
+require __DIR__ . '/includes/cta-band.php';
+?>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>

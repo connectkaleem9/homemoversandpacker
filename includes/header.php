@@ -16,7 +16,7 @@ require_once __DIR__ . '/config.php';
 /** @var string $googleAdsId */
 /** @var string $googleSiteVerify */
 ?><!DOCTYPE html>
-<html lang="en-AE">
+<html lang="<?= e(lang_locale()) ?>" dir="<?= e(lang_dir()) ?>">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,6 +29,9 @@ require_once __DIR__ . '/config.php';
   <link rel="apple-touch-icon" href="<?= e(asset('images/favicon.svg')) ?>">
   <link rel="stylesheet" href="<?= e(asset('css/style.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset('css/responsive.css')) ?>" media="screen">
+<?php if (is_rtl()): ?>
+  <link rel="stylesheet" href="<?= e(asset('css/rtl.css')) ?>">
+<?php endif; ?>
 <?php echo schema_render(); ?>
 <?php if (!empty($googleTagManagerId)): ?>
   <!-- Google Tag Manager -->
@@ -53,7 +56,7 @@ require_once __DIR__ . '/config.php';
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <?php endif; ?>
 
-<a class="skip-link" href="#main">Skip to main content</a>
+<a class="skip-link" href="#main"><?= e(t('nav.skip')) ?></a>
 
 <?php require __DIR__ . '/navigation.php'; ?>
 
