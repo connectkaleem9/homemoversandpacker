@@ -1,1 +1,3 @@
-Deny from all
+# The schema is not secret, but there is no reason to serve it. Denied here as
+# well as in the site root .htaccess, so one lost file does not expose it.
+Require all denied

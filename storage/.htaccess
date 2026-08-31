@@ -1,1 +1,4 @@
-Deny from all
+# Defence in depth. The site root .htaccess already 404s /storage/, but this
+# directory holds enquiry records — if that file is ever lost or overwritten,
+# this one still denies access.
+Require all denied

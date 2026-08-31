@@ -7,10 +7,40 @@
 declare(strict_types=1);
 
 /* ------------------------------------------------------------------
+ | Server-specific settings
+ |
+ | includes/env.php holds the handful of values that differ between a
+ | developer's machine and the live server — the environment name, database
+ | credentials, the notification address. It is NOT in version control: copy
+ | includes/env.example.php to includes/env.php on the server and fill it in.
+ |
+ | A file rather than SetEnv in .htaccess, because whether getenv() sees an
+ | Apache environment variable depends on how PHP is running (module, FPM or
+ | LiteSpeed SAPI) and shared hosting can change that underneath you. A file
+ | that returns an array behaves the same everywhere.
+ | ------------------------------------------------------------------ */
+$appEnvFile     = __DIR__ . '/env.php';
+$appEnvSettings = is_file($appEnvFile) ? (array) require $appEnvFile : [];
+
+/** One setting: includes/env.php first, then the environment, then the default. */
+function cfg(string $key, string $default = ''): string
+{
+    global $appEnvSettings;
+
+    if (array_key_exists($key, $appEnvSettings)) {
+        return (string) $appEnvSettings[$key];
+    }
+
+    $value = getenv($key);
+
+    return ($value !== false && $value !== '') ? (string) $value : $default;
+}
+
+/* ------------------------------------------------------------------
  | Environment
  | ------------------------------------------------------------------ */
-define('APP_ENV', getenv('APP_ENV') ?: 'local');           // local | production
-define('APP_DEBUG', APP_ENV === 'local');
+define('APP_ENV', cfg('APP_ENV', 'local'));                // local | production
+define('APP_DEBUG', APP_ENV !== 'production');
 define('APP_ROOT', dirname(__DIR__));
 
 if (APP_DEBUG) {
@@ -110,18 +140,18 @@ $googleSiteVerify    = '';   // Search Console meta verification token
  | Database (MySQL) — optional. The site degrades gracefully to file
  | storage when the database is unreachable, so a lead is never lost.
  | ------------------------------------------------------------------ */
-define('DB_ENABLED', filter_var(getenv('DB_ENABLED') ?: 'false', FILTER_VALIDATE_BOOL));
-define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
-define('DB_PORT', getenv('DB_PORT') ?: '3306');
-define('DB_NAME', getenv('DB_NAME') ?: 'homemoverandpaker');
-define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_ENABLED', filter_var(cfg('DB_ENABLED', 'false'), FILTER_VALIDATE_BOOL));
+define('DB_HOST', cfg('DB_HOST', '127.0.0.1'));
+define('DB_PORT', cfg('DB_PORT', '3306'));
+define('DB_NAME', cfg('DB_NAME', 'homemoverandpaker'));
+define('DB_USER', cfg('DB_USER', 'root'));
+define('DB_PASS', cfg('DB_PASS', ''));
 define('DB_CHARSET', 'utf8mb4');
 
 /* ------------------------------------------------------------------
  | Leads
  | ------------------------------------------------------------------ */
-define('LEAD_NOTIFY_EMAIL', getenv('LEAD_NOTIFY_EMAIL') ?: EMAIL_ADDRESS);
+define('LEAD_NOTIFY_EMAIL', cfg('LEAD_NOTIFY_EMAIL', EMAIL_ADDRESS));
 define('LEAD_FALLBACK_FILE', APP_ROOT . '/storage/leads.jsonl');
 define('FORM_MIN_SECONDS', 3);      // submissions faster than this are treated as bots
 define('RATE_LIMIT_MAX', 5);        // max submissions

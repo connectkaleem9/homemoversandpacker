@@ -34,3 +34,7 @@ Desktop.ini
 # Design references — not part of the website
 /design/
 assets/images/_ref.png
+
+# Server-specific settings and credentials — never committed.
+# includes/env.example.php is the template.
+/includes/env.php
