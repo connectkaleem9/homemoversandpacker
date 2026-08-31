@@ -73,6 +73,7 @@ $pageTitle = $setupMode ? 'Set up the admin account' : 'Admin sign in';
   <meta name="robots" content="noindex, nofollow">
   <title><?= e($pageTitle) ?> · <?= e(SITE_NAME) ?></title>
   <link rel="icon" href="<?= e(asset('images/favicon.svg')) ?>" type="image/svg+xml">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
   <link rel="stylesheet" href="<?= e(asset('css/style.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset('css/admin.css')) ?>">
 </head>

@@ -25,8 +25,13 @@ require_once __DIR__ . '/config.php';
 <?php if (!empty($googleSiteVerify)): ?>
   <meta name="google-site-verification" content="<?= e($googleSiteVerify) ?>">
 <?php endif; ?>
+<?php /* SVG first for browsers that take it; .ico is the fallback that older
+         browsers and most crawlers still request by name from the site root,
+         whatever the markup says. */ ?>
   <link rel="icon" href="<?= e(asset('images/favicon.svg')) ?>" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="<?= e(asset('images/favicon.svg')) ?>">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="apple-touch-icon" href="<?= e(asset('images/apple-touch-icon.png')) ?>">
+  <link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="<?= e(asset('css/style.css')) ?>">
   <link rel="stylesheet" href="<?= e(asset('css/responsive.css')) ?>" media="screen">
 <?php if (is_rtl()): ?>

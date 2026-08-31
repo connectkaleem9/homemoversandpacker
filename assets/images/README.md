@@ -76,3 +76,15 @@ and your Google Ads quality score.
 your crew, in a city that is obviously not the UAE, are worse than a placeholder —
 customers notice, and misleading imagery is the kind of thing that gets flagged
 in a Google Ads review.
+
+## Site icon
+
+Generated, not hand-placed. `favicon.svg`, `favicon.ico`, `apple-touch-icon.png`,
+`icon-192.png`, `icon-512.png` and `icon-maskable-512.png` are all one drawing:
+the brand mark from `logo.png` — a roof over a truck — redrawn in solid shapes,
+because the logo's own outlines turn to mush below about 32px.
+
+The SVG is the source of truth for the geometry. If it changes, the rasters have
+to be redrawn to match, and `/favicon.ico` in the site root is a copy of
+`favicon.ico` from here (browsers ask for that path by name whatever the markup
+says).

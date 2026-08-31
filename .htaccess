@@ -186,6 +186,7 @@ RedirectMatch 404 ^/(\.git|\.github|storage|database|includes)(/|$)
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
   AddOutputFilterByType DEFLATE application/javascript application/x-javascript
   AddOutputFilterByType DEFLATE application/json application/xml
+  AddOutputFilterByType DEFLATE application/manifest+json
   AddOutputFilterByType DEFLATE application/rss+xml image/svg+xml
   AddOutputFilterByType DEFLATE font/woff2 font/woff
 </IfModule>
@@ -230,12 +231,22 @@ RedirectMatch 404 ^/(\.git|\.github|storage|database|includes)(/|$)
   <FilesMatch "\.(php|html)$">
     Header set Cache-Control "no-cache, must-revalidate"
   </FilesMatch>
+
+  # The root favicon and the manifest are requested by fixed name, so they
+  # cannot carry the ?v= that lets everything else cache for a year — an
+  # immutable year on these would mean a new icon never reaching anyone who
+  # has already visited. A week, and they revalidate.
+  <FilesMatch "^(favicon\.ico|site\.webmanifest)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
 </IfModule>
 
 # ------------------------------------------------------------------------
 # 14. Correct MIME types
 # ------------------------------------------------------------------------
 <IfModule mod_mime.c>
+  AddType application/manifest+json .webmanifest
+  AddType image/x-icon          .ico
   AddType image/webp            .webp
   AddType image/avif            .avif
   AddType image/svg+xml         .svg
