@@ -151,6 +151,7 @@
   .serve-grid { grid-template-columns: 1fr; gap: var(--sp-6); }
   .process-row { grid-template-columns: repeat(3, 1fr); gap: var(--sp-5); }
   .process-item:nth-child(3n)::after { display: none; }
+  .contact-grid, .contact-grid-reverse { grid-template-columns: 1fr; gap: var(--sp-5); }
   .reviews-grid { grid-template-columns: 1fr; gap: var(--sp-5); }
   .reviews-intro { text-align: center; }
   .reviews-intro .stars { justify-content: center; }

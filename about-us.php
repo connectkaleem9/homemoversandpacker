@@ -59,7 +59,7 @@ require __DIR__ . '/includes/header.php';
       <div class="btn-row">
         <?= cta_quote('btn btn-primary btn-lg', 'Get a Free Quote', '/contact-us/#quote') ?>
         <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
-           aria-label="Call <?= e(PHONE_INTL) ?>">
+           <?= cta_id('phone') ?> aria-label="Call <?= e(PHONE_INTL) ?>">
           <?= icon('phone', 'icon') ?>
           <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
         </a>

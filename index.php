@@ -62,7 +62,7 @@ require __DIR__ . '/includes/header.php';
 
       <div class="btn-row">
         <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
-           id="phone-cta" aria-label="Call <?= e(PHONE_INTL) ?>">
+           <?= cta_id('phone') ?> aria-label="Call <?= e(PHONE_INTL) ?>">
           <?= icon('phone', 'icon') ?>
           <span class="btn-stack">
             <small>Call Now</small>

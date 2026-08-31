@@ -1373,6 +1373,31 @@ a.card:hover .card-link .icon { transform: translateX(3px); }
 .quote-mini .field select { min-height: 40px; }
 .quote-mini .form-legal { font-size: 0.6875rem; margin-top: var(--sp-2); }
 
+/* --- Contact page ----------------------------------------------------------- */
+.contact-methods .contact-card { text-align: center; align-items: center; }
+.contact-card .card-icon-plain { margin-bottom: var(--sp-3); }
+.contact-card .card-title { font-size: var(--fs-base); margin-bottom: 4px; }
+.contact-value {
+  font-size: var(--fs-lg);
+  font-weight: 750;
+  color: var(--navy-800);
+  margin: 0 0 var(--sp-2);
+  word-break: break-word;
+}
+.contact-value-sm { font-size: var(--fs-sm); }
+.contact-card .card-text { font-size: var(--fs-xs); margin-bottom: 0; flex: 0; }
+a.contact-card:hover { border-color: var(--accent-500); }
+a.contact-card:hover .contact-value { color: var(--accent-700); }
+
+/* Form beside a supporting panel */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: var(--sp-6);
+  align-items: start;
+}
+.contact-grid-reverse { grid-template-columns: 1fr 1fr; align-items: center; }
+
 /* --- Footer social --------------------------------------------------------- */
 .footer-social { display: flex; gap: var(--sp-2); margin-top: var(--sp-3); }
 .footer-social a {
