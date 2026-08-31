@@ -166,7 +166,9 @@ require __DIR__ . '/includes/header.php';
         <span class="eyebrow"><?= e(t('sec.serve')) ?></span>
         <h2 class="serve-cities">
           <?php foreach (areas_list() as $homeArea => $homeCity): ?>
-            <?= $homeArea > 0 ? '<span class="dot">&bull;</span>' : '' ?><?= e($homeCity) ?>
+            <?php /* The separator is its own word: without the spaces the bullet
+                     sits flush against the next city name. */ ?>
+            <?= $homeArea > 0 ? '<span class="dot">&bull;</span> ' : '' ?><?= e($homeCity) ?>
           <?php endforeach; ?>
         </h2>
         <p><?= e(t('page.home.serve_p')) ?></p>

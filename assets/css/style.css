@@ -1207,7 +1207,7 @@ a.card:hover .card-link .icon { transform: translateX(3px); }
   color: var(--navy-800);
   margin-bottom: var(--sp-4);
 }
-.serve-cities .dot { color: var(--accent-500); }
+.serve-cities .dot { color: var(--accent-500); margin-inline: 0.15em; }
 .help-box {
   display: flex;
   align-items: center;

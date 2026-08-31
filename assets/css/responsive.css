@@ -126,32 +126,77 @@
   .trust-grid { grid-template-columns: 1fr 1fr; }
 
   /* Homepage sections */
-  /* Below the breakpoint the copy stacks over the photo, so the height has to
-     come from the content — the photo's 1.64:1 ratio would be far too short. */
-  /* Stacked layout: the copy sits directly over the picture, so it has to fill
-     the section rather than fit inside it — contain would leave empty bars. */
+  /*
+   * The overlay hero does not survive a narrow screen. The copy needs the full
+   * width, and a scrim opaque enough to keep navy body text legible over a
+   * bright photograph ends up hiding the photograph — which was most of the
+   * point of it. The previous scrim ran at 90-97% and the picture simply was
+   * not there on a phone.
+   *
+   * So below this width the hero stops pretending to be an overlay and becomes
+   * what it actually is on a phone: a block of copy, then the picture.
+   */
   .hero-home { height: auto; }
-  /* Matches the base rule's specificity — plain `.hero-home-media img` lost to
-     `.hero-home-media img:not(.hero-home-backdrop)` and left contain in place,
-     which letterboxed the photo behind the stacked copy. */
-  .hero-home-media img:not(.hero-home-backdrop) { object-fit: cover; }
-  /* Stacked layout fills the section, so the backdrop has nothing to hide. */
-  .hero-home-backdrop { display: none; }
-  .hero-home-inner { grid-template-columns: 1fr; min-height: 0; height: auto; align-items: center; }
-  .hero-trust { max-width: none; }
-  .hero-home-copy { max-width: 100%; padding-block: var(--sp-7) var(--sp-5); }
-  .hero-home-media { position: absolute; inset: 0; width: 100%; min-height: 0; margin: 0; }
-  .hero-home-media img { object-position: center; }
-  /* Almost solid: the copy sits directly over the photo once the hero stacks,
-     and navy body text on a bright photograph is unreadable otherwise. */
-  .hero-home-media::after {
-    background: linear-gradient(180deg,
-      rgba(248, 250, 253, .97) 0%,
-      rgba(248, 250, 253, .94) 55%,
-      rgba(248, 250, 253, .90) 100%);
+  .hero-home-inner {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    height: auto;
+    align-items: start;
+    gap: var(--sp-5);
   }
-  .hero-home-copy { padding-block: var(--sp-6); }
+  .hero-trust { max-width: none; }
+  .hero-home-copy { max-width: 100%; padding-block: var(--sp-6) 0; }
+
+  .hero-home-media {
+    position: relative;
+    inset: auto;
+    width: auto;
+    min-height: 0;
+    /* Bleed to the screen edges by exactly the container's padding. 100vw
+       would include the scrollbar and overflow the page by its width. */
+    margin-inline: calc(var(--sp-5) * -1);
+    margin-block: 0;
+    /* A wide band on a tablet. At 16:10 a 1000px-wide hero was 616px of
+       photograph, which pushed the whole page down a screen and a half. */
+    aspect-ratio: 2 / 1;
+  }
+  .hero-home-media img:not(.hero-home-backdrop),
+  .hero-home-media .img-placeholder {
+    object-fit: cover;
+    object-position: center;
+  }
+  /* Nothing sits on the picture now, so it needs neither the blurred fill
+     behind it nor a scrim over it. */
+  .hero-home-backdrop { display: none; }
+  .hero-home-media::after,
   .hero-home-media::before { display: none; }
+
+  /*
+   * iOS Safari zooms the page in whenever a focused field is smaller than 16px,
+   * and the visitor has to pinch back out to carry on. On a site whose entire
+   * job is getting a quote form completed, that is a conversion problem rather
+   * than a cosmetic one.
+   */
+  .field input,
+  .field select,
+  .field textarea { font-size: 1rem; }
+
+  /*
+   * 12px floor on the conversion elements. These are all touch widths, and the
+   * sticky bar and the phone button's caption were rendering at 11px — the two
+   * things a visitor on a phone is most likely to be reaching for.
+   * Desktop typography is left exactly as approved.
+   */
+  .mobile-bar-item { font-size: 0.75rem; }
+  .btn-stack small { font-size: 0.75rem; }
+
+  /* Touch targets. A 21px link is a miss waiting to happen; 44px is the size
+     both Apple and Google publish as the minimum. */
+  .dropdown-list a { min-height: 44px; }
+  .footer-list li, .footer-contact li { margin-bottom: 0; }
+  .footer-list a { display: block; padding-block: 0.55rem; }
+  .footer-legal a { display: inline-block; padding-block: 0.4rem; }
+  .breadcrumb-item a { display: inline-block; padding-block: 0.35rem; }
   .why-grid { grid-template-columns: 1fr; gap: var(--sp-5); min-height: 0; }
   .why-grid > *:not(.why-media) { grid-column: auto; }
   .why-media {
@@ -205,6 +250,42 @@
 
   .container { padding-inline: var(--sp-4); }
 
+  /*
+   * Anything that bleeds to the screen edges is pulled out by the container's
+   * padding, and the padding changes here — so every bleed has to change with
+   * it. Leaving them at the -sp-5 set above pushed the photographs 8px past
+   * the viewport on each side.
+   */
+  .hero-home-media,
+  .why-media { margin-inline: calc(var(--sp-4) * -1); }
+  /* Taller crop on a phone: 16:10 leaves the crew as a distant strip. */
+  .hero-home-media { aspect-ratio: 4 / 3; }
+
+  /* The compact form sets its own smaller size, so the floor has to be
+     matched on specificity to beat it. */
+  .form-legal,
+  .quote-mini .form-legal { font-size: 0.75rem; }
+
+  /* The compact form's 40px fields are below the touch minimum too. */
+  .quote-mini .field input,
+  .quote-mini .field select { min-height: 46px; }
+
+  /* Remaining touch targets: footer contact rows, legal links, the social
+     icons and the dropdown's "view all" link were all in the 21-34px range. */
+  .footer-list a { padding-block: 0.65rem; }
+  .footer-contact li { padding-block: 0.4rem; }
+  .footer-contact a { display: inline-block; padding-block: 0.3rem; }
+  .footer-legal a { padding-block: 0.55rem; }
+  .footer-social a { display: inline-flex; padding: 0.6rem; }
+  .dropdown-foot .dropdown-all { display: inline-flex; align-items: center; min-height: 44px; }
+  .topbar-phone a { display: inline-block; padding-block: 0.5rem; }
+
+  /* Checklists are used as navigation on the location pages — twelve service
+     links at 25px each. Inline links inside running prose are left alone:
+     padding them out to 44px would break the paragraph they sit in. */
+  .checklist a { display: inline-block; padding-block: 0.55rem; }
+  .breadcrumb-item a { padding-block: 0.5rem; }
+
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .steps-4, .steps-5 { grid-template-columns: 1fr; }
   .checklist-2 { grid-template-columns: 1fr; }
@@ -246,6 +327,9 @@
 /* ---------- Very small phone ---------- */
 @media (max-width: 380px) {
   .brand-text strong { font-size: 0.95rem; }
-  .mobile-bar-item { font-size: 0.625rem; }
+  /* Shrink the icon and the padding rather than the label — the label is what
+     makes the button unambiguous, and these three are the site's primary
+     conversion path. 12px is the floor. */
+  .mobile-bar-item { font-size: 0.75rem; padding-inline: 2px; gap: 1px; }
   .mobile-bar-item .icon { width: 18px; height: 18px; }
 }
