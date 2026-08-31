@@ -71,18 +71,40 @@
 
   /* ----------------------------------------------------------------------
      Conversion tracking
-     Pushes a dataLayer event for every phone / WhatsApp / quote / email CTA.
-     Works with GTM when a container ID is configured, and stays silent
-     (no errors) when tracking is not yet set up.
+
+     Every phone / WhatsApp / quote / email CTA is reported twice, because the
+     two consumers want different shapes:
+
+       - dataLayer.push({event: 'cta_click', ...})  for Google Tag Manager
+       - gtag('event', 'cta_click', {...})          for GA4 directly
+
+     They are not interchangeable. gtag() does push onto dataLayer, but it
+     pushes an *arguments* object — so a hand-rolled dataLayer.push of a plain
+     object is invisible to GA4, and a GTM container never sees a gtag event
+     as a trigger. Sending both is how one CTA reaches whichever is installed.
+
+     Both paths are silent when nothing is configured: dataLayer is just an
+     array nobody reads, and gtag is simply not defined.
      -------------------------------------------------------------------- */
   function track(action, detail) {
+    var payload = {
+      cta_type: action,
+      cta_detail: detail || '',
+      page_path: window.location.pathname,
+      page_language: document.documentElement.lang || ''
+    };
+
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: 'cta_click',
-      cta_type: action,
-      cta_detail: detail || '',
-      page_path: window.location.pathname
+      cta_type: payload.cta_type,
+      cta_detail: payload.cta_detail,
+      page_path: payload.page_path
     });
+
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'cta_click', payload);
+    }
   }
 
   document.addEventListener('click', function (e) {
@@ -90,6 +112,14 @@
     if (!el) { return; }
     track(el.getAttribute('data-cta') || 'unknown', el.textContent.trim().slice(0, 60));
   });
+
+  /* Form ids are markup detail; these are the names that end up in the
+     analytics reports, so they are worth keeping readable and stable. */
+  var FORM_KINDS = {
+    'quote-form': 'quote',
+    'contact-form': 'contact',
+    'review-form': 'review'
+  };
 
   /* ----------------------------------------------------------------------
      Form validation
@@ -171,7 +201,26 @@
         elapsed.value = String(Math.round((Date.now() - startedAt) / 1000));
       }
 
-      track('form_submit', form.getAttribute('id') || 'form');
+      /*
+       * The conversion that matters. Reported here rather than from a
+       * separate submit listener, because by this point the form has passed
+       * the site's own validation — a listener on the raw submit event
+       * counts attempts, not leads, and having both counts every lead twice.
+       *
+       * generate_lead is one of GA4's recommended events, so it can be marked
+       * as a key event in the property without any custom configuration.
+       */
+      var formKind = FORM_KINDS[form.getAttribute('id')] || 'form';
+
+      track('form_submit', formKind);
+
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'generate_lead', {
+          form_type: formKind,
+          page_path: window.location.pathname,
+          page_language: document.documentElement.lang || ''
+        });
+      }
 
       var button = form.querySelector('button[type=submit]');
       if (button) {

@@ -43,7 +43,7 @@ return [
         ['ul', [
             'Your IP address and browser user-agent string, recorded with form submissions to help prevent spam and abuse',
             'Standard web server logs',
-            'Analytics data, if and when analytics is enabled on this site',
+            'Usage data collected by Google Analytics — the pages you view, roughly where in the world you are, the type of device and browser you use, and how you arrived at the site',
         ]],
 
         ['h2', 'Why we use it'],
@@ -58,7 +58,11 @@ return [
 
         ['h2', 'Cookies and analytics'],
         ['p',  'This website uses a session cookie, which is required for the security of our forms (specifically to protect against cross-site request forgery). It contains no personal information and expires when you close your browser.'],
-        ['p',  'Where analytics or advertising measurement tools such as Google Analytics, Google Tag Manager or Google Ads conversion tracking are enabled, those services may set their own cookies and process usage data under their own privacy terms. You can control cookies through your browser settings.'],
+        ['h3', 'Google Analytics'],
+        ['p',  'This site uses Google Analytics 4 to understand how people find and use it — which pages are read, which are ignored, and whether the English or the Arabic side is working. Google Analytics sets its own cookies and processes that data under Google\'s privacy terms.'],
+        ['p',  'We also record when someone taps a call, WhatsApp or quote button, and when a form is submitted. That tells us which parts of the site actually lead to an enquiry. These records are counts and page paths — they do not include your name, your phone number or anything you typed into a form.'],
+        ['p',  'We do not use Google Analytics to identify you, we have not enabled Google Signals or advertising personalisation on the property, and we do not sell or share the data with anyone.'],
+        ['p',  'You can control cookies through your browser settings, or install Google\'s official opt-out add-on, and the site works normally either way.'],
 
         ['h2', 'How long we keep it'],
         ['p',  'Enquiry and booking records are kept for as long as we need them to provide the service, to answer follow-up questions and to meet our record-keeping obligations, after which they are deleted.'],

@@ -38,21 +38,38 @@ require_once __DIR__ . '/config.php';
   <link rel="stylesheet" href="<?= e(asset('css/rtl.css')) ?>">
 <?php endif; ?>
 <?php echo schema_render(); ?>
-<?php if (!empty($googleTagManagerId)): ?>
+<?php
+/*
+ * Analytics. One gtag.js load covers GA4 and Google Ads — loading it twice,
+ * once per product, is a common mistake that double-counts every page view.
+ *
+ * $analyticsEnabled is false outside production, so nothing below is emitted
+ * on a developer machine.
+ */
+$trackingIds = $analyticsEnabled
+    ? array_values(array_filter([$googleAnalyticsId, $googleAdsId]))
+    : [];
+?>
+<?php if ($analyticsEnabled && !empty($googleTagManagerId)): ?>
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
   var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
   j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})
   (window,document,'script','dataLayer','<?= e($googleTagManagerId) ?>');</script>
-<?php elseif (!empty($googleAnalyticsId)): ?>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=<?= e($googleAnalyticsId) ?>"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
-  gtag('js',new Date());gtag('config','<?= e($googleAnalyticsId) ?>');</script>
-<?php endif; ?>
-<?php if (!empty($googleAdsId)): ?>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=<?= e($googleAdsId) ?>"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
-  gtag('js',new Date());gtag('config','<?= e($googleAdsId) ?>');</script>
+<?php elseif ($trackingIds !== []): ?>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<?= e($trackingIds[0]) ?>"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    <?php foreach ($trackingIds as $trackingId): ?>
+    gtag('config', '<?= e($trackingId) ?>');
+    <?php endforeach; ?>
+    /* Which language the visitor is reading, as a dimension on every event —
+       the whole point of running a bilingual site is being able to see
+       whether the Arabic side is working. */
+    gtag('set', {'content_language': '<?= e(lang()) ?>'});
+  </script>
 <?php endif; ?>
 </head>
 <body class="<?= e(seo_get('body_class', '')) ?>">

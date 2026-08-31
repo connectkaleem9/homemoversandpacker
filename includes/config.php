@@ -133,16 +133,35 @@ define('SOCIAL_LINKS', [
 ]);
 
 /* ------------------------------------------------------------------
- | Tracking — leave EMPTY until real IDs are supplied by the business.
- | Nothing is injected into the page while these are blank.
+ | Tracking
+ |
+ | These are public identifiers — they appear in the page source of every
+ | page — so they live here in version control rather than in env.php, and
+ | deploy with the code. An empty value injects nothing at all.
+ |
+ | Analytics only loads when APP_ENV is 'production' (see $analyticsEnabled
+ | below), so a developer browsing localhost does not pollute the property
+ | with test traffic.
  | ------------------------------------------------------------------ */
-$googleTagManagerId  = '';   // e.g. GTM-XXXXXXX
-$googleAnalyticsId   = '';   // e.g. G-XXXXXXXXXX
-$googleAdsId         = '';   // e.g. AW-XXXXXXXXX
-$googleAdsQuoteLabel = '';   // conversion label for quote form submissions
-$googleAdsCallLabel  = '';   // conversion label for phone CTA clicks
-$googleAdsWhatsLabel = '';   // conversion label for WhatsApp CTA clicks
-$googleSiteVerify    = '';   // Search Console meta verification token
+$googleTagManagerId  = '';                              // e.g. GTM-XXXXXXX — unused; GA4 is wired directly
+$googleAnalyticsId   = 'G-VWHD0G5WYH';                  // GA4 measurement ID
+$googleAdsId         = '';                              // e.g. AW-XXXXXXXXX
+$googleAdsQuoteLabel = '';                              // conversion label for quote form submissions
+$googleAdsCallLabel  = '';                              // conversion label for phone CTA clicks
+$googleAdsWhatsLabel = '';                              // conversion label for WhatsApp CTA clicks
+
+/* Search Console ownership. Google keeps checking this, so it stays put
+   permanently — removing it after verification un-verifies the property. */
+$googleSiteVerify    = 'NJFcqQaeVRG5X-_R-pipnaiGvf30jnpA53PNmo5CUXA';
+
+/**
+ * Whether to load any analytics at all.
+ *
+ * Production only. Without this, every local page view, every QA crawl and
+ * every screenshot run lands in the live property, and the first month of
+ * data is unusable because nobody can tell real visitors from us.
+ */
+$analyticsEnabled = APP_ENV === 'production';
 
 /* ------------------------------------------------------------------
  | Database (MySQL) — optional. The site degrades gracefully to file
@@ -172,4 +191,4 @@ define('RATE_LIMIT_WINDOW', 900);   // per 15 minutes, per IP
  | ?v= query string. BUMP THIS whenever a file in /assets changes, or nobody
  | who has already visited — and no CDN edge — will ever fetch the new one.
  | ------------------------------------------------------------------ */
-define('ASSET_VERSION', '1.4.0');
+define('ASSET_VERSION', '1.5.0');

@@ -423,28 +423,75 @@ Currently set:
 - **WhatsApp:** <https://wa.me/971556581781>
 - **Email:** info@homemoverandpaker.com — *confirm this mailbox exists*
 
-### 2. Tracking IDs — `includes/config.php`
+### 2. Analytics and Search Console — done
 
-Empty by default, and nothing is injected into the page while they are empty:
+Both are wired up in `includes/config.php`:
 
 ```php
-$googleTagManagerId  = '';   // GTM-XXXXXXX
-$googleAnalyticsId   = '';   // G-XXXXXXXXXX
-$googleAdsId         = '';   // AW-XXXXXXXXX
-$googleAdsQuoteLabel = '';
-$googleAdsCallLabel  = '';
-$googleAdsWhatsLabel = '';
-$googleSiteVerify    = '';   // Search Console verification
+$googleAnalyticsId = 'G-VWHD0G5WYH';                              // GA4
+$googleSiteVerify  = 'NJFcqQaeVRG5X-_R-pipnaiGvf30jnpA53PNmo5CUXA'; // Search Console
 ```
 
-Stable IDs are already in the markup for conversion tracking:
-`#quote-form`, `#quote-cta`, `#phone-cta`, `#whatsapp-cta`. Every CTA also pushes a
-`cta_click` event to `dataLayer` with a `cta_type` of `phone`, `whatsapp`, `quote`
-or `email`, and forms push `form_submit`.
+These are public identifiers — they appear in the page source — so they live in
+version control and deploy with the code, rather than in `env.php`.
 
-**Conversion priority:** quote form submission → phone click → WhatsApp click are
-primary. Email clicks and other CTA interactions are secondary — do not count every
-button click as a primary conversion.
+**The verification tag stays put permanently.** Google re-checks it, and removing
+it after verification un-verifies the property.
+
+Google Ads is still empty (`$googleAdsId`). When there is an account, put the
+`AW-` ID there and it joins the same gtag load — do not add a second gtag script,
+that double-counts every page view.
+
+#### Analytics only runs in production
+
+`$analyticsEnabled = APP_ENV === 'production'`, so nothing is sent from a
+developer machine. Without this, every local page view, QA crawl and screenshot
+run lands in the live property and the first month of data is unusable because
+real visitors cannot be told apart from us.
+
+To check the tag on a local machine, set `APP_ENV` to `production` in
+`includes/env.php` temporarily — and remember that hits from that session are
+real and will show up in the reports.
+
+#### What is measured
+
+| Event | When |
+|---|---|
+| `page_view` | automatic, with `content_language` set to `en` or `ar` |
+| `cta_click` | any call, WhatsApp, quote or email CTA; `cta_type` says which |
+| `generate_lead` | a quote, contact or review form passing validation |
+
+`generate_lead` is one of GA4's recommended events, so it can be marked as a key
+event in the property without any custom configuration. **Mark it, and mark
+`cta_click` where `cta_type` is `phone` or `whatsapp`** — on this site a phone
+call is the conversion, not a page view.
+
+Every event carries `page_path` and `page_language`, so the Arabic side can be
+compared with the English one. That comparison is the main reason the site is
+bilingual, and it is invisible without the language dimension.
+
+Each event goes out twice, deliberately, in two different shapes:
+`dataLayer.push({event: ...})` for Google Tag Manager and `gtag('event', ...)`
+for GA4. They are not interchangeable — `gtag()` pushes an *arguments* object, so
+a hand-rolled `dataLayer.push` of a plain object is invisible to GA4, and a GTM
+container never sees a gtag event as a trigger. Sending both means one CTA reaches
+whichever is installed.
+
+The conversion fires from the form's own submit handler, **after** the site's
+validation — a listener on the raw submit event counts attempts, not leads.
+
+Stable IDs for anything that needs to target an element directly:
+`#quote-form`, `#contact-form`, `#review-form`, `#quote-cta`, `#phone-cta`,
+`#whatsapp-cta`.
+
+#### Still to do in the Google properties
+
+- Submit `https://homemoverandpaker.com/sitemap.xml` in Search Console
+- In GA4, mark `generate_lead` (and the phone/WhatsApp `cta_click`s) as key events
+- Link the GA4 property to Search Console, so query data and behaviour sit together
+- Consider excluding your own IP in GA4 → Admin → Data Streams → Configure tag
+  settings → Define internal traffic, or the team's own visits inflate everything
+
 
 ### 3. Customer reviews
 
@@ -502,10 +549,10 @@ Still to do:
 - Uncomment the HSTS header in `.htaccess` once you are confident nothing
   needs to be served over plain HTTP. It is commented out deliberately:
   `max-age=31536000; preload` is very hard to undo if something is wrong.
-- Submit `https://homemoverandpaker.com/sitemap.xml` to Search Console, and
-  set the Arabic pages as an alternate version there
 - Confirm the `info@homemoverandpaker.com` mailbox exists and that lead
   notifications are actually arriving in it
+- Finish the Google property setup — see
+  [Analytics and Search Console](#2-analytics-and-search-console--done)
 
 ---
 
