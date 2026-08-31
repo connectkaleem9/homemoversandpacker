@@ -438,10 +438,8 @@ hr { border: 0; border-top: 1px solid var(--line); margin: var(--sp-6) 0; }
 .hero-assurance .icon { color: var(--accent-500); }
 
 /* Slightly shorter hero for inner pages that use the homepage hero layout */
-.hero-compact .hero-home-inner { min-height: 380px; }
+.hero-compact .hero-home-inner { min-height: 400px; }
 .hero-compact .hero-home h1 { font-size: clamp(1.6rem, 2.3vw, 2.1rem); }
-/* The media's own 400px floor is taller than a compact hero, so 20px of the
-   picture was being clipped by the section's overflow. */
 .hero-compact .hero-home-media { min-height: 0; }
 
 /* Duotone illustration inside a plain card, no tinted circle behind it */
@@ -897,14 +895,12 @@ a.card:hover .card-link .icon { transform: translateX(3px); }
 }
 .hero-home-inner {
   display: grid;
-  grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.72fr);
   align-items: center;
   gap: var(--sp-5);
-  min-height: 440px;
+  min-height: 460px;
 }
-/* Must stay clear of .hero-home-media, which is positioned against the
-   viewport at 58vw. 440px keeps the copy inside the remaining 42%. */
-.hero-home-copy { padding-block: var(--sp-6); max-width: 440px; }
+.hero-home-copy { padding-block: var(--sp-7); max-width: 560px; }
 .hero-home h1 {
   color: var(--navy-800);
   font-size: clamp(1.8rem, 2.7vw, 2.5rem);
@@ -924,12 +920,13 @@ a.card:hover .card-link .icon { transform: translateX(3px); }
    item onto its own row once the copy column narrowed. */
 .hero-trust {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--sp-2);
+  grid-template-columns: repeat(3, minmax(0, max-content));
+  gap: var(--sp-5);
   margin-bottom: var(--sp-5);
   padding-block: var(--sp-3);
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  border-top: 1px solid rgba(16, 25, 42, .12);
+  border-bottom: 1px solid rgba(16, 25, 42, .12);
+  max-width: 560px;
 }
 .hero-trust-item { display: flex; align-items: center; gap: 7px; }
 .hero-trust-item .icon { color: var(--navy-600); width: 20px; height: 20px; }
@@ -940,16 +937,18 @@ a.card:hover .card-link .icon { transform: translateX(3px); }
   line-height: 1.2;
 }
 
-/* The hero photo bleeds to the right edge of the viewport. The grid column
-   still reserves the space; the picture itself is positioned against the
-   section so it can run past the 1200px container. */
+/*
+ * The photograph is the background of the WHOLE hero, not a column beside the
+ * copy — the text sits on top of it. A gradient scrim keeps the left side
+ * light enough for navy body text to stay readable (the copy is dark-on-light,
+ * so the scrim is doing real contrast work here, not decoration) and thins out
+ * to the right so the picture reads properly.
+ */
 .hero-home-media {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 58vw;
-  min-height: 400px;
+  inset: 0;
+  width: 100%;
+  z-index: 0;
 }
 .hero-home-media img,
 .hero-home-media .img-placeholder {
@@ -959,18 +958,33 @@ a.card:hover .card-link .icon { transform: translateX(3px); }
   height: 100%;
   padding-bottom: 0 !important;
   object-fit: cover;
-  object-position: center;
+  /* Bias above centre so the crew's heads stay in frame on a wide, short crop. */
+  object-position: center 36%;
   border: 0;
   border-radius: 0;
 }
-.hero-home-media::before {
+.hero-home-media::after {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 1;
-  background: linear-gradient(96deg, #f7f9fc 0%, rgba(247, 249, 252, .92) 6%, rgba(247, 249, 252, .5) 16%, rgba(247, 249, 252, .12) 28%, transparent 38%);
+  background:
+    linear-gradient(100deg,
+      rgba(248, 250, 253, .97) 0%,
+      rgba(248, 250, 253, .95) 34%,
+      rgba(248, 250, 253, .88) 46%,
+      rgba(248, 250, 253, .48) 58%,
+      rgba(248, 250, 253, .12) 70%,
+      rgba(248, 250, 253, 0) 80%);
   pointer-events: none;
 }
+
+/*
+ * The copy sits above the picture — NOT by making .hero-home-inner relative:
+ * .hero-home-media is a child of the inner, so that would make the inner its
+ * containing block and the photo would cover the copy instead of the section.
+ * The section stays the containing block; the copy is lifted on its own.
+ */
+.hero-home-copy { position: relative; z-index: 1; }
 
 /* --- Service strip --------------------------------------------------------- */
 .service-strip {

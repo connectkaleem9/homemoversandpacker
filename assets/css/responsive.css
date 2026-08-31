@@ -127,14 +127,19 @@
 
   /* Homepage sections */
   .hero-home-inner { grid-template-columns: 1fr; min-height: 0; }
+  .hero-trust { max-width: none; }
   .hero-home-copy { max-width: 100%; padding-block: var(--sp-7) var(--sp-5); }
-  .hero-home-media {
-    position: relative;
-    width: auto;
-    right: auto;
-    min-height: 300px;
-    margin-inline: calc(var(--sp-5) * -1);
+  .hero-home-media { position: absolute; inset: 0; width: 100%; min-height: 0; margin: 0; }
+  .hero-home-media img { object-position: center; }
+  /* Almost solid: the copy sits directly over the photo once the hero stacks,
+     and navy body text on a bright photograph is unreadable otherwise. */
+  .hero-home-media::after {
+    background: linear-gradient(180deg,
+      rgba(248, 250, 253, .97) 0%,
+      rgba(248, 250, 253, .94) 55%,
+      rgba(248, 250, 253, .90) 100%);
   }
+  .hero-home-copy { padding-block: var(--sp-6); }
   .hero-home-media::before { display: none; }
   .why-grid { grid-template-columns: 1fr; gap: var(--sp-5); min-height: 0; }
   .why-grid > *:not(.why-media) { grid-column: auto; }
