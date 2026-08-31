@@ -126,7 +126,10 @@
   .trust-grid { grid-template-columns: 1fr 1fr; }
 
   /* Homepage sections */
-  .hero-home-inner { grid-template-columns: 1fr; min-height: 0; }
+  /* Below the breakpoint the copy stacks over the photo, so the height has to
+     come from the content — the photo's 1.64:1 ratio would be far too short. */
+  .hero-home { aspect-ratio: auto; }
+  .hero-home-inner { grid-template-columns: 1fr; min-height: 0; height: auto; align-items: center; }
   .hero-trust { max-width: none; }
   .hero-home-copy { max-width: 100%; padding-block: var(--sp-7) var(--sp-5); }
   .hero-home-media { position: absolute; inset: 0; width: 100%; min-height: 0; margin: 0; }
