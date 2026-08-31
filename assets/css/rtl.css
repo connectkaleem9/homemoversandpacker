@@ -142,25 +142,40 @@ a:hover > .card-link .icon-arrow { transform: scaleX(-1) translateX(3px); }
 .why-media { left: auto; right: 0; }
 
 /* --------------------------------------------------------------------------
-   9. Mobile bar
+   9. Sliding service strip
+   The track is laid out right-to-left here, so running the same keyframes
+   backwards keeps the motion going the same way relative to the reader.
+   -------------------------------------------------------------------------- */
+.service-marquee-track { animation-direction: reverse; }
+
+/* --------------------------------------------------------------------------
+   10. Mobile bar
    -------------------------------------------------------------------------- */
 .mobile-bar-item { border-right: 0; border-left: 1px solid rgba(255, 255, 255, .12); }
 .mobile-bar-item:last-child { border-left: 0; }
 
 /* --------------------------------------------------------------------------
-   10. Small-screen overrides
+   11. Small-screen overrides
    These mirror the matching rules in responsive.css, which is loaded first.
    -------------------------------------------------------------------------- */
 @media (max-width: 1023.98px) {
   .primary-nav { margin-right: 0; }
   .quote-mini .form-grid { text-align: right; }
 
-  /* The hero stops being an overlay below this width and the photograph
-     becomes a band of its own, so it should be centred in both languages.
-     This sheet loads after responsive.css, so without it the RTL anchor above
-     would win and crop the band to its left edge. */
+  /* The stacked hero puts the copy over the middle of the picture rather than
+     to one side, so it is centred in both languages. This sheet loads after
+     responsive.css, so without this the RTL anchor above would win and crop
+     the photograph to its left edge. */
   .hero-home-media img:not(.hero-home-backdrop),
   .hero-home-media .img-placeholder { object-position: center; }
+  /* The scrim is a straight top-to-bottom fade once stacked — it has no
+     side to favour, so the RTL angle above does not apply. */
+  .hero-home-media::after {
+    background: linear-gradient(180deg,
+      rgba(13, 36, 64, .80) 0%,
+      rgba(13, 36, 64, .68) 42%,
+      rgba(13, 36, 64, .86) 100%);
+  }
 }
 
 @media (max-width: 599.98px) {

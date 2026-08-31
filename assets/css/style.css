@@ -808,7 +808,6 @@ a.card:hover .card-link .icon { transform: translateX(3px); }
 .mobile-bar-item:hover { text-decoration: none; color: #fff; }
 .mobile-bar-item .icon { width: 20px; height: 20px; }
 .mobile-bar-whatsapp { background: var(--green-600); }
-.mobile-bar-quote { background: var(--accent-500); }
 
 /* --------------------------------------------------------------------------
    17. 404
@@ -1081,6 +1080,64 @@ a.card:hover .card-link .icon { transform: translateX(3px); }
 
 /* Twelve tiles do not fit one row; wrap them onto a 6-wide grid instead. */
 .service-strip-wrap { grid-template-columns: repeat(6, 1fr); }   /* 12 tiles, two rows of six */
+
+/* --------------------------------------------------------------------------
+   Continuously sliding service strip
+   --------------------------------------------------------------------------
+   The tiles are rendered twice (see includes/service-marquee.php) and the
+   track travels exactly one group's width before the animation repeats, so
+   the second copy has moved into the place the first one started from at the
+   moment it loops. That is what makes it seamless rather than snapping back.
+
+   It bleeds to the viewport edges so tiles slide in and out of the screen
+   rather than appearing at a container margin. The masks fade those edges so
+   nothing is abruptly cut in half.
+   -------------------------------------------------------------------------- */
+.service-marquee {
+  overflow: hidden;
+  margin-inline: calc(50% - 50vw);
+  padding-block: 4px;                 /* room for the tiles' hover lift */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.service-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: service-marquee 46s linear infinite;
+}
+.service-marquee-group {
+  display: flex;
+  gap: var(--sp-3);
+  padding-inline-end: var(--sp-3);    /* keeps the seam evenly spaced */
+}
+.service-marquee .service-tile {
+  flex: 0 0 210px;
+  width: 210px;
+}
+
+/* From -50% to 0 so the strip travels left to right. */
+@keyframes service-marquee {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+/* Stop while someone is reading a tile, or tabbing through them. */
+.service-marquee:hover .service-marquee-track,
+.service-marquee:focus-within .service-marquee-track { animation-play-state: paused; }
+
+/*
+ * Continuous motion is a genuine accessibility problem for vestibular
+ * disorders, and this strip never stops. Anyone who has asked their system to
+ * reduce motion gets the plain wrapping grid instead — no animation, and the
+ * duplicate group hidden so nothing reads twice.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .service-marquee { margin-inline: 0; mask-image: none; -webkit-mask-image: none; }
+  .service-marquee-track { animation: none; width: 100%; }
+  .service-marquee-group[aria-hidden="true"] { display: none; }
+  .service-marquee-group { flex-wrap: wrap; justify-content: center; padding-inline-end: 0; }
+  .service-marquee .service-tile { flex: 0 1 210px; }
+}
 
 /* Blog cards used in a plain 2-column grid on the blog index */
 .grid-2 > .blog-card { height: 100%; }

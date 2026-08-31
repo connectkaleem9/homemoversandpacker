@@ -130,12 +130,17 @@ $navOther     = other_lang();
       </div>
     </nav>
 
+    <?php /* Both carry an aria-label: between 1025px and 1140px the labels are
+             hidden to keep the header on one line, and without these the
+             buttons would have no accessible name at all. */ ?>
     <div class="header-cta">
-      <a href="<?= PHONE_LINK ?>" class="btn btn-phone js-track" data-cta="phone">
+      <a href="<?= PHONE_LINK ?>" class="btn btn-phone js-track" data-cta="phone"
+         aria-label="<?= e(t('cta.call', ['phone' => PHONE_INTL])) ?>">
         <?= icon('phone', 'icon icon-sm') ?><span><?= e(PHONE_DISPLAY) ?></span>
       </a>
       <a href="<?= e(whatsapp_url()) ?>" class="btn btn-gold js-track"
-         data-cta="whatsapp" target="_blank" rel="noopener">
+         data-cta="whatsapp" target="_blank" rel="noopener"
+         aria-label="<?= e(t('foot.whatsapp_us')) ?>">
         <?= icon('whatsapp', 'icon icon-sm') ?><span><?= e(t('cta.whatsapp')) ?></span>
       </a>
     </div>

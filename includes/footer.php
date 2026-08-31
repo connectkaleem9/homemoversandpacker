@@ -123,7 +123,12 @@ $footHome = lang_url('/');
   </div>
 </footer>
 
-<!-- Mobile sticky conversion bar -->
+<!--
+  Mobile sticky conversion bar. Call and WhatsApp only, at the client's
+  request — the quote button was removed because the quote form is already
+  reachable from the hero, the CTA band and the footer on every page, and
+  three buttons across a 360px screen left each one cramped.
+-->
 <div class="mobile-bar" role="group" aria-label="<?= e(t('bar.aria')) ?>">
   <a href="<?= PHONE_LINK ?>" class="mobile-bar-item js-track" data-cta="phone">
     <?= icon('phone', 'icon') ?><span><?= e(t('bar.call')) ?></span>
@@ -131,14 +136,6 @@ $footHome = lang_url('/');
   <a href="<?= e(whatsapp_url()) ?>" class="mobile-bar-item mobile-bar-whatsapp js-track"
      data-cta="whatsapp" target="_blank" rel="noopener">
     <?= icon('whatsapp', 'icon') ?><span><?= e(t('bar.whatsapp')) ?></span>
-  </a>
-  <?php
-  /* An in-page anchor stays as it is; a path gets the language prefix. */
-  $footQuote = (string) seo_get('quote_anchor', '/contact-us/#quote');
-  $footQuote = str_starts_with($footQuote, '#') ? $footQuote : lang_url($footQuote);
-  ?>
-  <a href="<?= e($footQuote) ?>" class="mobile-bar-item mobile-bar-quote js-track" data-cta="quote">
-    <?= icon('quote', 'icon') ?><span><?= e(t('bar.quote')) ?></span>
   </a>
 </div>
 

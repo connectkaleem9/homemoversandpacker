@@ -9,10 +9,29 @@
   :root { --fs-4xl: 2.4rem; --fs-3xl: 1.95rem; }
   .hero-inner { gap: var(--sp-6); }
   .nav-link { padding-inline: 0.6rem; }
+  .header-inner { gap: var(--sp-4); }
+  .header-cta { gap: var(--sp-2); }
+}
+
+/*
+ * Between here and 1024px — where the nav collapses into the toggle — the
+ * navigation, the language switcher and two labelled buttons no longer fit on
+ * one line, and `.header-cta { flex: none }` meant the header simply ran off
+ * the page: 1157px of content in an 1100px window, with a horizontal
+ * scrollbar on the whole site. The WhatsApp button drops to its icon for this
+ * range; it keeps its aria-label, so its accessible name is unchanged.
+ */
+@media (max-width: 1140px) {
+  .header-cta .btn-gold span { display: none; }
+  .header-cta .btn-gold { padding-inline: 0.85rem; }
 }
 
 /* ---------- Small desktop / large tablet ---------- */
 @media (max-width: 1080px) {
+  /* 1025px is the tightest the horizontal nav ever gets — one pixel above the
+     width where it collapses into the toggle — and it was still 8px over. */
+  .nav-link { padding-inline: 0.45rem; }
+  .nav-item-lang { margin-inline-start: 0; }
   .header-phone-text small { display: none; }
   .dropdown-wide { min-width: 460px; }
   .steps-5 { grid-template-columns: repeat(3, 1fr); }
@@ -127,49 +146,78 @@
 
   /* Homepage sections */
   /*
-   * The overlay hero does not survive a narrow screen. The copy needs the full
-   * width, and a scrim opaque enough to keep navy body text legible over a
-   * bright photograph ends up hiding the photograph — which was most of the
-   * point of it. The previous scrim ran at 90-97% and the picture simply was
-   * not there on a phone.
+   * The photograph stays the hero's background here, as it is on a desktop.
    *
-   * So below this width the hero stops pretending to be an overlay and becomes
-   * what it actually is on a phone: a block of copy, then the picture.
+   * What has to change is the scrim. Once the hero stacks, the copy sits over
+   * the middle of the picture rather than beside it, and a near-white scrim
+   * heavy enough to carry navy body text hides the photograph completely —
+   * which is how this hero came to render as an empty white block on a phone.
+   *
+   * So the scrim goes navy and the copy inverts to light-on-dark. The picture
+   * reads properly through it, and white on this depth of navy has more
+   * contrast than the navy-on-white it replaces.
    */
-  .hero-home { height: auto; }
+  .hero-home {
+    height: auto;
+    min-height: 30rem;
+    background: var(--navy-800);
+  }
   .hero-home-inner {
     grid-template-columns: 1fr;
     min-height: 0;
     height: auto;
-    align-items: start;
-    gap: var(--sp-5);
+    align-items: center;
   }
   .hero-trust { max-width: none; }
-  .hero-home-copy { max-width: 100%; padding-block: var(--sp-6) 0; }
+  .hero-home-copy { max-width: 100%; padding-block: var(--sp-7) var(--sp-6); }
 
-  .hero-home-media {
-    position: relative;
-    inset: auto;
-    width: auto;
-    min-height: 0;
-    /* Bleed to the screen edges by exactly the container's padding. 100vw
-       would include the scrollbar and overflow the page by its width. */
-    margin-inline: calc(var(--sp-5) * -1);
-    margin-block: 0;
-    /* A wide band on a tablet. At 16:10 a 1000px-wide hero was 616px of
-       photograph, which pushed the whole page down a screen and a half. */
-    aspect-ratio: 2 / 1;
-  }
+  .hero-home-media { position: absolute; inset: 0; width: 100%; min-height: 0; margin: 0; }
   .hero-home-media img:not(.hero-home-backdrop),
   .hero-home-media .img-placeholder {
     object-fit: cover;
     object-position: center;
   }
-  /* Nothing sits on the picture now, so it needs neither the blurred fill
-     behind it nor a scrim over it. */
+  /* The stacked photo fills the section, so the blurred fill has nothing to
+     hide behind the sharp copy. */
   .hero-home-backdrop { display: none; }
-  .hero-home-media::after,
   .hero-home-media::before { display: none; }
+  /*
+   * Measured against the hero photograph: at these stops the worst-case
+   * contrast for white body text over the brightest part of the picture is
+   * 5.6:1, comfortably past the 4.5:1 AA needs, while 32% of the photograph
+   * still shows through. Loosening them to .62 in the middle drops it to
+   * 4.6:1 — fine for this photo, no margin at all for a brighter one on a
+   * service page.
+   */
+  .hero-home-media::after {
+    display: block;
+    background: linear-gradient(180deg,
+      rgba(13, 36, 64, .80) 0%,
+      rgba(13, 36, 64, .68) 42%,
+      rgba(13, 36, 64, .86) 100%);
+  }
+
+  /* Light-on-dark copy to match the scrim. */
+  .hero-home .eyebrow { color: var(--accent-400); }
+  .hero-home h1 { color: #fff; }
+  .hero-home-sub { color: rgba(255, 255, 255, .88); }
+  .hero-home .post-meta,
+  .hero-home .post-meta time { color: rgba(255, 255, 255, .82); }
+  .hero-trust {
+    border-top-color: rgba(255, 255, 255, .22);
+    border-bottom-color: rgba(255, 255, 255, .22);
+  }
+  .hero-trust-item .icon { color: var(--accent-400); }
+  .hero-trust-item span { color: #fff; }
+  /* The navy phone button would disappear into a navy scrim. */
+  .hero-home .btn-phone {
+    background: rgba(255, 255, 255, .1);
+    border: 1px solid rgba(255, 255, 255, .45);
+    backdrop-filter: blur(2px);
+  }
+  .hero-home .btn-phone:hover { background: rgba(255, 255, 255, .18); }
+  .hero-home .btn-outline { color: #fff; border-color: rgba(255, 255, 255, .5); }
+  .hero-home .btn-outline:hover { background: rgba(255, 255, 255, .12); color: #fff; }
 
   /*
    * iOS Safari zooms the page in whenever a focused field is smaller than 16px,
@@ -251,15 +299,14 @@
   .container { padding-inline: var(--sp-4); }
 
   /*
-   * Anything that bleeds to the screen edges is pulled out by the container's
-   * padding, and the padding changes here — so every bleed has to change with
-   * it. Leaving them at the -sp-5 set above pushed the photographs 8px past
-   * the viewport on each side.
+   * A bleed to the screen edges is pulled out by the container's padding, and
+   * the padding changes here — so the bleed has to change with it. Left at the
+   * -sp-5 set above, the photograph hung 8px past the viewport on each side.
    */
-  .hero-home-media,
   .why-media { margin-inline: calc(var(--sp-4) * -1); }
-  /* Taller crop on a phone: 16:10 leaves the crew as a distant strip. */
-  .hero-home-media { aspect-ratio: 4 / 3; }
+
+  /* Shorter hero on a phone: there is less copy on screen to fill it. */
+  .hero-home { min-height: 26rem; }
 
   /* The compact form sets its own smaller size, so the floor has to be
      matched on specificity to beat it. */
@@ -312,7 +359,12 @@
   .error-code { font-size: 3.5rem; }
 
   .service-strip, .service-strip-wrap { grid-template-columns: 1fr !important; gap: var(--sp-2); }
+  /* The sliding strip keeps its column tiles — the row layout below is for the
+     stacked grids, and a row tile in a marquee would be far too wide to read
+     as it passes. Two and a bit tiles on screen at 390px. */
+  .service-marquee .service-tile { flex: 0 0 165px; width: 165px; }
   .service-tile { flex-direction: row; text-align: left; align-items: center; gap: var(--sp-4); }
+  .service-marquee .service-tile { flex-direction: column; text-align: center; }
   .service-tile-icon { width: 40px; height: 40px; margin-bottom: 0; }
   .svc-icon { width: 38px; height: 38px; }
   .service-tile h3 { margin-top: 0; }
