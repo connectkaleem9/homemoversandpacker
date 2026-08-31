@@ -22,18 +22,26 @@ declare(strict_types=1);
 $appEnvFile     = __DIR__ . '/env.php';
 $appEnvSettings = is_file($appEnvFile) ? (array) require $appEnvFile : [];
 
-/** One setting: includes/env.php first, then the environment, then the default. */
+/**
+ * One setting: includes/env.php first, then the environment, then the default.
+ *
+ * An EMPTY value at any level means "not set here, keep looking" — the example
+ * env.php ships with blank entries as documentation, and treating those as a
+ * deliberate empty string is how LEAD_NOTIFY_EMAIL silently became '' and every
+ * lead notification failed to send.
+ */
 function cfg(string $key, string $default = ''): string
 {
     global $appEnvSettings;
 
-    if (array_key_exists($key, $appEnvSettings)) {
-        return (string) $appEnvSettings[$key];
+    $fromFile = (string) ($appEnvSettings[$key] ?? '');
+    if ($fromFile !== '') {
+        return $fromFile;
     }
 
-    $value = getenv($key);
+    $fromEnv = getenv($key);
 
-    return ($value !== false && $value !== '') ? (string) $value : $default;
+    return ($fromEnv !== false && $fromEnv !== '') ? (string) $fromEnv : $default;
 }
 
 /* ------------------------------------------------------------------

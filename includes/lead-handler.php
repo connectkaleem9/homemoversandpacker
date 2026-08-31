@@ -177,7 +177,7 @@ function lead_notify(string $subject, array $lead): void
     }
 
     $headers = [
-        'From: ' . SITE_NAME . ' <no-reply@' . SITE_DOMAIN . '>',
+        'From: ' . mb_encode_mimeheader(SITE_NAME, 'UTF-8', 'B') . ' <no-reply@' . SITE_DOMAIN . '>',
         'Content-Type: text/plain; charset=UTF-8',
         'X-Mailer: PHP/' . PHP_VERSION,
     ];
@@ -185,9 +185,30 @@ function lead_notify(string $subject, array $lead): void
         $headers[] = 'Reply-To: ' . $replyTo;
     }
 
-    $sent = @mail(LEAD_NOTIFY_EMAIL, lead_header_safe($subject), $body, implode("\r\n", $headers));
+    /*
+     * Say WHY it failed. A generic "could not be sent" sent us looking at the
+     * mail server when the recipient address was simply empty. The lead is
+     * stored either way, but nobody goes and reads a .jsonl file, so a
+     * notification that quietly stops arriving is the worst failure here.
+     */
+    if (LEAD_NOTIFY_EMAIL === '') {
+        error_log('[lead] LEAD_NOTIFY_EMAIL is empty, no notification sent for: ' . $subject
+                . ' (the lead itself was stored)');
+        return;
+    }
+
+    /* Mail headers must be ASCII, and a subject carries an em dash — or, from
+       the contact form, whatever the visitor typed, in either language. */
+    $sent = @mail(
+        LEAD_NOTIFY_EMAIL,
+        mb_encode_mimeheader(lead_header_safe($subject), 'UTF-8', 'B'),
+        $body,
+        implode("\r\n", $headers)
+    );
+
     if (!$sent) {
-        error_log('[lead] notification email could not be sent for: ' . $subject);
+        error_log('[lead] mail() refused the notification to ' . LEAD_NOTIFY_EMAIL
+                . ' for: ' . $subject . ' (the lead itself was stored)');
     }
 }
 

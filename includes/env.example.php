@@ -26,6 +26,7 @@ return [
     'DB_USER'    => '',
     'DB_PASS'    => '',
 
-    /* Where new enquiries are emailed. Defaults to EMAIL_ADDRESS in config.php. */
+    /* Where new enquiries are emailed. Leave blank to use EMAIL_ADDRESS from
+       config.php — a blank value here means "not set", not "send to nobody". */
     'LEAD_NOTIFY_EMAIL' => '',
 ];
