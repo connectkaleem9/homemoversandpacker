@@ -82,10 +82,8 @@ $splitImg = image_exists('services/' . $slug . '-2.jpg') ? 'services/' . $slug .
       </div>
     </div>
 
-    <div class="hero-home-media">
-      <?= img($heroImg, $service['name'] . ' in Dubai, Sharjah and Ajman',
+    <?= hero_media($heroImg, $service['name'] . ' in Dubai, Sharjah and Ajman',
               ['width' => 1600, 'height' => 977, 'loading' => 'eager', 'fetchpriority' => 'high', 'icon' => $service['icon']]) ?>
-    </div>
   </div>
 </section>
 

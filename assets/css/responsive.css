@@ -128,7 +128,15 @@
   /* Homepage sections */
   /* Below the breakpoint the copy stacks over the photo, so the height has to
      come from the content — the photo's 1.64:1 ratio would be far too short. */
-  .hero-home { aspect-ratio: auto; }
+  /* Stacked layout: the copy sits directly over the picture, so it has to fill
+     the section rather than fit inside it — contain would leave empty bars. */
+  .hero-home { height: auto; }
+  /* Matches the base rule's specificity — plain `.hero-home-media img` lost to
+     `.hero-home-media img:not(.hero-home-backdrop)` and left contain in place,
+     which letterboxed the photo behind the stacked copy. */
+  .hero-home-media img:not(.hero-home-backdrop) { object-fit: cover; }
+  /* Stacked layout fills the section, so the backdrop has nothing to hide. */
+  .hero-home-backdrop { display: none; }
   .hero-home-inner { grid-template-columns: 1fr; min-height: 0; height: auto; align-items: center; }
   .hero-trust { max-width: none; }
   .hero-home-copy { max-width: 100%; padding-block: var(--sp-7) var(--sp-5); }

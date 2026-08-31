@@ -73,11 +73,9 @@ require __DIR__ . '/includes/header.php';
       </div>
     </div>
 
-    <div class="hero-home-media">
-      <?= img('hero-movers-dubai.webp',
+    <?= hero_media('hero-movers-dubai.webp',
               'Movers loading wrapped furniture and cartons into a moving truck in Dubai',
               ['width' => 1200, 'height' => 900, 'loading' => 'eager', 'fetchpriority' => 'high', 'icon' => 'truck']) ?>
-    </div>
   </div>
 </section>
 

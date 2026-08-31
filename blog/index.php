@@ -51,10 +51,8 @@ require dirname(__DIR__) . '/includes/header.php';
       </div>
     </div>
 
-    <div class="hero-home-media">
-      <?= img('why-choose-us.jpg', 'Our crew wrapping furniture before a move',
+    <?= hero_media('why-choose-us.jpg', 'Our crew wrapping furniture before a move',
               ['width' => 1400, 'height' => 933, 'loading' => 'eager', 'fetchpriority' => 'high', 'icon' => 'sofa']) ?>
-    </div>
   </div>
 </section>
 

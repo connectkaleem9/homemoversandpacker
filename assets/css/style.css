@@ -893,12 +893,12 @@ a.card:hover .card-link .icon { transform: translateX(3px); }
   background: linear-gradient(100deg, #ffffff 0%, #f7f9fc 46%, var(--surface-tint) 100%);
   overflow: hidden;
   /*
-   * The section takes the hero photograph's own aspect ratio (1600x977), so
-   * object-fit: cover has nothing left to crop and the whole picture is
-   * visible. A fixed short hero cut the villa, the skyline and the ground out
-   * of frame and left only a band across the middle.
+   * A fixed, comfortable height rather than the photograph's own ratio. Taking
+   * the ratio meant a ~920px hero on a desktop, which was far too tall; the
+   * picture is kept whole by `contain` below instead of by stretching the
+   * section to match it.
    */
-  aspect-ratio: 1600 / 977;
+  height: clamp(500px, 41vw, 660px);
 }
 .hero-home-inner {
   display: grid;
@@ -963,15 +963,34 @@ a.card:hover .card-link .icon { transform: translateX(3px); }
   width: 100%;
   z-index: 0;
 }
-.hero-home-media img,
+/* Blurred fill behind the sharp photo, so there is no hard edge where the
+   contained image starts. Scaled up slightly so the blur has no soft border. */
+.hero-home-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: blur(26px) saturate(.9);
+  transform: scale(1.1);
+}
+
+.hero-home-media img:not(.hero-home-backdrop),
 .hero-home-media .img-placeholder {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   padding-bottom: 0 !important;
-  object-fit: cover;
-  object-position: center;
+  /*
+   * contain, never cover: the photograph is shown whole and is never cropped.
+   * Anchored right, so the part of the section it does not cover is the light
+   * left-hand area the copy sits in — and the scrim above is ~95% opaque
+   * there, which hides the picture's left edge rather than leaving a seam.
+   */
+  object-fit: contain;
+  object-position: right center;
   border: 0;
   border-radius: 0;
 }

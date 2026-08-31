@@ -69,10 +69,8 @@ $groups = [
       </div>
     </div>
 
-    <div class="hero-home-media">
-      <?= img('hero-movers-dubai.jpg', 'Our moving crew loading a truck in Dubai',
+    <?= hero_media('hero-movers-dubai.jpg', 'Our moving crew loading a truck in Dubai',
               ['width' => 1600, 'height' => 977, 'loading' => 'eager', 'fetchpriority' => 'high', 'icon' => 'truck']) ?>
-    </div>
   </div>
 </section>
 

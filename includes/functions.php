@@ -430,6 +430,30 @@ function cta_id(string $type): string
 }
 
 /**
+ * Hero media block.
+ *
+ * Two copies of the same photograph: a blurred, cover-fitted backdrop filling
+ * the section, and the sharp `contain` copy on top which is never cropped.
+ * Without the backdrop there is a hard vertical seam wherever the contained
+ * image begins, and that edge moves with the viewport width, so no single
+ * gradient stop can hide it.
+ */
+function hero_media(string $path, string $alt, array $opts = []): string
+{
+    $out = '<div class="hero-home-media">';
+
+    if (image_exists($path)) {
+        $out .= '<img class="hero-home-backdrop" src="' . e(image_url($path)) . '" alt=""'
+             . ' aria-hidden="true" loading="' . e((string) ($opts['loading'] ?? 'eager')) . '" decoding="async">';
+    }
+
+    $out .= img($path, $alt, $opts);
+    $out .= '</div>';
+
+    return $out;
+}
+
+/**
  * Duotone service icons — solid navy shapes with gold accents, matching the
  * reference design. Separate from icon(): those are line icons used inline in
  * body copy, these are filled illustrations sized for the service cards.

@@ -60,10 +60,8 @@ require dirname(__DIR__) . '/includes/header.php';
       </div>
     </div>
 
-    <div class="hero-home-media">
-      <?= img('hero-movers-dubai.jpg', 'Our moving crew working across Dubai, Sharjah and Ajman',
+    <?= hero_media('hero-movers-dubai.jpg', 'Our moving crew working across Dubai, Sharjah and Ajman',
               ['width' => 1600, 'height' => 977, 'loading' => 'eager', 'fetchpriority' => 'high', 'icon' => 'truck']) ?>
-    </div>
   </div>
 </section>
 

@@ -78,10 +78,8 @@ $heroImg = image_exists('locations/' . $slug . '-hero.jpg')
       </div>
     </div>
 
-    <div class="hero-home-media">
-      <?= img($heroImg, 'Our moving crew working in ' . $city . ', UAE',
+    <?= hero_media($heroImg, 'Our moving crew working in ' . $city . ', UAE',
               ['width' => 1600, 'height' => 977, 'loading' => 'eager', 'fetchpriority' => 'high', 'icon' => 'building']) ?>
-    </div>
   </div>
 </section>
 
