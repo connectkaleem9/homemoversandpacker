@@ -10,6 +10,10 @@ Allow: /assets/
 # Form processing endpoints — no content, nothing to index
 Disallow: /forms/
 
+# The dashboard. Also noindexed in its own markup, but there is no reason to
+# spend crawl budget discovering it.
+Disallow: /admin/
+
 # Application internals
 Disallow: /includes/
 Disallow: /storage/

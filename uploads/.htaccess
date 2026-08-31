@@ -1,0 +1,22 @@
+# Uploaded files are data, never code.
+#
+# Nothing in here should ever be executed: a file that got past the re-encoding
+# in includes/upload.php would still be inert. PHP is disabled several ways
+# because which one takes effect depends on how the host runs PHP.
+
+<FilesMatch "\.(php|phtml|php[0-9]|phar|cgi|pl|py|sh|htaccess)$">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>
+
+<IfModule LiteSpeed>
+  RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8
+</IfModule>
+
+RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8
+AddType text/plain .php .phtml .php3 .php4 .php5 .php7 .php8
+
+Options -Indexes -ExecCGI

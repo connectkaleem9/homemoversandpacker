@@ -182,6 +182,30 @@ return [
     'example.quote2'      => 'Placeholder two. Copy your genuine Google reviews into includes/data/testimonials.php.',
     'example.quote3'      => 'Placeholder three, here only to show the card design. It never appears on the live site.',
 
+    /* Projects and reviews */
+    'nav.projects'        => 'Projects',
+    'nav.reviews'         => 'Reviews',
+    'cta.view_project'    => 'See the job',
+    'cta.write_review'    => 'Write a review',
+
+    'form.rating'         => 'Your rating',
+    'form.rating_of'      => '{n} out of 5',
+    'form.city'           => 'Your area',
+    'form.service_used'   => 'Which service did we do for you?',
+    'form.review'         => 'Your review',
+    'form.review_ph'      => 'What did we move, and how did the day go? The specifics are what help the next customer.',
+    'form.review_submit'  => 'Submit my review',
+    'form.review_legal'   => 'We publish your first name, your area and your review. Your email and phone stay private and are only used to check the review is genuine. See our',
+    'form.review_contact_hint' => 'Give us an email or a phone number so we can confirm the review is genuine. Neither is ever published.',
+
+    'err.rating'          => 'Choose a rating from 1 to 5 stars.',
+    'err.review_short'    => 'Please write a little more — at least a sentence or two.',
+    'err.review_contact'  => 'Give us either an email or a phone number so we can verify the review.',
+    'err.check_review'    => 'Please check the highlighted fields and send the review again.',
+
+    'flash.review_thanks' => 'Thank you for writing this.',
+    'lead.review_ok'      => 'Your review has been received. We check every review is genuine before it goes on the site, so it will appear shortly.',
+
     /* Misc */
     'misc.list_sep'       => ', ',
     'misc.list_and'       => ' and ',

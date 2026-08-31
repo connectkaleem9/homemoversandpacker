@@ -16,6 +16,9 @@ require_once __DIR__ . '/functions.php';
 require_once __DIR__ . '/seo.php';
 require_once __DIR__ . '/schema.php';
 require_once __DIR__ . '/breadcrumbs.php';
+require_once __DIR__ . '/store.php';
+require_once __DIR__ . '/content.php';
+require_once __DIR__ . '/upload.php';
 
 /**
  * Start the session here, before a single byte of output.

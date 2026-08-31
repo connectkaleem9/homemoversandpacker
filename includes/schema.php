@@ -143,6 +143,47 @@ function schema_service(array $service): array
     ];
 }
 
+/**
+ * Review and AggregateRating nodes.
+ *
+ * Only ever called with reviews an admin has approved, and only when there is
+ * at least one — an aggregateRating with no reviews behind it is exactly the
+ * kind of claim Google's structured data guidelines prohibit, and it is the
+ * reason this site shipped without any rating markup at all until now.
+ */
+function schema_reviews(array $reviews, float $average): array
+{
+    $nodes = [];
+    foreach ($reviews as $review) {
+        $nodes[] = [
+            '@type'         => 'Review',
+            'author'        => ['@type' => 'Person', 'name' => $review['name']],
+            'datePublished' => substr((string) $review['created_at'], 0, 10),
+            'reviewBody'    => $review['quote'],
+            'reviewRating'  => [
+                '@type'       => 'Rating',
+                'ratingValue' => (int) $review['rating'],
+                'bestRating'  => 5,
+                'worstRating' => 1,
+            ],
+        ];
+    }
+
+    return [
+        '@type'           => 'MovingCompany',
+        '@id'             => CANONICAL_BASE . '/#organization',
+        'name'            => BUSINESS_NAME,
+        'aggregateRating' => [
+            '@type'       => 'AggregateRating',
+            'ratingValue' => $average,
+            'reviewCount' => count($reviews),
+            'bestRating'  => 5,
+            'worstRating' => 1,
+        ],
+        'review'          => $nodes,
+    ];
+}
+
 /** BlogPosting node for an article. */
 function schema_article(array $post): array
 {

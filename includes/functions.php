@@ -61,13 +61,25 @@ function all_posts(): array
 function all_testimonials(): array
 {
     static $testimonials = null;
-    if ($testimonials === null) {
-        $testimonials = array_values(array_filter(
-            require __DIR__ . '/data/testimonials.php',
-            static fn ($t): bool => is_array($t) && !empty($t['quote']) && !empty($t['name'])
-        ));
+
+    if ($testimonials !== null) {
+        return $testimonials;
     }
-    return $testimonials;
+
+    /*
+     * Reviews approved in the admin dashboard are the real source now. The
+     * hand-written file stays as a fallback so anything added there before the
+     * dashboard existed is not silently dropped; approved submissions come
+     * first because they are the newer, verifiable ones.
+     */
+    require_once __DIR__ . '/content.php';
+
+    $fromFile = array_values(array_filter(
+        require __DIR__ . '/data/testimonials.php',
+        static fn ($t): bool => is_array($t) && !empty($t['quote']) && !empty($t['name'])
+    ));
+
+    return $testimonials = array_merge(approved_reviews(), $fromFile);
 }
 
 /**
@@ -310,6 +322,27 @@ function whatsapp_url(string $message = ''): string
 {
     $message = $message !== '' ? $message : t('wa.default');
     return WHATSAPP_BASE . '?text=' . rawurlencode($message);
+}
+
+/* ------------------------------------------------------------------
+ | Input
+ | ------------------------------------------------------------------ */
+
+/**
+ * Trim, collapse runs of spaces and strip control characters from user input.
+ *
+ * Not lead-specific, despite where it used to live: the admin dashboard
+ * sanitises its own fields with it too, and making it reach for the whole lead
+ * pipeline to get one string helper is what made the dashboard fatal on an
+ * undefined function.
+ */
+function lead_clean(?string $value, int $max = 255): string
+{
+    $value = (string) ($value ?? '');
+    $value = preg_replace('/[ --]/u', '', $value) ?? '';
+    $value = trim(preg_replace('/[ 	]+/', ' ', $value) ?? '');
+
+    return mb_substr($value, 0, $max);
 }
 
 /* ------------------------------------------------------------------

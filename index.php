@@ -83,11 +83,17 @@ require __DIR__ . '/includes/header.php';
       <h2><?= e(t('sec.services')) ?></h2>
     </div>
 
-    <?php
-    $marqueeServices = $featured;
-    require __DIR__ . '/includes/service-marquee.php';
-    ?>
+  </div>
 
+  <?php
+  /* Outside the container on purpose: a block-level child of the section is
+     exactly the client width, so the strip reaches both screen edges without
+     the calc(50% - 50vw) trick, which overshoots by half a scrollbar. */
+  $marqueeServices = $featured;
+  require __DIR__ . '/includes/service-marquee.php';
+  ?>
+
+  <div class="container">
     <div class="service-strip-foot">
       <a href="<?= e(lang_url('/services/')) ?>" class="btn btn-phone">
         <span><?= e(t('cta.view_services')) ?></span><?= icon('arrow', 'icon icon-sm') ?>

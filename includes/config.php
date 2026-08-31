@@ -172,4 +172,4 @@ define('RATE_LIMIT_WINDOW', 900);   // per 15 minutes, per IP
  | ?v= query string. BUMP THIS whenever a file in /assets changes, or nobody
  | who has already visited — and no CDN edge — will ever fetch the new one.
  | ------------------------------------------------------------------ */
-define('ASSET_VERSION', '1.2.0');
+define('ASSET_VERSION', '1.3.0');

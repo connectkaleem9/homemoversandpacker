@@ -10,6 +10,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/includes/bootstrap.php';
+require_once __DIR__ . '/includes/content.php';
 
 header('Content-Type: application/xml; charset=UTF-8');
 
@@ -48,6 +49,8 @@ $add('/locations/', $today, 'monthly', '0.9');
 $add('/about-us/', $today, 'yearly', '0.6');
 $add('/contact-us/', $today, 'monthly', '0.8');
 $add('/blog/', $today, 'weekly', '0.7');
+$add('/projects/', $today, 'weekly', '0.8');
+$add('/reviews/', $today, 'weekly', '0.7');
 
 /* Service landing pages — the primary commercial targets.
    The slugs are identical in both languages, so one loop covers both. */
@@ -63,6 +66,17 @@ foreach (all_locations() as $slug => $location) {
 /* Blog articles */
 foreach (all_posts() as $slug => $post) {
     $add(post_url($slug), $post['modified'] ?? $post['published'], 'yearly', '0.6');
+}
+
+/* Project pages — created in the admin dashboard, so this list is whatever
+   is published right now rather than a fixed set. */
+foreach (all_projects() as $project) {
+    $add(
+        '/projects/' . $project['slug'] . '/',
+        substr((string) ($project['updated_at'] ?? $project['created_at'] ?? $today), 0, 10),
+        'yearly',
+        '0.6'
+    );
 }
 
 /* Legal pages */

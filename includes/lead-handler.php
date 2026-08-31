@@ -1,6 +1,6 @@
 <?php
 /**
- * Shared lead pipeline for the quote and contact forms.
+ * Shared lead pipeline for the quote, contact and review forms.
  *
  * Order of defence:
  *   1. POST only, CSRF token, honeypot, submission timing, per-IP rate limit
@@ -9,21 +9,15 @@
  *      silently: a failure to store is logged and the lead still goes by email)
  *   4. Email notification to the business
  *   5. POST-redirect-GET back to the originating page with a flash message
+ *
+ * lead_clean() used to live here. It is a general-purpose input sanitiser, so
+ * it moved to functions.php once the admin dashboard needed it too.
  */
 
 declare(strict_types=1);
 
 require_once __DIR__ . '/bootstrap.php';
 require_once __DIR__ . '/database.php';
-
-/** Trim, strip control characters and cap the length of a submitted value. */
-function lead_clean(?string $value, int $max = 255): string
-{
-    $value = (string) ($value ?? '');
-    $value = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $value) ?? '';
-    $value = trim(preg_replace('/[ \t]+/', ' ', $value) ?? '');
-    return mb_substr($value, 0, $max);
-}
 
 /** Header-injection guard for anything that reaches a mail header. */
 function lead_header_safe(string $value): string
@@ -253,7 +247,14 @@ function lead_redirect(
         }
     }
 
-    header('Location: ' . $target . ($form === 'contact' ? '#message' : '#quote'), true, 303);
+    /* Land on the form the visitor actually used, not just any form. */
+    $anchor = match ($form) {
+        'contact' => '#message',
+        'review'  => '#write-review',
+        default   => '#quote',
+    };
+
+    header('Location: ' . $target . $anchor, true, 303);
     exit;
 }
 

@@ -309,6 +309,44 @@ return [
     'legal.updated'        => 'Last updated:',
 
     /* ==================================================================
+     | Projects
+     | ================================================================== */
+    'page.projects.title'   => 'Our Recent Moving Projects',
+    'page.projects.desc'    => 'Moves we have completed across Dubai, Sharjah and Ajman — villas, apartments, offices and shops, with what each job actually involved.',
+    'page.projects.eyebrow' => 'Our work',
+    'page.projects.h1'      => 'Moves We Have Completed',
+    'page.projects.sub'     => 'Real jobs across Dubai, Sharjah and Ajman — what was moved, where it went, and what made each one worth writing up.',
+    'page.projects.grid_h2' => 'Recent Projects',
+    'page.projects.more_h2' => 'Other Projects',
+    'page.projects.empty'   => 'We are putting this page together. In the meantime, call or WhatsApp us and we will talk you through jobs like yours.',
+    'page.projects.faq_h'   => 'About our work',
+    'page.projects.faq1_q'  => 'Are these real jobs?',
+    'page.projects.faq1_a'  => 'Yes. Every project on this page is a move we carried out, added by us after the job was finished. We do not publish stock photography as our own work.',
+    'page.projects.faq2_q'  => 'Can you do a job like one of these for me?',
+    'page.projects.faq2_a'  => 'Almost certainly. These are a sample rather than a limit — the same crews handle everything from a single room to a five-bedroom villa. Tell us what you are moving and we will quote for it.',
+    'page.projects.faq3_q'  => 'Do you publish customer details?',
+    'page.projects.faq3_a'  => 'No. We describe the property type and the area, never the customer name or the exact address. If a project shows a photograph, it is one we took with permission.',
+
+    /* ==================================================================
+     | Reviews
+     | ================================================================== */
+    'page.reviews.title'    => 'Customer Reviews',
+    'page.reviews.desc'     => 'What our customers say about moving with us in Dubai, Sharjah and Ajman — and a form to leave your own review.',
+    'page.reviews.eyebrow'  => 'Customer reviews',
+    'page.reviews.h1'       => 'What Our Customers Say',
+    'page.reviews.sub'      => 'Reviews written by people we have actually moved. If we moved you, we would like to hear how it went — good or bad.',
+    'page.reviews.empty'    => 'No reviews have been published yet. If we have moved you, yours would be the first — the form below takes a minute.',
+    'page.reviews.form_title' => 'Leave a review',
+    'page.reviews.form_intro' => 'Tell us how your move went. We read every review before it goes on the site, so it will appear within a day or so.',
+    'page.reviews.faq_h'    => 'About these reviews',
+    'page.reviews.faq1_q'   => 'Are these reviews real?',
+    'page.reviews.faq1_a'   => 'Yes. Every review here was submitted through the form on this page by someone we moved, and we check each one against our records before publishing it. We do not write reviews ourselves and we do not buy them.',
+    'page.reviews.faq2_q'   => 'Why has my review not appeared yet?',
+    'page.reviews.faq2_a'   => 'Every review is read before it is published, which usually takes less than a day. That is what stops this page filling with spam, and it is why the reviews here are worth reading.',
+    'page.reviews.faq3_q'   => 'Do you remove negative reviews?',
+    'page.reviews.faq3_a'   => 'No. A review is only rejected if it is spam, abusive, or from someone we have no record of moving. If something went wrong on your move we would rather know — call us on 055 658 1781 and we will try to put it right.',
+
+    /* ==================================================================
      | Service page template
      | ================================================================== */
     'tpl.service.covers'   => 'What this covers',

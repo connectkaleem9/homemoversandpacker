@@ -4,34 +4,46 @@
    1024px, and the hero form stays above the fold on phones.
    ========================================================================== */
 
+/*
+ * The header holds seven navigation items, a language switcher and two
+ * buttons, and `.header-cta { flex: none }` means it never shrinks — so it
+ * runs off the page rather than wrapping. Adding Projects and Reviews pushed
+ * it over at every desktop width, 37px at 1440 and 116px at 1025.
+ *
+ * It gives way in stages, cheapest thing first: the WhatsApp label goes (the
+ * icon is unmistakable and the button keeps its aria-label), then the nav
+ * padding tightens, then the phone number drops to its icon. Nothing is ever
+ * removed — every one of them is still in the mobile menu below 1024px.
+ *
+ * The first stage starts at 1500 rather than at some rounder number because
+ * that is where it measured over: 1440 was 37px past the viewport with every
+ * label showing.
+ */
+@media (max-width: 1500px) {
+  .header-cta .btn-gold span { display: none; }
+  .header-cta .btn-gold { padding-inline: 0.85rem; }
+}
+
 /* ---------- Large desktop ---------- */
 @media (max-width: 1200px) {
   :root { --fs-4xl: 2.4rem; --fs-3xl: 1.95rem; }
   .hero-inner { gap: var(--sp-6); }
-  .nav-link { padding-inline: 0.6rem; }
-  .header-inner { gap: var(--sp-4); }
+  .nav-link { padding-inline: 0.5rem; font-size: var(--fs-xs); }
+  .header-inner { gap: var(--sp-3); }
   .header-cta { gap: var(--sp-2); }
-}
-
-/*
- * Between here and 1024px — where the nav collapses into the toggle — the
- * navigation, the language switcher and two labelled buttons no longer fit on
- * one line, and `.header-cta { flex: none }` meant the header simply ran off
- * the page: 1157px of content in an 1100px window, with a horizontal
- * scrollbar on the whole site. The WhatsApp button drops to its icon for this
- * range; it keeps its aria-label, so its accessible name is unchanged.
- */
-@media (max-width: 1140px) {
-  .header-cta .btn-gold span { display: none; }
-  .header-cta .btn-gold { padding-inline: 0.85rem; }
+  .nav-item-lang { margin-inline-start: 0; }
+  .nav-lang { padding-inline: var(--sp-2); }
 }
 
 /* ---------- Small desktop / large tablet ---------- */
 @media (max-width: 1080px) {
   /* 1025px is the tightest the horizontal nav ever gets — one pixel above the
-     width where it collapses into the toggle — and it was still 8px over. */
-  .nav-link { padding-inline: 0.45rem; }
-  .nav-item-lang { margin-inline-start: 0; }
+     width where it collapses into the toggle. The phone number gives up its
+     label here and the switcher its globe, which is the last of the slack. */
+  .nav-link { padding-inline: 0.35rem; }
+  .header-cta .btn-phone span { display: none; }
+  .header-cta .btn-phone { padding-inline: 0.85rem; }
+  .nav-lang .icon { display: none; }
   .header-phone-text small { display: none; }
   .dropdown-wide { min-width: 460px; }
   .steps-5 { grid-template-columns: repeat(3, 1fr); }
@@ -209,6 +221,10 @@
   }
   .hero-trust-item .icon { color: var(--accent-400); }
   .hero-trust-item span { color: #fff; }
+  /* The reviews hero shows the average rating in the copy block, so it
+     inverts with everything else — dark navy on a dark scrim was invisible. */
+  .hero-rating-text { color: rgba(255, 255, 255, .85); }
+  .hero-rating-text strong { color: #fff; }
   /* The navy phone button would disappear into a navy scrim. */
   .hero-home .btn-phone {
     background: rgba(255, 255, 255, .1);
@@ -274,6 +290,7 @@
   :root { --fs-4xl: 2.1rem; --fs-3xl: 1.75rem; --fs-2xl: 1.5rem; }
 
   .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .project-grid, .review-wall { grid-template-columns: repeat(2, 1fr); }
   .steps-4, .steps-5 { grid-template-columns: repeat(2, 1fr); }
   .section { padding-block: var(--sp-7); }
   .cta-band-inner { flex-direction: column; align-items: flex-start; }
@@ -334,6 +351,8 @@
   .breadcrumb-item a { padding-block: 0.5rem; }
 
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .project-grid, .review-wall, .project-gallery { grid-template-columns: 1fr; }
+  .rating-stars label .icon { width: 34px; height: 34px; }
   .steps-4, .steps-5 { grid-template-columns: 1fr; }
   .checklist-2 { grid-template-columns: 1fr; }
   .trust-grid { grid-template-columns: 1fr; }

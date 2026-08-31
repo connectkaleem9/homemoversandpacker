@@ -107,6 +107,12 @@ $navOther     = other_lang();
         </li>
 
         <li class="nav-item">
+          <a href="<?= e(lang_url('/projects/')) ?>" class="nav-link<?= is_section('/projects') ? ' is-current' : '' ?>"><?= e(t('nav.projects')) ?></a>
+        </li>
+        <li class="nav-item">
+          <a href="<?= e(lang_url('/reviews/')) ?>" class="nav-link<?= is_current('/reviews/') ? ' is-current' : '' ?>"><?= e(t('nav.reviews')) ?></a>
+        </li>
+        <li class="nav-item">
           <a href="<?= e(lang_url('/about-us/')) ?>" class="nav-link<?= is_current('/about-us/') ? ' is-current' : '' ?>"><?= e(t('nav.about')) ?></a>
         </li>
         <li class="nav-item">

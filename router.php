@@ -26,6 +26,13 @@ if (preg_match('#^/ar(/|$)#', $path) === 1) {
     $path = $path === '' ? '/' : $path;
 }
 
+/* Project pages have no file on disk — the slugs come from the dashboard.
+   Mirrors rule 6 in .htaccess. */
+if (preg_match('#^/projects/[a-z0-9][a-z0-9-]*/?$#', $path) === 1) {
+    require $root . '/projects/project.php';
+    return true;
+}
+
 /* Block the paths .htaccess denies, so local behaviour matches production. */
 if (preg_match('#^/(storage|database|includes)(/|$)#', $path)) {
     http_response_code(404);

@@ -76,6 +76,8 @@ $footHome = lang_url('/');
       <h2 class="footer-title footer-title-spaced"><?= e(t('foot.company')) ?></h2>
       <ul class="footer-list">
         <li><a href="<?= e($footHome) ?>"><?= e(t('nav.home')) ?></a></li>
+        <li><a href="<?= e(lang_url('/projects/')) ?>"><?= e(t('nav.projects')) ?></a></li>
+        <li><a href="<?= e(lang_url('/reviews/')) ?>"><?= e(t('nav.reviews')) ?></a></li>
         <li><a href="<?= e(lang_url('/about-us/')) ?>"><?= e(t('nav.about')) ?></a></li>
         <li><a href="<?= e(lang_url('/contact-us/')) ?>"><?= e(t('nav.contact')) ?></a></li>
         <?php /* Blog left the header at the client's request; it keeps this

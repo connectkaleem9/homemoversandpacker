@@ -1,0 +1,310 @@
+/* ==========================================================================
+   Admin dashboard.
+
+   Loaded after style.css, which supplies the design tokens, the buttons and
+   the form controls. This layer is only the dashboard's own chrome, so the
+   public site and the dashboard cannot break each other.
+   ========================================================================== */
+
+body.admin {
+  background: var(--surface-alt);
+  padding-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Top bar
+   -------------------------------------------------------------------------- */
+.admin-bar {
+  background: var(--navy-800);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.admin-bar-inner {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: 0 var(--sp-5);
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+  flex-wrap: wrap;
+}
+.admin-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: #fff;
+  font-weight: 700;
+}
+.admin-brand:hover { color: #fff; text-decoration: none; }
+.admin-brand .icon { color: var(--accent-500); }
+.admin-brand small {
+  font-weight: 600;
+  font-size: var(--fs-xs);
+  color: var(--accent-400);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.admin-nav { display: flex; gap: var(--sp-1); flex-wrap: wrap; margin-inline-end: auto; }
+.admin-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--radius);
+  color: #c8d6e6;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.admin-nav-link:hover { background: rgba(255, 255, 255, .1); color: #fff; text-decoration: none; }
+.admin-nav-link.is-current { background: rgba(255, 255, 255, .14); color: #fff; }
+
+/* Count of reviews waiting. Gold rather than red: it is work to do, not a
+   fault, and the dashboard should not cry wolf. */
+.admin-badge {
+  min-width: 20px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--accent-500);
+  color: var(--on-accent);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.admin-bar-end { display: flex; align-items: center; gap: var(--sp-3); }
+.admin-view-site { color: #c8d6e6; font-size: var(--fs-sm); }
+.admin-view-site:hover { color: #fff; }
+.admin-logout { margin: 0; }
+.admin-bar .btn-outline { color: #fff; border-color: rgba(255, 255, 255, .4); }
+.admin-bar .btn-outline:hover { background: rgba(255, 255, 255, .12); color: #fff; }
+
+/* --------------------------------------------------------------------------
+   Shell
+   -------------------------------------------------------------------------- */
+.admin-main { padding-block: var(--sp-6) var(--sp-8); }
+.admin-shell { max-width: 1100px; margin-inline: auto; padding-inline: var(--sp-5); }
+
+.admin-h1 { font-size: var(--fs-3xl); margin-bottom: var(--sp-5); }
+.admin-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-5);
+}
+.admin-head .admin-h1 { margin-bottom: 0; }
+.admin-sub { font-size: var(--fs-base); margin: var(--sp-5) 0 var(--sp-3); }
+.admin-muted { color: var(--ink-500); font-size: var(--fs-sm); }
+
+.admin-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5);
+  margin-bottom: var(--sp-5);
+}
+.admin-panel h2 { font-size: var(--fs-xl); margin-bottom: var(--sp-3); }
+.admin-empty { text-align: center; padding-block: var(--sp-7); }
+.admin-empty p { margin-bottom: var(--sp-2); }
+
+.admin-notes { font-size: var(--fs-sm); color: var(--ink-500); margin: 0; padding-left: 1.1rem; }
+.admin-notes code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: var(--surface-tint);
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85em;
+}
+
+/* --------------------------------------------------------------------------
+   Stats
+   -------------------------------------------------------------------------- */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-6);
+}
+.admin-stat {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-4) var(--sp-5);
+  color: inherit;
+}
+a.admin-stat:hover { border-color: var(--accent-500); text-decoration: none; }
+.admin-stat.is-attention { border-color: var(--accent-500); background: var(--accent-100); }
+.admin-stat-n { display: block; font-size: 2rem; font-weight: 700; color: var(--navy-800); line-height: 1.1; }
+.admin-stat-l { display: block; font-size: var(--fs-xs); color: var(--ink-500); margin-top: 4px; }
+
+.admin-list { list-style: none; margin: 0 0 var(--sp-4); padding: 0; }
+.admin-list li { padding-block: var(--sp-2); border-bottom: 1px solid var(--line); font-size: var(--fs-sm); }
+.admin-list li:last-child { border-bottom: 0; }
+
+/* --------------------------------------------------------------------------
+   Tables
+   -------------------------------------------------------------------------- */
+.admin-table-wrap { padding: 0; overflow-x: auto; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
+.admin-table th,
+.admin-table td { padding: var(--sp-3) var(--sp-4); text-align: start; vertical-align: top; }
+.admin-table thead th {
+  background: var(--surface-alt);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--ink-500);
+  border-bottom: 1px solid var(--line);
+}
+.admin-table tbody tr { border-bottom: 1px solid var(--line); }
+.admin-table tbody tr:last-child { border-bottom: 0; }
+.admin-row-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.admin-inline { display: inline; margin: 0; }
+
+/* --------------------------------------------------------------------------
+   Forms
+   -------------------------------------------------------------------------- */
+.admin-form .form-grid { gap: var(--sp-4); }
+.admin-form-narrow { max-width: 420px; }
+.admin-actions { margin-top: var(--sp-5); display: flex; gap: var(--sp-3); flex-wrap: wrap; }
+.admin-form .req { color: #c92a2a; }
+
+.admin-thumbs { display: flex; gap: var(--sp-3); flex-wrap: wrap; margin-bottom: var(--sp-4); }
+.admin-thumb { position: relative; margin: 0; width: 140px; }
+.admin-thumb img {
+  width: 140px;
+  height: 105px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+}
+.admin-thumb-x {
+  position: absolute;
+  top: -8px;
+  inset-inline-end: -8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  color: #a51d1d;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.admin-thumb-x:hover { background: #fdecec; }
+
+/* --------------------------------------------------------------------------
+   Review moderation
+   -------------------------------------------------------------------------- */
+.admin-tabs { display: flex; gap: var(--sp-2); margin-bottom: var(--sp-5); flex-wrap: wrap; }
+.admin-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-700);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+.admin-tab:hover { border-color: var(--line-strong); text-decoration: none; }
+.admin-tab.is-current { background: var(--navy-800); border-color: var(--navy-800); color: #fff; }
+.admin-tab-n { font-size: var(--fs-xs); opacity: .75; }
+
+.admin-reviews { display: grid; gap: var(--sp-4); }
+.admin-review {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5);
+}
+.admin-review-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-3);
+}
+/* The star icon is stroke-only, so colour alone leaves it as an outline —
+   which reads as an empty star. Filled ones need the fill as well. */
+.admin-review-stars { display: inline-flex; gap: 2px; }
+.admin-review-stars .icon { color: var(--accent-500); fill: var(--accent-500); }
+.admin-review-stars .icon.is-empty { color: var(--line-strong); fill: none; }
+.admin-review blockquote {
+  margin: 0 0 var(--sp-4);
+  padding-inline-start: var(--sp-4);
+  border-inline-start: 3px solid var(--accent-500);
+  color: var(--ink-700);
+}
+.admin-review-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  border-top: 1px solid var(--line);
+  padding-top: var(--sp-3);
+}
+.admin-review-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* --------------------------------------------------------------------------
+   Login and first-run setup
+   -------------------------------------------------------------------------- */
+body.admin-auth {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: var(--sp-5);
+}
+.admin-auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: var(--sp-6);
+}
+.admin-auth-brand { display: block; margin-bottom: var(--sp-5); }
+.admin-auth-brand img { height: auto; }
+.admin-auth-card h1 { font-size: var(--fs-xl); margin-bottom: var(--sp-4); }
+.admin-auth-intro { font-size: var(--fs-sm); color: var(--ink-500); margin-bottom: var(--sp-4); }
+.admin-auth-back { margin: var(--sp-5) 0 0; font-size: var(--fs-sm); text-align: center; }
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+.admin-foot {
+  border-top: 1px solid var(--line);
+  padding: var(--sp-4) var(--sp-5);
+  text-align: center;
+  font-size: var(--fs-xs);
+  color: var(--ink-500);
+}
+.admin-foot p { margin: 0; }
+
+/* --------------------------------------------------------------------------
+   Narrow screens
+   -------------------------------------------------------------------------- */
+@media (max-width: 860px) {
+  .admin-stats { grid-template-columns: repeat(2, 1fr); }
+  .admin-bar-inner { padding-block: var(--sp-3); }
+  .admin-nav { order: 3; width: 100%; margin-inline-end: 0; }
+}
+
+@media (max-width: 600px) {
+  .admin-stats { grid-template-columns: 1fr 1fr; }
+  .admin-shell { padding-inline: var(--sp-4); }
+  .admin-panel { padding: var(--sp-4); }
+  .admin-review-foot { align-items: flex-start; flex-direction: column; }
+}

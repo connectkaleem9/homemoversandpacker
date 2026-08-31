@@ -31,18 +31,19 @@ RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
 # 3. Never expose .php in public URLs
 #    /services/villa-movers.php  ->  301  ->  /services/villa-movers/
 #
-#    GET only, and never /forms/. The form endpoints are POST targets: a 301
-#    on a POST makes the browser re-issue it as a GET with no body, so every
-#    quote and contact submission would arrive empty. THE_REQUEST matches the
-#    whole request line regardless of method, so the method has to be excluded
-#    explicitly.
+#    GET only, and never /forms/ or /admin/. The form endpoints are POST
+#    targets: a 301 on a POST makes the browser re-issue it as a GET with no
+#    body, so every quote and contact submission would arrive empty.
+#    THE_REQUEST matches the whole request line regardless of method, so the
+#    method has to be excluded explicitly. The dashboard is excluded because it
+#    is not public SEO surface and its own redirects point at real .php paths.
 # ------------------------------------------------------------------------
 RewriteCond %{REQUEST_METHOD} =GET
 RewriteCond %{THE_REQUEST} \s/+(.*?)index\.php[\s?] [NC]
 RewriteRule ^ /%1 [R=301,L,NE]
 
 RewriteCond %{REQUEST_METHOD} =GET
-RewriteCond %{REQUEST_URI} !^/forms/
+RewriteCond %{REQUEST_URI} !^/(forms|admin)/
 RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[\s?] [NC]
 RewriteRule ^ /%1/ [R=301,L,NE]
 
@@ -53,6 +54,7 @@ RewriteRule ^ /%1/ [R=301,L,NE]
 #    GET only, for the same reason as rule 3.
 # ------------------------------------------------------------------------
 RewriteCond %{REQUEST_METHOD} =GET
+RewriteCond %{REQUEST_URI} !^/admin/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !\.[a-zA-Z0-9]{2,5}$
@@ -65,7 +67,18 @@ RewriteRule ^(.+)$ /$1/ [R=301,L,NE]
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
 # ------------------------------------------------------------------------
-# 6. Arabic — /ar/... is served by the same PHP files as English
+# 6. Project pages
+#    /projects/<slug>/  and  /ar/projects/<slug>/  ->  projects/project.php
+#
+#    The slugs are created in the admin dashboard, so there is no file on disk
+#    to match — this has to come before the Arabic strip and the generic
+#    clean-URL rules, both of which would fall through to a 404.
+#    /projects/ itself is untouched: it has its own index.php.
+# ------------------------------------------------------------------------
+RewriteRule ^(?:ar/)?projects/[a-z0-9][a-z0-9-]*/?$ projects/project.php [L]
+
+# ------------------------------------------------------------------------
+# 7. Arabic — /ar/... is served by the same PHP files as English
 #    /ar/                            -> index.php
 #    /ar/services/                   -> services/index.php
 #    /ar/services/villa-movers/      -> services/villa-movers.php
@@ -87,7 +100,7 @@ RewriteCond %{DOCUMENT_ROOT}/$1.php -f
 RewriteRule ^ar/(.+?)/?$ $1.php [L]
 
 # ------------------------------------------------------------------------
-# 7. Clean URLs -> real files
+# 8. Clean URLs -> real files
 #    /about-us/                  -> about-us.php
 #    /services/villa-movers/     -> services/villa-movers.php
 #    /locations/dubai/           -> locations/dubai.php
@@ -106,13 +119,13 @@ RewriteRule ^(.+?)/?$ $1.php [L]
 </IfModule>
 
 # ------------------------------------------------------------------------
-# 8. Error documents
+# 9. Error documents
 # ------------------------------------------------------------------------
 ErrorDocument 404 /404.php
 ErrorDocument 403 /404.php
 
 # ------------------------------------------------------------------------
-# 9. Security headers
+# 10. Security headers
 # ------------------------------------------------------------------------
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"
@@ -138,7 +151,7 @@ ErrorDocument 403 /404.php
 </IfModule>
 
 # ------------------------------------------------------------------------
-# 10. Protect sensitive files and directories
+# 11. Protect sensitive files and directories
 # ------------------------------------------------------------------------
 <FilesMatch "^\.">
   Require all denied
@@ -167,7 +180,7 @@ ErrorDocument 403 /404.php
 RedirectMatch 404 ^/(\.git|\.github|storage|database|includes)(/|$)
 
 # ------------------------------------------------------------------------
-# 11. Compression
+# 12. Compression
 # ------------------------------------------------------------------------
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
@@ -184,7 +197,7 @@ RedirectMatch 404 ^/(\.git|\.github|storage|database|includes)(/|$)
 </IfModule>
 
 # ------------------------------------------------------------------------
-# 12. Browser caching
+# 13. Browser caching
 #     Assets are versioned with ?v= in the markup, so they can cache hard.
 # ------------------------------------------------------------------------
 <IfModule mod_expires.c>
@@ -220,7 +233,7 @@ RedirectMatch 404 ^/(\.git|\.github|storage|database|includes)(/|$)
 </IfModule>
 
 # ------------------------------------------------------------------------
-# 13. Correct MIME types
+# 14. Correct MIME types
 # ------------------------------------------------------------------------
 <IfModule mod_mime.c>
   AddType image/webp            .webp

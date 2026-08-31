@@ -6,6 +6,12 @@
 !/storage/logs/.gitkeep
 /uploads/*
 !/uploads/.gitkeep
+# The execution guard must ship with the code — an uploads directory without
+# it on a fresh deploy is the whole risk of accepting uploads at all.
+!/uploads/.htaccess
+!/uploads/projects/
+/uploads/projects/*
+!/uploads/projects/.gitkeep
 
 # Local environment
 .env
@@ -38,3 +44,8 @@ assets/images/_ref.png
 # Server-specific settings and credentials — never committed.
 # includes/env.example.php is the template.
 /includes/env.php
+
+# Runtime records written by the admin dashboard and the review form.
+/storage/data/
+/storage/admin.json
+/storage/admin-attempts.json
