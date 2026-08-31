@@ -20,7 +20,7 @@
   .footer-top { grid-template-columns: 1.4fr 1fr 1fr; }
   .footer-top .footer-col:last-child { grid-column: 2 / -1; }
 
-  .service-strip { grid-template-columns: repeat(4, 1fr); }
+  .service-strip, .service-strip-wrap { grid-template-columns: repeat(4, 1fr) !important; }
   .blog-grid { grid-template-columns: 1fr; }
   .blog-cards { grid-template-columns: repeat(3, 1fr); }
 }
@@ -173,7 +173,7 @@
   .topbar-item:first-child { display: none; }
   .topbar-inner { justify-content: center; }
 
-  .service-strip { grid-template-columns: repeat(2, 1fr); }
+  .service-strip, .service-strip-wrap { grid-template-columns: repeat(2, 1fr) !important; }
   .city-cards { grid-template-columns: 1fr; }
   .review-cards { grid-template-columns: 1fr; }
   .blog-cards { grid-template-columns: 1fr; }
@@ -214,7 +214,7 @@
 
   .error-code { font-size: 3.5rem; }
 
-  .service-strip { grid-template-columns: 1fr; gap: var(--sp-2); }
+  .service-strip, .service-strip-wrap { grid-template-columns: 1fr !important; gap: var(--sp-2); }
   .service-tile { flex-direction: row; text-align: left; align-items: center; gap: var(--sp-4); }
   .service-tile-icon { width: 40px; height: 40px; margin-bottom: 0; }
   .svc-icon { width: 38px; height: 38px; }

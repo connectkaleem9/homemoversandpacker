@@ -26,6 +26,36 @@ seo_set([
 require __DIR__ . '/includes/header.php';
 ?>
 
+<!-- ===================================================== Hero ============ -->
+<section class="hero-home hero-compact">
+  <div class="container hero-home-inner">
+    <div class="hero-home-copy">
+      <span class="eyebrow">Legal</span>
+        <p class="hero-home-sub">The terms that apply to quotations, bookings and use of this website.</p>
+
+      <div class="hero-trust">
+        <div class="hero-trust-item"><?= icon('clipboard', 'icon') ?><span>Quotations</span></div>
+        <div class="hero-trust-item"><?= icon('truck', 'icon') ?><span>Bookings</span></div>
+        <div class="hero-trust-item"><?= icon('shield', 'icon') ?><span>Your rights</span></div>
+      </div>
+
+      <div class="btn-row">
+        <?= cta_quote('btn btn-primary btn-lg', 'Get a Free Quote', '/contact-us/#quote') ?>
+        <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
+           <?= cta_id('phone') ?> aria-label="Call <?= e(PHONE_INTL) ?>">
+          <?= icon('phone', 'icon') ?>
+          <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-home-media">
+      <?= img('hero-movers-dubai.jpg', 'Our moving crew loading a truck in Dubai',
+              ['width' => 1600, 'height' => 977, 'loading' => 'eager', 'fetchpriority' => 'high', 'icon' => 'truck']) ?>
+    </div>
+  </div>
+</section>
+
 <?= breadcrumbs_render() ?>
 
 <section class="section">
@@ -153,6 +183,27 @@ require __DIR__ . '/includes/header.php';
       <a href="<?= PHONE_LINK ?>"><?= e(PHONE_DISPLAY) ?></a> ·
       <a href="mailto:<?= e(EMAIL_ADDRESS) ?>"><?= e(EMAIL_ADDRESS) ?></a>
     </p>
+  </div>
+</section>
+
+<!-- ======================================================= CTA band ====== -->
+<section class="cta-gold">
+  <div class="container cta-gold-inner">
+    <div class="cta-gold-media">
+      <?= img('cta-boxes.webp', '', ['width' => 600, 'height' => 450, 'icon' => 'box']) ?>
+    </div>
+    <div>
+      <h2>Planning a Move? Get Your Free Quote Today!</h2>
+      <p>Quick, easy and obligation-free.</p>
+    </div>
+    <div class="cta-gold-actions">
+      <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
+         <?= cta_id('phone') ?> aria-label="Call <?= e(PHONE_INTL) ?>">
+        <?= icon('phone', 'icon') ?>
+        <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
+      </a>
+      <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-white btn-lg') ?>
+    </div>
   </div>
 </section>
 

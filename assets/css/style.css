@@ -972,7 +972,10 @@ a.card:hover .card-link .icon { transform: translateX(3px); }
 /* --- Service strip --------------------------------------------------------- */
 .service-strip {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  /* Column count is set per instance via --cols: a related-services strip has
+     four tiles, a location strip has seven, the full catalogue has twelve.
+     A fixed repeat(8) left the rest of the row empty. */
+  grid-template-columns: repeat(var(--cols, 8), 1fr);
   gap: var(--sp-3);
 }
 .service-tile {
@@ -1014,6 +1017,12 @@ a.card:hover .card-link .icon { transform: translateX(3px); }
   line-height: 1.45;
 }
 .service-strip-foot { display: flex; justify-content: center; margin-top: var(--sp-4); }
+
+/* Twelve tiles do not fit one row; wrap them onto a 6-wide grid instead. */
+.service-strip-wrap { grid-template-columns: repeat(6, 1fr); }   /* 12 tiles, two rows of six */
+
+/* Blog cards used in a plain 2-column grid on the blog index */
+.grid-2 > .blog-card { height: 100%; }
 
 /* --- Why choose us --------------------------------------------------------- */
 .why-section { position: relative; overflow: hidden; }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Shared location page template.
+ * Shared location page template — same design language as the homepage.
  *
  * Each file in /locations/ sets $locationSlug and requires this.
  * Layout is shared; every word of content comes from includes/data/locations.php,
@@ -45,41 +45,78 @@ require dirname(__DIR__) . '/header.php';
 $location = get_location($locationSlug);
 $slug     = $location['slug'];
 $city     = $location['name'];
+
+/* The city skylines are card-sized (900px). Across a ~890x490 hero they would
+   be upscaled and soft, so the hero uses the full-size crew photo unless a
+   dedicated large city image has been supplied. */
+$heroImg = image_exists('locations/' . $slug . '-hero.jpg')
+    ? 'locations/' . $slug . '-hero.jpg'
+    : 'hero-movers-dubai.jpg';
 ?>
 
-<section class="hero hero-inner-page">
-  <div class="container hero-inner">
-    <div class="hero-copy">
-      <span class="eyebrow eyebrow-light">Movers &amp; Packers · <?= e($city) ?>, UAE</span>
+<!-- ===================================================== Hero ============ -->
+<section class="hero-home hero-compact">
+  <div class="container hero-home-inner">
+    <div class="hero-home-copy">
+      <span class="eyebrow">Movers &amp; Packers · <?= e($city) ?>, UAE</span>
       <h1><?= e($location['h1']) ?></h1>
-      <p class="hero-sub"><?= e($location['hero_sub']) ?></p>
+      <p class="hero-home-sub"><?= e($location['hero_sub']) ?></p>
 
-      <div class="hero-actions">
-        <?= cta_quote('btn btn-primary btn-lg', 'Get a Free Moving Quote', '#quote') ?>
-        <?= cta_phone('btn btn-ghost-light btn-lg', 'Call ' . PHONE_DISPLAY) ?>
-        <?= cta_whatsapp($waMessage, 'btn btn-whatsapp btn-lg') ?>
+      <div class="hero-trust">
+        <div class="hero-trust-item"><?= icon('pin', 'icon') ?><span>Based in Sharjah</span></div>
+        <div class="hero-trust-item"><?= icon('route', 'icon') ?><span>Cross-emirate moves</span></div>
+        <div class="hero-trust-item"><?= icon('quote', 'icon') ?><span>Free quotation</span></div>
       </div>
 
-      <div class="hero-assurance">
-        <span><?= icon('pin', 'icon icon-sm') ?> Based in <?= e(BUSINESS_ADDRESS) ?></span>
-        <span><?= icon('route', 'icon icon-sm') ?> <?= e($city) ?> moves and cross-emirate routes</span>
-        <span><?= icon('quote', 'icon icon-sm') ?> Free quotation before booking</span>
+      <div class="btn-row">
+        <?= cta_quote('btn btn-primary btn-lg', 'Get a Free Quote', '#quote') ?>
+        <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
+           <?= cta_id('phone') ?> aria-label="Call <?= e(PHONE_INTL) ?>">
+          <?= icon('phone', 'icon') ?>
+          <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
+        </a>
       </div>
+    </div>
+
+    <div class="hero-home-media">
+      <?= img($heroImg, 'Our moving crew working in ' . $city . ', UAE',
+              ['width' => 1600, 'height' => 977, 'loading' => 'eager', 'fetchpriority' => 'high', 'icon' => 'building']) ?>
     </div>
   </div>
 </section>
 
 <?= breadcrumbs_render() ?>
 
-<section class="section">
+<!-- ============================================== Local context ========== -->
+<section class="section section-alt why-section">
   <div class="container">
-    <div class="split">
-      <div class="prose">
+    <div class="why-grid">
+      <div class="why-media">
+        <?= img('why-choose-us.jpg', 'Our crew wrapping furniture before a move in ' . $city,
+                ['width' => 1400, 'height' => 933, 'icon' => 'sofa']) ?>
+      </div>
+
+      <div>
+        <span class="eyebrow">Moving in <?= e($city) ?></span>
+        <h2><?= e($location['local_context']['heading']) ?></h2>
         <?php foreach ($location['intro'] as $paragraph): ?>
           <p><?= e($paragraph) ?></p>
         <?php endforeach; ?>
 
-        <h2><?= e($location['local_context']['heading']) ?></h2>
+        <div class="btn-row" style="margin-top: var(--sp-5);">
+          <?= cta_quote('btn btn-primary', 'Get a Free Quote', '#quote') ?>
+          <?= cta_whatsapp($waMessage, 'btn btn-whatsapp') ?>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================== Detail + help box ===== -->
+<section class="section">
+  <div class="container">
+    <div class="split">
+      <div class="prose">
         <?php foreach ($location['local_context']['body'] as $paragraph): ?>
           <p><?= e($paragraph) ?></p>
         <?php endforeach; ?>
@@ -89,8 +126,8 @@ $city     = $location['name'];
         <div class="panel panel-accent">
           <h3>Book a move in <?= e($city) ?></h3>
           <p style="font-size: var(--fs-sm); color: var(--ink-500);">
-            Send us the two addresses, the property type and your preferred date. We confirm access,
-            crew and vehicle, then quote.
+            Send us the two addresses, the property type and your preferred date. We confirm
+            access, crew and vehicle, then quote.
           </p>
           <div class="grid" style="gap: var(--sp-3); margin-top: var(--sp-4);">
             <?= cta_quote('btn btn-primary btn-block', 'Get a Free Quote', '#quote') ?>
@@ -103,16 +140,16 @@ $city     = $location['name'];
   </div>
 </section>
 
+<!-- ================================================== Scenarios ========== -->
 <section class="section section-alt">
   <div class="container">
-    <div class="section-head">
-      <span class="eyebrow"><?= e($city) ?> moving scenarios</span>
-      <h2 class="section-title"><?= e($location['scenarios']['heading']) ?></h2>
+    <div class="heading-rule">
+      <h2><?= e($location['scenarios']['heading']) ?></h2>
     </div>
     <div class="grid grid-3">
       <?php foreach ($location['scenarios']['items'] as $item): ?>
         <div class="card">
-          <span class="card-icon"><?= icon('route', 'icon') ?></span>
+          <span class="card-icon-plain"><?= service_icon('route') ?></span>
           <h3 class="card-title"><?= e($item['title']) ?></h3>
           <p class="card-text" style="margin-bottom:0;"><?= e($item['text']) ?></p>
         </div>
@@ -121,28 +158,39 @@ $city     = $location['name'];
   </div>
 </section>
 
+<!-- ============================================ Services in this city ==== -->
 <section class="section">
   <div class="container">
-    <div class="section-head">
-      <span class="eyebrow">Services in <?= e($city) ?></span>
-      <h2 class="section-title">Moving services available in <?= e($city) ?></h2>
-      <p class="section-lead"><?= e($location['services_intro']) ?></p>
+    <div class="heading-rule">
+      <h2>Our Services in <?= e($city) ?></h2>
     </div>
-    <div class="grid grid-3">
-      <?php foreach ($location['featured_services'] as $serviceSlug): ?>
-        <?php if (isset($services[$serviceSlug])): ?>
-          <?= service_card($serviceSlug, $services[$serviceSlug]) ?>
-        <?php endif; ?>
+    <p class="section-lead" style="text-align:center; margin-bottom: var(--sp-5);">
+      <?= e($location['services_intro']) ?>
+    </p>
+
+    <div class="service-strip" style="--cols:<?= min(6, count($location['featured_services'])) + 1 ?>">
+      <?php foreach (array_slice($location['featured_services'], 0, 6) as $featSlug): ?>
+        <?php if (!isset($services[$featSlug])) { continue; } $feat = $services[$featSlug]; ?>
+        <a class="service-tile" href="<?= e(service_url($featSlug)) ?>">
+          <span class="service-tile-icon"><?= service_icon($feat['icon']) ?></span>
+          <h3><?= e($feat['name']) ?></h3>
+          <p><?= e($feat['tile']) ?></p>
+        </a>
       <?php endforeach; ?>
+      <a class="service-tile" href="/services/">
+        <span class="service-tile-icon"><?= service_icon('truck') ?></span>
+        <h3>And More Services</h3>
+        <p>Loading, assembly, local moving and car transport.</p>
+      </a>
     </div>
 
-    <div class="panel" style="margin-top: var(--sp-6);">
+    <div class="panel" style="margin-top: var(--sp-5);">
       <h3>Every service we offer covers <?= e($city) ?></h3>
       <ul class="checklist checklist-2">
-        <?php foreach ($services as $serviceSlug => $service): ?>
+        <?php foreach ($services as $svcSlug => $svc): ?>
           <li>
             <?= icon('check', 'icon icon-sm') ?>
-            <a href="<?= e(service_url($serviceSlug)) ?>"><?= e($service['name']) ?></a>
+            <a href="<?= e(service_url($svcSlug)) ?>"><?= e($svc['name']) ?></a>
           </li>
         <?php endforeach; ?>
       </ul>
@@ -152,6 +200,7 @@ $city     = $location['name'];
 
 <?= faq_list($location['faqs'], 'Movers in ' . e($city) . ' — frequently asked questions') ?>
 
+<!-- ==================================================== Quote form ====== -->
 <section class="section">
   <div class="container container-narrow">
     <?php
@@ -163,34 +212,61 @@ $city     = $location['name'];
   </div>
 </section>
 
+<!-- ================================================ Other emirates ====== -->
 <section class="section section-alt">
   <div class="container">
-    <h2 class="section-title">Also moving to or from another emirate?</h2>
-    <div class="grid grid-3">
+    <div class="heading-rule">
+      <h2>Also Moving To or From Another Emirate?</h2>
+    </div>
+    <div class="city-cards">
       <?php foreach (all_locations() as $otherSlug => $other): ?>
-        <?php if ($otherSlug !== $slug): ?>
-          <?= location_card($otherSlug, $other) ?>
-        <?php endif; ?>
+        <?php if ($otherSlug === $slug) { continue; } ?>
+        <a class="city-card" href="<?= e(location_url($otherSlug)) ?>">
+          <span class="city-card-media">
+            <?= img('locations/' . $otherSlug . '.webp',
+                    'Movers and packers serving ' . $other['name'] . ', UAE',
+                    ['width' => 900, 'height' => 600, 'icon' => 'building']) ?>
+          </span>
+          <span class="city-card-body">
+            <h3>Movers in <?= e($other['name']) ?></h3>
+            <p><?= e($other['short']) ?></p>
+            <span class="card-link">Learn more <?= icon('arrow', 'icon icon-sm') ?></span>
+          </span>
+        </a>
       <?php endforeach; ?>
-      <a class="card card-location" href="/services/">
-        <span class="card-icon"><?= icon('box', 'icon') ?></span>
-        <h3 class="card-title">All moving services</h3>
-        <p class="card-text">Browse the full range of residential, commercial and specialist services.</p>
-        <span class="card-link">View services <?= icon('arrow', 'icon icon-sm') ?></span>
+
+      <a class="city-card" href="/services/">
+        <span class="city-card-media">
+          <?= img('why-choose-us.jpg', 'All our moving services',
+                  ['width' => 900, 'height' => 600, 'icon' => 'box']) ?>
+        </span>
+        <span class="city-card-body">
+          <h3>All moving services</h3>
+          <p>Browse the full range of residential, commercial and specialist services.</p>
+          <span class="card-link">View services <?= icon('arrow', 'icon icon-sm') ?></span>
+        </span>
       </a>
     </div>
   </div>
 </section>
 
-<section class="cta-band">
-  <div class="container cta-band-inner">
+<!-- ======================================================= CTA band ====== -->
+<section class="cta-gold">
+  <div class="container cta-gold-inner">
+    <div class="cta-gold-media">
+      <?= img('cta-boxes.webp', '', ['width' => 600, 'height' => 450, 'icon' => 'box']) ?>
+    </div>
     <div>
       <h2>Moving in <?= e($city) ?>?</h2>
-      <p>Call or WhatsApp us with your dates and addresses — we will confirm what is available and what it will involve.</p>
+      <p>Call or WhatsApp us with your dates and addresses — we will confirm what is available.</p>
     </div>
-    <div class="cta-band-actions">
-      <?= cta_phone('btn btn-primary btn-lg', 'Call ' . PHONE_DISPLAY) ?>
-      <?= cta_whatsapp($waMessage, 'btn btn-whatsapp btn-lg') ?>
+    <div class="cta-gold-actions">
+      <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
+         aria-label="Call <?= e(PHONE_INTL) ?>">
+        <?= icon('phone', 'icon') ?>
+        <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
+      </a>
+      <?= cta_whatsapp($waMessage, 'btn btn-white btn-lg') ?>
     </div>
   </div>
 </section>

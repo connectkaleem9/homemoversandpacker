@@ -1,6 +1,8 @@
 <?php
 /**
- * Shared service page template.
+ * Shared service page template — same design language as the homepage:
+ * photo hero, rule-flanked section headings, duotone cards, a left-bleeding
+ * photo split, numbered process steps, city cards and the gold CTA band.
  *
  * Every service file in /services/ sets $serviceSlug and requires this file.
  * The layout is reusable; all the copy comes from includes/data/services.php,
@@ -50,44 +52,85 @@ require dirname(__DIR__) . '/header.php';
    service's content under this page's URL and title. */
 $service = get_service($serviceSlug);
 $slug    = $service['slug'];
+
+/* Per-service photography if supplied, otherwise the site's crew photos. */
+$heroImg  = image_exists('services/' . $slug . '.jpg') ? 'services/' . $slug . '.jpg' : 'hero-movers-dubai.jpg';
+$splitImg = image_exists('services/' . $slug . '-2.jpg') ? 'services/' . $slug . '-2.jpg' : 'why-choose-us.jpg';
 ?>
 
-<section class="hero hero-inner-page">
-  <div class="container hero-inner">
-    <div class="hero-copy">
-      <span class="eyebrow eyebrow-light"><?= e($service['name']) ?> · <?= e(areas_sentence()) ?></span>
+<!-- ===================================================== Hero ============ -->
+<section class="hero-home hero-compact">
+  <div class="container hero-home-inner">
+    <div class="hero-home-copy">
+      <span class="eyebrow"><?= e($service['name']) ?></span>
       <h1><?= e($service['h1']) ?></h1>
-      <p class="hero-sub"><?= e($service['hero_sub']) ?></p>
+      <p class="hero-home-sub"><?= e($service['hero_sub']) ?></p>
 
-      <div class="hero-actions">
-        <?= cta_quote('btn btn-primary btn-lg', 'Get a Free Moving Quote', '#quote') ?>
-        <?= cta_phone('btn btn-ghost-light btn-lg', 'Call ' . PHONE_DISPLAY) ?>
-        <?= cta_whatsapp($waMessage, 'btn btn-whatsapp btn-lg') ?>
+      <div class="hero-trust">
+        <div class="hero-trust-item"><?= icon('pin', 'icon') ?><span>Based in Sharjah</span></div>
+        <div class="hero-trust-item"><?= icon('quote', 'icon') ?><span>Free quotation</span></div>
+        <div class="hero-trust-item"><?= icon('shield', 'icon') ?><span>Careful handling</span></div>
       </div>
 
-      <div class="hero-assurance">
-        <span><?= icon('pin', 'icon icon-sm') ?> Based in <?= e(BUSINESS_ADDRESS) ?></span>
-        <span><?= icon('quote', 'icon icon-sm') ?> Free quotation, no obligation</span>
-        <span><?= icon('shield', 'icon icon-sm') ?> Careful handling throughout</span>
+      <div class="btn-row">
+        <?= cta_quote('btn btn-primary btn-lg', 'Get a Free Quote', '#quote') ?>
+        <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
+           <?= cta_id('phone') ?> aria-label="Call <?= e(PHONE_INTL) ?>">
+          <?= icon('phone', 'icon') ?>
+          <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
+        </a>
       </div>
+    </div>
+
+    <div class="hero-home-media">
+      <?= img($heroImg, $service['name'] . ' in Dubai, Sharjah and Ajman',
+              ['width' => 1600, 'height' => 977, 'loading' => 'eager', 'fetchpriority' => 'high', 'icon' => $service['icon']]) ?>
     </div>
   </div>
 </section>
 
 <?= breadcrumbs_render() ?>
 
-<section class="section">
+<!-- ============================================= What the service is ===== -->
+<section class="section section-alt why-section">
   <div class="container">
-    <div class="split">
-      <div class="prose">
+    <div class="why-grid">
+      <div class="why-media">
+        <?= img($splitImg, $service['name'] . ' — our crew at work',
+                ['width' => 1400, 'height' => 933, 'icon' => $service['icon']]) ?>
+      </div>
+
+      <div>
+        <span class="eyebrow">What this covers</span>
+        <h2><?= e($service['what_it_is']['heading']) ?></h2>
         <?php foreach ($service['intro'] as $paragraph): ?>
           <p><?= e($paragraph) ?></p>
         <?php endforeach; ?>
 
-        <h2><?= e($service['what_it_is']['heading']) ?></h2>
+        <div class="btn-row" style="margin-top: var(--sp-5);">
+          <?= cta_quote('btn btn-primary', 'Get a Free Quote', '#quote') ?>
+          <?= cta_whatsapp($waMessage, 'btn btn-whatsapp') ?>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================ Detail + included === -->
+<section class="section">
+  <div class="container">
+    <div class="split">
+      <div class="prose">
         <?php foreach ($service['what_it_is']['body'] as $paragraph): ?>
           <p><?= e($paragraph) ?></p>
         <?php endforeach; ?>
+
+        <h2><?= e($service['suits']['heading']) ?></h2>
+        <ul class="tag-list">
+          <?php foreach ($service['suits']['items'] as $item): ?>
+            <li><span class="tag"><?= e($item) ?></span></li>
+          <?php endforeach; ?>
+        </ul>
       </div>
 
       <aside>
@@ -98,8 +141,9 @@ $slug    = $service['slug'];
               <li><?= icon('check', 'icon icon-sm') ?><span><?= e($item) ?></span></li>
             <?php endforeach; ?>
           </ul>
-          <div class="btn-row" style="margin-top: var(--sp-5);">
+          <div class="grid" style="gap: var(--sp-3); margin-top: var(--sp-5);">
             <?= cta_quote('btn btn-primary btn-block', 'Get a Free Quote', '#quote') ?>
+            <?= cta_phone('btn btn-phone btn-block', 'Call ' . PHONE_DISPLAY) ?>
           </div>
         </div>
       </aside>
@@ -107,14 +151,16 @@ $slug    = $service['slug'];
   </div>
 </section>
 
+<!-- ================================================== Who it is for ====== -->
 <section class="section section-alt">
   <div class="container">
-    <div class="section-head">
-      <h2 class="section-title"><?= e($service['who_for']['heading']) ?></h2>
+    <div class="heading-rule">
+      <h2><?= e($service['who_for']['heading']) ?></h2>
     </div>
     <div class="grid grid-4">
       <?php foreach ($service['who_for']['items'] as $item): ?>
         <div class="card">
+          <span class="card-icon-plain"><?= service_icon($service['icon']) ?></span>
           <h3 class="card-title"><?= e($item['title']) ?></h3>
           <p class="card-text" style="margin-bottom:0;"><?= e($item['text']) ?></p>
         </div>
@@ -123,15 +169,17 @@ $slug    = $service['slug'];
   </div>
 </section>
 
+<!-- ===================================================== Process ========= -->
 <section class="section">
   <div class="container">
-    <div class="section-head">
-      <span class="eyebrow">Our process</span>
-      <h2 class="section-title">How your <?= e(strtolower($service['name'])) ?> booking works</h2>
+    <div class="heading-rule">
+      <h2>How It Works</h2>
     </div>
-    <ol class="steps steps-5">
-      <?php foreach ($service['process'] as $step): ?>
-        <li class="step">
+    <ol class="process-row">
+      <?php foreach ($service['process'] as $i => $step): ?>
+        <li class="process-item">
+          <span class="process-icon"><?= icon(['phone', 'clipboard', 'box', 'truck', 'home'][$i] ?? 'check', 'icon') ?></span>
+          <span class="process-num"><?= str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT) ?></span>
           <h3><?= e($step['title']) ?></h3>
           <p><?= e($step['text']) ?></p>
         </li>
@@ -140,59 +188,52 @@ $slug    = $service['slug'];
   </div>
 </section>
 
+<!-- ===================================================== Benefits ======== -->
 <section class="section section-alt">
   <div class="container">
-    <div class="split">
-      <div>
-        <div class="section-head">
-          <span class="eyebrow">Why it matters</span>
-          <h2 class="section-title">What you get from doing this properly</h2>
+    <div class="heading-rule">
+      <h2>Why It Matters</h2>
+    </div>
+    <div class="grid grid-4">
+      <?php foreach ($service['benefits'] as $benefit): ?>
+        <div class="card">
+          <span class="card-icon-plain"><?= service_icon('tools') ?></span>
+          <h3 class="card-title"><?= e($benefit['title']) ?></h3>
+          <p class="card-text" style="margin-bottom:0;"><?= e($benefit['text']) ?></p>
         </div>
-        <div class="grid" style="gap: var(--sp-5);">
-          <?php foreach ($service['benefits'] as $benefit): ?>
-            <div class="benefit">
-              <?= icon('check', 'icon') ?>
-              <div>
-                <h3><?= e($benefit['title']) ?></h3>
-                <p><?= e($benefit['text']) ?></p>
-              </div>
-            </div>
-          <?php endforeach; ?>
-        </div>
-      </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
 
-      <aside>
-        <div class="panel">
-          <h3><?= e($service['suits']['heading']) ?></h3>
-          <ul class="tag-list">
-            <?php foreach ($service['suits']['items'] as $item): ?>
-              <li><span class="tag"><?= e($item) ?></span></li>
-            <?php endforeach; ?>
-          </ul>
-        </div>
-
-        <div class="panel" style="margin-top: var(--sp-5);">
-          <h3>Available across all three emirates</h3>
-          <p style="font-size: var(--fs-sm); color: var(--ink-500);">
-            <?= e($service['name']) ?> is available throughout our service area. Choose your emirate
-            for local details and moving scenarios:
-          </p>
-          <ul class="checklist">
-            <?php foreach ($locations as $locSlug => $location): ?>
-              <li>
-                <?= icon('pin', 'icon icon-sm') ?>
-                <a href="<?= e(location_url($locSlug)) ?>">Movers in <?= e($location['name']) ?></a>
-              </li>
-            <?php endforeach; ?>
-          </ul>
-        </div>
-      </aside>
+<!-- ================================================= Where we do it ====== -->
+<section class="section">
+  <div class="container">
+    <div class="heading-rule">
+      <h2><?= e($service['name']) ?> Across All Three Emirates</h2>
+    </div>
+    <div class="city-cards">
+      <?php foreach ($locations as $citySlug => $city): ?>
+        <a class="city-card" href="<?= e(location_url($citySlug)) ?>">
+          <span class="city-card-media">
+            <?= img('locations/' . $citySlug . '.webp',
+                    e($service['name']) . ' in ' . $city['name'] . ', UAE',
+                    ['width' => 900, 'height' => 600, 'icon' => 'building']) ?>
+          </span>
+          <span class="city-card-body">
+            <h3>Movers in <?= e($city['name']) ?></h3>
+            <p><?= e($city['short']) ?></p>
+            <span class="card-link">Learn more <?= icon('arrow', 'icon icon-sm') ?></span>
+          </span>
+        </a>
+      <?php endforeach; ?>
     </div>
   </div>
 </section>
 
 <?= faq_list($service['faqs'], e($service['name']) . ' — frequently asked questions') ?>
 
+<!-- ==================================================== Quote form ====== -->
 <section class="section">
   <div class="container container-narrow">
     <?php
@@ -206,17 +247,50 @@ $slug    = $service['slug'];
   </div>
 </section>
 
-<?= related_services($service['related']) ?>
+<!-- ================================================ Related services ===== -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="heading-rule">
+      <h2>Related Services</h2>
+    </div>
+    <div class="service-strip" style="--cols:<?= count($service['related']) ?>">
+      <?php
+      $allServices = all_services();
+      foreach ($service['related'] as $relSlug):
+          if (!isset($allServices[$relSlug])) { continue; }
+          $rel = $allServices[$relSlug]; ?>
+        <a class="service-tile" href="<?= e(service_url($relSlug)) ?>">
+          <span class="service-tile-icon"><?= service_icon($rel['icon']) ?></span>
+          <h3><?= e($rel['name']) ?></h3>
+          <p><?= e($rel['tile']) ?></p>
+        </a>
+      <?php endforeach; ?>
+    </div>
+    <div class="service-strip-foot">
+      <a href="/services/" class="btn btn-phone">
+        <span>View All Services</span><?= icon('arrow', 'icon icon-sm') ?>
+      </a>
+    </div>
+  </div>
+</section>
 
-<section class="cta-band">
-  <div class="container cta-band-inner">
+<!-- ======================================================= CTA band ====== -->
+<section class="cta-gold">
+  <div class="container cta-gold-inner">
+    <div class="cta-gold-media">
+      <?= img('cta-boxes.webp', '', ['width' => 600, 'height' => 450, 'icon' => 'box']) ?>
+    </div>
     <div>
-      <h2>Need <?= e($service['name']) ?> today?</h2>
+      <h2>Need <?= e($service['name']) ?>?</h2>
       <p>Call or WhatsApp us and we will tell you honestly what is available and what it will involve.</p>
     </div>
-    <div class="cta-band-actions">
-      <?= cta_phone('btn btn-primary btn-lg', 'Call ' . PHONE_DISPLAY) ?>
-      <?= cta_whatsapp($waMessage, 'btn btn-whatsapp btn-lg') ?>
+    <div class="cta-gold-actions">
+      <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
+         aria-label="Call <?= e(PHONE_INTL) ?>">
+        <?= icon('phone', 'icon') ?>
+        <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
+      </a>
+      <?= cta_whatsapp($waMessage, 'btn btn-white btn-lg') ?>
     </div>
   </div>
 </section>

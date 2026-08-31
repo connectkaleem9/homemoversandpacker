@@ -88,7 +88,7 @@ require __DIR__ . '/includes/header.php';
       <h2>Our Moving Services</h2>
     </div>
 
-    <div class="service-strip">
+    <div class="service-strip" style="--cols:8">
       <?php foreach ($featured as $featSlug): $feat = $services[$featSlug]; ?>
         <a class="service-tile" href="<?= e(service_url($featSlug)) ?>">
           <span class="service-tile-icon"><?= service_icon($feat['icon']) ?></span>

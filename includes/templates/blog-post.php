@@ -44,23 +44,41 @@ $published = new DateTimeImmutable($post['published']);
 $modified  = new DateTimeImmutable($post['modified'] ?? $post['published']);
 ?>
 
+<!-- ===================================================== Hero ============ -->
+<section class="hero-home hero-compact">
+  <div class="container hero-home-inner">
+    <div class="hero-home-copy">
+      <span class="eyebrow"><?= e($post['category']) ?></span>
+      <h1><?= e($post['title_h1'] ?? $post['title']) ?></h1>
+      <p class="post-meta" style="margin-bottom: var(--sp-4);">
+        <span>Published <time datetime="<?= e($published->format('Y-m-d')) ?>"><?= e($published->format('j F Y')) ?></time></span>
+        <?php if ($modified > $published): ?>
+          <span>Updated <time datetime="<?= e($modified->format('Y-m-d')) ?>"><?= e($modified->format('j F Y')) ?></time></span>
+        <?php endif; ?>
+        <span><?= e($post['read_time']) ?></span>
+      </p>
+      <div class="btn-row">
+        <?= cta_quote('btn btn-primary', 'Get a Free Quote', '/contact-us/#quote') ?>
+        <a href="<?= PHONE_LINK ?>" class="btn btn-phone js-track" data-cta="phone"
+           <?= cta_id('phone') ?> aria-label="Call <?= e(PHONE_INTL) ?>">
+          <?= icon('phone', 'icon icon-sm') ?><span><?= e(PHONE_DISPLAY) ?></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-home-media">
+      <?= img('blog/' . $slug . '.webp', '',
+              ['width' => 800, 'height' => 500, 'loading' => 'eager', 'fetchpriority' => 'high', 'icon' => 'quote']) ?>
+    </div>
+  </div>
+</section>
+
 <?= breadcrumbs_render() ?>
 
 <article class="section">
   <div class="container">
     <div class="split">
       <div class="post-body">
-        <span class="eyebrow"><?= e($post['category']) ?></span>
-        <h1><?= e($post['title_h1'] ?? $post['title']) ?></h1>
-
-        <p class="post-meta" style="margin-bottom: var(--sp-6);">
-          <span>Published <time datetime="<?= e($published->format('Y-m-d')) ?>"><?= e($published->format('j F Y')) ?></time></span>
-          <?php if ($modified > $published): ?>
-            <span>Updated <time datetime="<?= e($modified->format('Y-m-d')) ?>"><?= e($modified->format('j F Y')) ?></time></span>
-          <?php endif; ?>
-          <span><?= e($post['read_time']) ?></span>
-        </p>
-
         <?php foreach ($post['intro'] as $paragraph): ?>
           <p style="font-size: var(--fs-lg); color: var(--ink-500);"><?= e($paragraph) ?></p>
         <?php endforeach; ?>
@@ -166,7 +184,7 @@ $modified  = new DateTimeImmutable($post['modified'] ?? $post['published']);
 
 <section class="section section-alt">
   <div class="container">
-    <h2 class="section-title">More moving guides</h2>
+    <div class="heading-rule"><h2>More Moving Guides</h2></div>
     <div class="grid grid-3">
       <?php
       $others = 0;
@@ -181,6 +199,27 @@ $modified  = new DateTimeImmutable($post['modified'] ?? $post['published']);
           <span class="card-link">Read the guide <?= icon('arrow', 'icon icon-sm') ?></span>
         </a>
       <?php endforeach; ?>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================= CTA band ====== -->
+<section class="cta-gold">
+  <div class="container cta-gold-inner">
+    <div class="cta-gold-media">
+      <?= img('cta-boxes.webp', '', ['width' => 600, 'height' => 450, 'icon' => 'box']) ?>
+    </div>
+    <div>
+      <h2>Planning a Move? Get Your Free Quote Today!</h2>
+      <p>Quick, easy and obligation-free.</p>
+    </div>
+    <div class="cta-gold-actions">
+      <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
+         aria-label="Call <?= e(PHONE_INTL) ?>">
+        <?= icon('phone', 'icon') ?>
+        <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
+      </a>
+      <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-white btn-lg') ?>
     </div>
   </div>
 </section>

@@ -1,6 +1,7 @@
 <?php
 /**
  * Locations index — hub linking the three emirate landing pages.
+ * Same design language as the homepage.
  */
 
 declare(strict_types=1);
@@ -8,6 +9,7 @@ declare(strict_types=1);
 require_once dirname(__DIR__) . '/includes/bootstrap.php';
 
 $locations = all_locations();
+$services  = all_services();
 
 $faqs = [
     ['q' => 'Which emirates do you serve?', 'a' => 'Dubai, Sharjah and Ajman. We are based in Sharjah, UAE, and moves between all three emirates are part of our normal service rather than a special arrangement.'],
@@ -25,90 +27,136 @@ seo_set([
         ['label' => 'Locations', 'url' => '/locations/'],
     ],
     'schema'      => [schema_faq($faqs)],
+    'quote_anchor'=> '#quote',
 ]);
 
 require dirname(__DIR__) . '/includes/header.php';
 ?>
 
-<section class="hero hero-inner-page">
-  <div class="container hero-inner">
-    <div class="hero-copy">
-      <span class="eyebrow eyebrow-light">Service areas</span>
+<!-- ===================================================== Hero ============ -->
+<section class="hero-home hero-compact">
+  <div class="container hero-home-inner">
+    <div class="hero-home-copy">
+      <span class="eyebrow">Service areas</span>
       <h1>Movers &amp; Packers Serving Dubai, Sharjah &amp; Ajman</h1>
-      <p class="hero-sub">
+      <p class="hero-home-sub">
         We are based in <?= e(BUSINESS_ADDRESS) ?> and work across all three emirates daily —
-        which is why cross-emirate moves are ordinary work for us rather than a logistical event.
+        which is why cross-emirate moves are ordinary work for us.
       </p>
-      <div class="hero-actions">
-        <?= cta_quote('btn btn-primary btn-lg', 'Get a Free Moving Quote', '/contact-us/#quote') ?>
-        <?= cta_phone('btn btn-ghost-light btn-lg', 'Call ' . PHONE_DISPLAY) ?>
-        <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-whatsapp btn-lg') ?>
+
+      <div class="hero-trust">
+        <div class="hero-trust-item"><?= icon('pin', 'icon') ?><span>Three emirates</span></div>
+        <div class="hero-trust-item"><?= icon('route', 'icon') ?><span>Single-day moves</span></div>
+        <div class="hero-trust-item"><?= icon('quote', 'icon') ?><span>Free quotation</span></div>
       </div>
+
+      <div class="btn-row">
+        <?= cta_quote('btn btn-primary btn-lg', 'Get a Free Quote', '#quote') ?>
+        <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
+           <?= cta_id('phone') ?> aria-label="Call <?= e(PHONE_INTL) ?>">
+          <?= icon('phone', 'icon') ?>
+          <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-home-media">
+      <?= img('hero-movers-dubai.jpg', 'Our moving crew working across Dubai, Sharjah and Ajman',
+              ['width' => 1600, 'height' => 977, 'loading' => 'eager', 'fetchpriority' => 'high', 'icon' => 'truck']) ?>
     </div>
   </div>
 </section>
 
 <?= breadcrumbs_render() ?>
 
+<!-- ================================================ Choose an emirate ==== -->
 <section class="section">
   <div class="container">
-    <div class="section-head">
-      <h2 class="section-title">Choose your emirate</h2>
-      <p class="section-lead">
-        Each page covers the moving scenarios, property types and practical considerations
-        specific to that emirate.
-      </p>
+    <div class="heading-rule">
+      <h2>Choose Your Emirate</h2>
     </div>
-    <div class="grid grid-3">
-      <?php foreach ($locations as $slug => $location): ?>
-        <?= location_card($slug, $location) ?>
+    <p class="section-lead" style="text-align:center; margin-bottom: var(--sp-5);">
+      Each page covers the moving scenarios, property types and practical considerations
+      specific to that emirate.
+    </p>
+
+    <div class="city-cards">
+      <?php foreach ($locations as $citySlug => $city): ?>
+        <a class="city-card" href="<?= e(location_url($citySlug)) ?>">
+          <span class="city-card-media">
+            <?= img('locations/' . $citySlug . '.webp',
+                    'Movers and packers serving ' . $city['name'] . ', UAE',
+                    ['width' => 900, 'height' => 600, 'icon' => 'building']) ?>
+          </span>
+          <span class="city-card-body">
+            <h3>Movers in <?= e($city['name']) ?></h3>
+            <p><?= e($city['short']) ?></p>
+            <span class="card-link">Learn more <?= icon('arrow', 'icon icon-sm') ?></span>
+          </span>
+        </a>
       <?php endforeach; ?>
     </div>
   </div>
 </section>
 
-<section class="section section-alt">
+<!-- ============================================ One area, three emirates = -->
+<section class="section section-alt why-section">
   <div class="container">
-    <div class="split">
-      <div class="prose">
-        <h2>One service area, three emirates</h2>
-        <p>
-          Dubai, Sharjah and Ajman sit close enough together that people move between them
-          constantly — for a shorter commute, more space, or a change of tenancy. Treating the
-          three as a single service area is what makes those moves straightforward: one crew,
-          one vehicle, one day, rather than a handover between companies at an emirate border.
-        </p>
-        <p>
-          Being based in Sharjah puts us in the middle of that area. Sharjah jobs get the shortest
-          response times, Ajman is a short run north, and Dubai is close enough that we work there
-          every day. The routes between them are ones our crews drive constantly, which matters more
-          for scheduling accuracy than any distance figure.
-        </p>
-        <p>
-          What changes between the three is not our method but the local conditions — building
-          access rules, lift availability, community entry requirements and the mix of property
-          types. Those differences are covered on each emirate's own page.
-        </p>
+    <div class="why-grid">
+      <div class="why-media">
+        <?= img('hero-movers-dubai.jpg', 'Our crew loading a truck for a cross-emirate move',
+                ['width' => 1600, 'height' => 977, 'icon' => 'truck']) ?>
       </div>
 
-      <aside>
-        <div class="panel panel-accent">
-          <h3>Common cross-emirate routes</h3>
-          <ul class="checklist">
-            <li><?= icon('route', 'icon icon-sm') ?><span>Sharjah to Dubai — our most frequent route</span></li>
-            <li><?= icon('route', 'icon icon-sm') ?><span>Dubai to Sharjah — same-day for most households</span></li>
-            <li><?= icon('route', 'icon icon-sm') ?><span>Ajman to Sharjah — a short run, usually straightforward</span></li>
-            <li><?= icon('route', 'icon icon-sm') ?><span>Ajman to Dubai — comfortably a single-day move</span></li>
-            <li><?= icon('route', 'icon icon-sm') ?><span>Dubai to Ajman — planned around building access at both ends</span></li>
-          </ul>
-        </div>
-      </aside>
+      <div>
+        <span class="eyebrow">Why it matters</span>
+        <h2>One Service Area, Three Emirates</h2>
+        <p>
+          Dubai, Sharjah and Ajman sit close enough together that people move between them
+          constantly. Treating the three as a single service area is what makes those moves
+          straightforward: one crew, one vehicle, one day, rather than a handover between
+          companies at an emirate border.
+        </p>
+        <p>
+          Being based in Sharjah puts us in the middle of that area. Sharjah jobs get the
+          shortest response times, Ajman is a short run north, and Dubai is close enough that
+          we work there every day.
+        </p>
+
+        <ul class="why-list">
+          <li><?= icon('check', 'icon') ?><span>Sharjah to Dubai — our most frequent route</span></li>
+          <li><?= icon('check', 'icon') ?><span>Dubai to Sharjah — same-day for most homes</span></li>
+          <li><?= icon('check', 'icon') ?><span>Ajman to Sharjah — a short run</span></li>
+          <li><?= icon('check', 'icon') ?><span>Ajman to Dubai — a single-day move</span></li>
+          <li><?= icon('check', 'icon') ?><span>Dubai to Ajman — planned around access</span></li>
+          <li><?= icon('check', 'icon') ?><span>Within any one emirate</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================= Services strip ====== -->
+<section class="section">
+  <div class="container">
+    <div class="heading-rule">
+      <h2>Available Across All Three</h2>
+    </div>
+    <div class="service-strip service-strip-wrap">
+      <?php foreach ($services as $svcSlug => $svc): ?>
+        <a class="service-tile" href="<?= e(service_url($svcSlug)) ?>">
+          <span class="service-tile-icon"><?= service_icon($svc['icon']) ?></span>
+          <h3><?= e($svc['name']) ?></h3>
+          <p><?= e($svc['tile']) ?></p>
+        </a>
+      <?php endforeach; ?>
     </div>
   </div>
 </section>
 
 <?= faq_list($faqs, 'Questions about our service areas') ?>
 
+<!-- ==================================================== Quote form ====== -->
 <section class="section">
   <div class="container container-narrow">
     <?php
@@ -117,6 +165,27 @@ require dirname(__DIR__) . '/includes/header.php';
     $quoteSource  = 'locations-index';
     require dirname(__DIR__) . '/includes/quote-form.php';
     ?>
+  </div>
+</section>
+
+<!-- ======================================================= CTA band ====== -->
+<section class="cta-gold">
+  <div class="container cta-gold-inner">
+    <div class="cta-gold-media">
+      <?= img('cta-boxes.webp', '', ['width' => 600, 'height' => 450, 'icon' => 'box']) ?>
+    </div>
+    <div>
+      <h2>Moving Between Emirates?</h2>
+      <p>Most household moves between Dubai, Sharjah and Ajman are done in a single day.</p>
+    </div>
+    <div class="cta-gold-actions">
+      <a href="<?= PHONE_LINK ?>" class="btn btn-phone btn-lg js-track" data-cta="phone"
+         aria-label="Call <?= e(PHONE_INTL) ?>">
+        <?= icon('phone', 'icon') ?>
+        <span class="btn-stack"><small>Call Now</small><strong><?= e(PHONE_DISPLAY) ?></strong></span>
+      </a>
+      <?= cta_whatsapp('Hello, I need a moving quote.', 'btn btn-white btn-lg') ?>
+    </div>
   </div>
 </section>
 
