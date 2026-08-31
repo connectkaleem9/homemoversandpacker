@@ -440,6 +440,9 @@ hr { border: 0; border-top: 1px solid var(--line); margin: var(--sp-6) 0; }
 /* Slightly shorter hero for inner pages that use the homepage hero layout */
 .hero-compact .hero-home-inner { min-height: 380px; }
 .hero-compact .hero-home h1 { font-size: clamp(1.6rem, 2.3vw, 2.1rem); }
+/* The media's own 400px floor is taller than a compact hero, so 20px of the
+   picture was being clipped by the section's overflow. */
+.hero-compact .hero-home-media { min-height: 0; }
 
 /* Duotone illustration inside a plain card, no tinted circle behind it */
 .card-icon-plain { display: block; margin-bottom: var(--sp-3); }

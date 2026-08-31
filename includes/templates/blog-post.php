@@ -67,8 +67,16 @@ $modified  = new DateTimeImmutable($post['modified'] ?? $post['published']);
     </div>
 
     <div class="hero-home-media">
-      <?= img('blog/' . $slug . '.webp', '',
-              ['width' => 800, 'height' => 500, 'loading' => 'eager', 'fetchpriority' => 'high', 'icon' => 'quote']) ?>
+      <?php
+      /* The card thumbnails are drawn at 800x500 for a 16:9 card. Stretched
+         across a ~890x490 hero they crop to one enlarged detail, so the hero
+         uses a photograph. Drop blog/<slug>-hero.jpg in to override. */
+      $postHero = image_exists('blog/' . $slug . '-hero.jpg')
+          ? 'blog/' . $slug . '-hero.jpg'
+          : 'hero-movers-dubai.jpg';
+      ?>
+      <?= img($postHero, 'Our moving crew at work',
+              ['width' => 1600, 'height' => 977, 'loading' => 'eager', 'fetchpriority' => 'high', 'icon' => 'truck']) ?>
     </div>
   </div>
 </section>
